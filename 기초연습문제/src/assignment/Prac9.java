@@ -88,7 +88,7 @@ public class Prac9 {
 			double sum = 0;
 			double discountedSum = 0;
 			for (Book book: bookArray) {
-				if (book.getCategory() == cate) {
+				if (book.getCategory().equals(cate)) {
 					sum += book.getBookPrice();
 					discountedSum += book.getBookPrice()
 							- book.getBookPrice() * book.getBookDiscountRate() * 0.01;
