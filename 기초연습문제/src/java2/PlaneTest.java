@@ -1,8 +1,8 @@
 package java2;
 
 abstract class Plane {
-	protected String planeName;
-	protected int fuelSize;
+	private String planeName;
+	private int fuelSize;
 
 	public String getPlaneName() {
 		return planeName;
@@ -32,6 +32,7 @@ abstract class Plane {
 	
 	void refuel(int fuel) {
 		setFuelSize(getFuelSize() + fuel);
+		// this.fuelSize = this.fuelSize + fuel;
 	}
 	
 	abstract void flight(int distance);
