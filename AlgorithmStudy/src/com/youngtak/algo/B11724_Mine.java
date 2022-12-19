@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Stack;
 import java.util.StringTokenizer;
 
-public class B11724 {
+public class B11724_Mine {
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
@@ -18,7 +18,7 @@ public class B11724 {
 		for(int i=0; i < N+1; i++) {
 			graph.add(new ArrayList<Integer>());
 		}
-		boolean[] visited = new boolean[N];
+		boolean[] visited = new boolean[N+1];
 		Stack<Integer> stack = new Stack<>();
 		int visitedCount = 0;
 		int connCount = 1;
@@ -32,26 +32,35 @@ public class B11724 {
 			graph.get(end).add(start);
 		}
 		
-		stack.push(0);
+		stack.push(1);
 		while(true) {
 			while(stack.size() > 0) {
 			 	int current = stack.pop();
-			 	ArrayList<Integer> dests = graph.get(current);
-			 	
-			 	for (int dest : dests) {
-			 		stack.push(dest);
+			 	if (!visited[current]) {
+			 		ArrayList<Integer> dests = graph.get(current);
+				 	
+				 	for (int dest : dests) {
+				 		stack.push(dest);
+				 	}
+				 	
+				 	visited[current] = true;
+				 	visitedCount++;
 			 	}
 			}
-			if (visitedCount >= graph.size()) {
+			
+			if (visitedCount >= N) {
 				break;
 			} else {
 				connCount++;
+				for (int i=1; i < visited.length; i++) {
+					if(!visited[i]) {
+						stack.push(i);
+						break;
+					}
+				}
 			}
 		}
 		
 		System.out.println(connCount);
-		
-		
-		
 	}
 }
