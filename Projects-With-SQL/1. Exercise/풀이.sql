@@ -38,19 +38,22 @@ where year(HIREDATE) = 1981
 order by SAL desc) e3;
 
 -- 6
-select ENAME as '직원명', concat(year(HIREDATE), '년 ', month(HIREDATE), '월 ', day(HIREDATE), '일') as '입사년월일', 'A' as '그룹'
+
+SELECT DATE_FORMAT(HIREDATE, "%Y년 %m월 %d일");
+
+select ENAME as '직원명', DATE_FORMAT(HIREDATE, "%Y년 %m월 %d일") as '입사년월일', 'A' as '그룹'
 from emp
 where year(HIREDATE) = 1980
 union
-select ENAME, concat(year(HIREDATE), '년 ', month(HIREDATE), '월 ', day(HIREDATE), '일'), 'B'
+select ENAME, DATE_FORMAT(HIREDATE, "%Y년 %m월 %d일"), 'B'
 from emp
 where year(HIREDATE) = 1981
 union
-select ENAME, concat(year(HIREDATE), '년 ', month(HIREDATE), '월 ', day(HIREDATE), '일'), 'C'
+select ENAME, DATE_FORMAT(HIREDATE, "%Y년 %m월 %d일"), 'C'
 from emp
 where year(HIREDATE) = 1982
 union
-select ENAME, concat(year(HIREDATE), '년 ', month(HIREDATE), '월 ', day(HIREDATE), '일'), 'D'
+select ENAME, DATE_FORMAT(HIREDATE, "%Y년 %m월 %d일"), 'D'
 from emp
 where year(HIREDATE) = 1983;
 
