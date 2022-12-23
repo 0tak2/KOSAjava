@@ -1,7 +1,9 @@
 use sqldb2;
 
 -- 1
-select job as '직무', truncate(avg(sal), -2) as '급여 평균' from (select job, sal from emp where DEPTNO = 30) empOf30 group by job;
+select job as '직무', truncate(avg(sal), -2) as '급여 평균'
+from (select job, sal from emp where DEPTNO = 30) empOf30
+group by job;
 
 -- 2
 select D.DNAME as '부서명', E.COUNT as '직원 수'
@@ -38,9 +40,7 @@ where year(HIREDATE) = 1981
 order by SAL desc) e3;
 
 -- 6
-
-SELECT DATE_FORMAT(HIREDATE, "%Y년 %m월 %d일");
-
+-- 6-1
 select ENAME as '직원명', DATE_FORMAT(HIREDATE, "%Y년 %m월 %d일") as '입사년월일', 'A' as '그룹'
 from emp
 where year(HIREDATE) = 1980
@@ -56,6 +56,15 @@ union
 select ENAME, DATE_FORMAT(HIREDATE, "%Y년 %m월 %d일"), 'D'
 from emp
 where year(HIREDATE) = 1983;
+
+-- 6-2
+select ENAME as '직원명', DATE_FORMAT(HIREDATE, "%Y년 %m월 %d일") as '입사년월일', CASE 
+	when (year(HIREDATE) = 1980) then 'A'
+	when (year(HIREDATE) = 1981) then 'B'
+	when (year(HIREDATE) = 1982) then 'C'
+	when (year(HIREDATE) = 1983) then 'D'
+end as '그룹'
+from emp;
 
 -- 7
 select e1.EMPNO as'사원 사번', e1.ENAME '사원 이름', e1.MGR as '관리자 사번', e2.ENAME as '관리자 이름' 
