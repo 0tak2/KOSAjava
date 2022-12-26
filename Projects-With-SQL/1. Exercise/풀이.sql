@@ -1,87 +1,87 @@
-use sqldb2;
+USE SQLDB2;
 
 -- 1
-select job as '직무', truncate(avg(sal), -2) as '급여 평균'
-from (select job, sal from emp where DEPTNO = 30) empOf30
-group by job;
+SELECT JOB AS '직무', TRUNCATE(AVG(SAL), -2) AS '급여 평균'
+FROM (SELECT JOB, SAL FROM EMP WHERE DEPTNO = 30) EMPOF30
+GROUP BY JOB;
 
 -- 2
-select D.DNAME as '부서명', E.COUNT as '직원 수'
-from (select DEPTNO, count(JOB) as count from emp group by DEPTNO) E
-	inner join DEPT D
-	on e.deptno = d.DEPTNO
-where E.count >= 4;
+SELECT D.DNAME AS '부서명', E.COUNT AS '직원 수'
+FROM (SELECT DEPTNO, COUNT(JOB) AS COUNT FROM EMP GROUP BY DEPTNO) E
+	INNER JOIN DEPT D
+	ON E.DEPTNO = D.DEPTNO
+WHERE E.COUNT >= 4;
 
 -- 3
-select JOB as '직무명', format(sum(SAL), 0) as '급여의 합' from emp group by JOB
-union
-select 'TOTAL', format(sum(SAL), 0) from emp
-order by 1;
+SELECT JOB AS '직무명', FORMAT(SUM(SAL), 0) AS '급여의 합' FROM EMP GROUP BY JOB
+UNION
+SELECT 'TOTAL', FORMAT(SUM(SAL), 0) FROM EMP
+ORDER BY 1;
 
 -- 4
-select E.ENAME, E.SAL, S.GRADE
-from (select ENAME, SAL from emp where SAL = (select max(SAL) from emp)) E
-inner join salgrade S
-on E.SAL >= S.LOSAL and e.SAL < s.HISAL;
+SELECT E.ENAME, E.SAL, S.GRADE
+FROM (SELECT ENAME, SAL FROM EMP WHERE SAL = (SELECT MAX(SAL) FROM EMP)) E
+INNER JOIN SALGRADE S
+ON E.SAL >= S.LOSAL AND E.SAL < S.HISAL;
 
 -- 5
-select ENAME as '직원명', concat(SAL + COMM, '원') as '급여'
-from
-	(select ENAME, SAL, ifnull(COMM, 0) as COMM, HIREDATE from emp) e2
-where year(HIREDATE) = 1981
-order by '급여' desc;
+SELECT ENAME AS '직원명', CONCAT(SAL + COMM, '원') AS '급여'
+FROM
+	(SELECT ENAME, SAL, IFNULL(COMM, 0) AS COMM, HIREDATE FROM EMP) E2
+WHERE YEAR(HIREDATE) = 1981
+ORDER BY '급여' DESC;
 
-select ENAME as '직원명', concat(SAL + COMM, '원') as '급여'
-from
-(select ENAME, SAL, COMM
-from
-	(select ENAME, SAL, ifnull(COMM, 0) as COMM, HIREDATE from emp) e2
-where year(HIREDATE) = 1981
-order by SAL desc) e3;
+SELECT ENAME AS '직원명', CONCAT(SAL + COMM, '원') AS '급여'
+FROM
+(SELECT ENAME, SAL, COMM
+FROM
+	(SELECT ENAME, SAL, IFNULL(COMM, 0) AS COMM, HIREDATE FROM EMP) E2
+WHERE YEAR(HIREDATE) = 1981
+ORDER BY SAL DESC) E3;
 
 -- 6
 -- 6-1
-select ENAME as '직원명', DATE_FORMAT(HIREDATE, "%Y년 %m월 %d일") as '입사년월일', 'A' as '그룹'
-from emp
-where year(HIREDATE) = 1980
-union
-select ENAME, DATE_FORMAT(HIREDATE, "%Y년 %m월 %d일"), 'B'
-from emp
-where year(HIREDATE) = 1981
-union
-select ENAME, DATE_FORMAT(HIREDATE, "%Y년 %m월 %d일"), 'C'
-from emp
-where year(HIREDATE) = 1982
-union
-select ENAME, DATE_FORMAT(HIREDATE, "%Y년 %m월 %d일"), 'D'
-from emp
-where year(HIREDATE) = 1983;
+SELECT ENAME AS '직원명', DATE_FORMAT(HIREDATE, "%Y년 %M월 %D일") AS '입사년월일', 'A' AS '그룹'
+FROM EMP
+WHERE YEAR(HIREDATE) = 1980
+UNION
+SELECT ENAME, DATE_FORMAT(HIREDATE, "%Y년 %M월 %D일"), 'B'
+FROM EMP
+WHERE YEAR(HIREDATE) = 1981
+UNION
+SELECT ENAME, DATE_FORMAT(HIREDATE, "%Y년 %M월 %D일"), 'C'
+FROM EMP
+WHERE YEAR(HIREDATE) = 1982
+UNION
+SELECT ENAME, DATE_FORMAT(HIREDATE, "%Y년 %M월 %D일"), 'D'
+FROM EMP
+WHERE YEAR(HIREDATE) = 1983;
 
 -- 6-2
-select ENAME as '직원명', DATE_FORMAT(HIREDATE, "%Y년 %m월 %d일") as '입사년월일', CASE 
-	when (year(HIREDATE) = 1980) then 'A'
-	when (year(HIREDATE) = 1981) then 'B'
-	when (year(HIREDATE) = 1982) then 'C'
-	when (year(HIREDATE) = 1983) then 'D'
-end as '그룹'
-from emp;
+SELECT ENAME AS '직원명', DATE_FORMAT(HIREDATE, "%Y년 %M월 %D일") AS '입사년월일', CASE 
+	WHEN (YEAR(HIREDATE) = 1980) THEN 'A'
+	WHEN (YEAR(HIREDATE) = 1981) THEN 'B'
+	WHEN (YEAR(HIREDATE) = 1982) THEN 'C'
+	WHEN (YEAR(HIREDATE) = 1983) THEN 'D'
+END AS '그룹'
+FROM EMP;
 
 -- 7
-select e1.EMPNO as'사원 사번', e1.ENAME '사원 이름', e1.MGR as '관리자 사번', e2.ENAME as '관리자 이름' 
-from emp e1
-	inner join emp e2
-	on e1.MGR = e2.EMPNO;
+SELECT E1.EMPNO AS'사원 사번', E1.ENAME '사원 이름', E1.MGR AS '관리자 사번', E2.ENAME AS '관리자 이름' 
+FROM EMP E1
+	INNER JOIN EMP E2
+	ON E1.MGR = E2.EMPNO;
 	
 -- 8
-select e.EMPNO, e.ENAME, e.DEPTNO
-from emp e
-inner join
-(select DEPTNO
-from dept d inner join locations l on d.LOC_CODE = l.LOC_CODE 
-where d.LOC_CODE = (select LOC_CODE from locations where CITY = 'CHICAGO')) d
-on e.DEPTNO = d.DEPTNO
+SELECT E.EMPNO, E.ENAME, E.DEPTNO
+FROM EMP E
+INNER JOIN
+(SELECT DEPTNO
+FROM DEPT D INNER JOIN LOCATIONS L ON D.LOC_CODE = L.LOC_CODE 
+WHERE D.LOC_CODE = (SELECT LOC_CODE FROM LOCATIONS WHERE CITY = 'CHICAGO')) D
+ON E.DEPTNO = D.DEPTNO
 
 -- 9
-select ename, sal
-from emp
-where sal > (select max(SAL) from emp where DEPTNO = 30);
+SELECT ENAME, SAL
+FROM EMP
+WHERE SAL > (SELECT MAX(SAL) FROM EMP WHERE DEPTNO = 30);
