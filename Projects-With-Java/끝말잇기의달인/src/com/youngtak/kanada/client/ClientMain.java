@@ -96,6 +96,11 @@ public class ClientMain extends Application {
 		startBtn.setPrefSize(190, 40);
 		startBtn.setOnAction(e -> {
 			try {
+				if (nickNameField.getText().equals("")) {
+					showAlert("잘못된 닉네임", "닉네임을 다시 입력해주세요.");
+					return;
+				}
+				
 				wordField.setDisable(false);
 				nickNameField.setDisable(true);
 				socket = new Socket("127.0.0.1", PORT);
@@ -130,7 +135,7 @@ public class ClientMain extends Application {
 							} else if (received.contains("%SET_TURN")) {
 								String currentPlayer = received.replace("%SET_TURN", "");
 								if (currentPlayer.equals(nickNameField.getText())) {
-									setGameStartButtonText("나");
+									setGameStartButtonText("현재 차례: 나");
 								} else {
 									setGameStartButtonText("현재 차례: " + currentPlayer);
 								}
@@ -229,8 +234,8 @@ public class ClientMain extends Application {
 		root.setCenter(textArea);
 		
 		Scene scene = new Scene(root, 600, 700);
-		
 		primaryStage.setScene(scene);
+		
 		primaryStage.setOnCloseRequest(e -> {
 			if (connected) {
 				try {
@@ -246,6 +251,7 @@ public class ClientMain extends Application {
 				nickNameField.setDisable(false);
 			}
 		});
+		
 		primaryStage.show();
 	}
 }

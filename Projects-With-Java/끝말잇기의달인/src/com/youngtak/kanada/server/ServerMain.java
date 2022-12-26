@@ -1,8 +1,6 @@
 package com.youngtak.kanada.server;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -320,8 +318,8 @@ public class ServerMain extends Application {
 		root.setCenter(textArea);
 		
 		Scene scene = new Scene(root, 600, 700);
-		
 		primaryStage.setScene(scene);
+		
 		primaryStage.show();
 	}
 }
