@@ -14,7 +14,7 @@ public class Dict {
 	public static final String baseUrl1 = "https://stdict.korean.go.kr/api/search.do?certkey_no=4720&key=";
 	public static final String baseUrl2 = "&type_search=search&req_type=json&q=";
 	
-	Dict() {
+	public Dict() {
 		super();
 		
 		try {
