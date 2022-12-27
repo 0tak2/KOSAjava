@@ -13,6 +13,7 @@ public class SearchPrac {
 		
 		System.out.print("검색할 책의 키워드 입력: ");
 		String keyword = sc.nextLine();
+		sc.close();
 		System.out.println();
 		
 		try {
@@ -49,6 +50,8 @@ public class SearchPrac {
 			}
 			if (index == 0) {
 				System.out.println("불러올 값이 없습니다.");
+			} else {
+				System.out.println("전체 " + index + "건을 불러왔습니다.");
 			}
 			
 			rs.close();
