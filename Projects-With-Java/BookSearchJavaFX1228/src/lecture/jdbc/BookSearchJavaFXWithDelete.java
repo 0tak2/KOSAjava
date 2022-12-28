@@ -60,6 +60,9 @@ public class BookSearchJavaFXWithDelete extends Application {
 			}
 			
 			tableView.setItems(list);
+			
+			rs.close();
+			pstmt.close();
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
@@ -125,11 +128,15 @@ public class BookSearchJavaFXWithDelete extends Application {
 				sqlBuf.append("WHERE BISBN = ? ");
 				
 				String sql = sqlBuf.toString();
+				
+				con.setAutoCommit(false); // 트랜잭션 시작
+				
 				PreparedStatement pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, deleteTargetISBN);
 				
 				int affectedRowsCount = pstmt.executeUpdate();
-				if (affectedRowsCount > 0) {
+				if (affectedRowsCount == 1) {
+					con.commit();
 					Alert alert2 = new Alert(AlertType.INFORMATION,
 											"삭제가 완료되었습니다.");
 					alert2.setTitle("삭제 완료");
@@ -138,11 +145,14 @@ public class BookSearchJavaFXWithDelete extends Application {
 					// 삭제 내용 반영
 					getBook(textField.getText());
 				} else {
+					con.rollback();
 					Alert alert3 = new Alert(AlertType.ERROR,
 							"삭제 중 문제가 발생했습니다.");
 					alert3.setTitle("삭제 중 오류 발생");
 					alert3.showAndWait();
 				}
+				
+				pstmt.close();
 			} catch (SQLException e2) {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
