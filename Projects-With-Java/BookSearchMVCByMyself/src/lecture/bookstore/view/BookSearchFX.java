@@ -18,7 +18,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import lecture.bookstore.controller.DeleteBookByISBNController;
-import lecture.bookstore.controller.MakeDialogContainingWholeBookInfoController;
+import lecture.bookstore.controller.SelectDetailBookInfoController;
 import lecture.bookstore.controller.SearchBooksByKeywordController;
 import lecture.bookstore.vo.BookVO;
 
@@ -101,8 +101,8 @@ public class BookSearchFX extends Application {
 		        	BookVO book = row.getItem();
 		        	String selectedISBN = book.getBisbn();
 		        	
-		        	MakeDialogContainingWholeBookInfoController controller =
-		        			new MakeDialogContainingWholeBookInfoController();
+		        	SelectDetailBookInfoController controller =
+		        			new SelectDetailBookInfoController();
 		        	
 		        	BookVO detailBook = controller.exec(selectedISBN);
 		        	
