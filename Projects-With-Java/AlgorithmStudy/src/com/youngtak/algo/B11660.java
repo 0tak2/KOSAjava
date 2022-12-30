@@ -15,14 +15,15 @@ public class B11660 {
 		
 		int[][] arr = new int[N][N];
 		int[][] subsum = new int[N][N];
+		int[] sumarr = new int[N * N];
 		for (int i=0; i<N; i++) {
 			st = new StringTokenizer(br.readLine());
 			for (int j=0; j<N; j++) {
 				arr[i][j] = Integer.parseInt(st.nextToken());
 				if (j > 0) {
-					subsum[i][j] = subsum[i][j-1] + arr[i][j];					
+					sumarr[i * N + j] = sumarr[i * N + j - 1] + arr[i][j];
 				} else { // j == 0
-					subsum[i][j] = arr[i][j];
+					sumarr[i * N + j] = arr[i][j];
 				}
 			}
 		}
@@ -38,7 +39,7 @@ public class B11660 {
 			
 			for (int j=startX; j<=endX; j++) {
 				if (startY == 0) {
-					result += subsum[j][endY];	
+					result += subsum[j][endY];
 				} else {
 					result += subsum[j][endY] - subsum[j][startY - 1];					
 				}
