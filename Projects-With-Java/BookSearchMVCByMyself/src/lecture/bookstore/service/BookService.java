@@ -24,7 +24,7 @@ public class BookService {
 
 	public BookVO selectWholeBookInfoByISBN(String isbn) {
 		BookDAO dao = new BookDAO();
-		BookVO detailBookInfo = dao.selectWhole(isbn);
+		BookVO detailBookInfo = dao.selectOne(isbn);
 		return detailBookInfo;
 	}
 

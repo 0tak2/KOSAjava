@@ -102,7 +102,7 @@ public class BookDAO {
 		return -1;
 	}
 
-	public BookVO selectWhole(String isbn) {
+	public BookVO selectOne(String isbn) {
 		BookVO detailBook = null;
 		Connection con = null;
 		DataSource ds = getDataSource();
