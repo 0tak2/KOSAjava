@@ -56,7 +56,7 @@
 		]]>
 	</select>
 	
-   	<update id="update" parameterType="Book">  <!-- VO 안에 있는 btitle이라는 컬럼의 값으로 치환해줌 -->
+   	<update id="update">  <!-- VO 안에 있는 btitle이라는 컬럼의 값으로 치환해줌 -->
 		<![CDATA[ 
 			UPDATE booksTBL
 			SET btitle = #{btitle},
