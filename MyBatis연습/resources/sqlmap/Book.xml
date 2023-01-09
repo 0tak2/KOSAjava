@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!--
+	Mapper가 여러 개여도 혼동되지 않도록
+	임의의 문자열을 namespace로 잡아준다.
+	패키지 경로도, 디렉토리 경로도 아닌 일반 문자열이다.
+-->
+<mapper namespace="example.myBook">
+	<!-- 임의의 아이디, 인자 타입, 리턴 타입을 지정 -->
+	<select id="selectBookByISBNHashMap" parameterType="String" resultType="HashMap">
+		<![CDATA[ 
+			SELECT bisbn, btitle, bauthor, bprice
+			FROM booksTBL
+			WHERE bisbn = #{isbn}
+		]]> <!-- CDATA 구문 -> XML 태그가 아닌 순수한 텍스트임을 지시.
+				부등호 등 자유롭게 사용 가능 -->
+	</select>
+	
+	<select id="selectAllHashMap" resultType="HashMap"> <!-- 책 한 권을 Map으로 가져옴 -->
+		<![CDATA[ 
+			SELECT bisbn, btitle, bauthor, bprice
+			FROM booksTBL
+		]]>
+	</select>
+	
+	<select id="selectBookByISBNBookVO" parameterType="String" resultType="Book">
+							<!-- resultType="example.vo.BookVO"를 Alias로 줄여썼음 -->
+		<![CDATA[ 
+			SELECT bisbn, btitle, bauthor, bprice
+			FROM booksTBL
+			WHERE bisbn = #{isbn}
+		]]>
+	</select>
+	<!-- ↑ select 문으로 가져온 컬럼과 매칭되는 VO의 필드를 찾아 값을 자동으로 맵핑 
+       이때 각 필드명이 컬럼명과 같아야만 함 -->
+       
+
+	<!-- ↓ select 문으로 가져온 컬럼명(Alias 적용됨)과 VO의 필드명이 다른 경우
+											resultType이 아닌 resultMap을 사용 -->
+	<resultMap id="testMap" type="Book">
+		<!-- column은 select 결과집합의 컬럼명; property는 VO의 필드명 -->
+		<result column="b_isbn" property="bisbn"></result>
+		<result column="b_title" property="btitle"></result>
+		<result column="b_author" property="bauthor"></result>
+		<result column="b_price" property="bprice"></result>
+	</resultMap>
+   	<select id="selectBookByISBNResultMap" parameterType="String" resultMap="testMap">
+		<![CDATA[ 
+			SELECT bisbn as b_isbn,
+					btitle as b_title,
+					bauthor as b_author,
+					bprice as b_price
+			FROM booksTBL
+			WHERE bisbn = #{isbn}
+		]]>
+	</select>
+	
+   	<update id="update" parameterType="Book">  <!-- VO 안에 있는 btitle이라는 컬럼의 값으로 치환해줌 -->
+		<![CDATA[ 
+			UPDATE booksTBL
+			SET btitle = #{btitle},
+				bauthor = #{bauthor},
+				bprice = #{bprice}
+			WHERE bisbn = #{bisbn}
+		]]>
+	</update>
+
+</mapper>
