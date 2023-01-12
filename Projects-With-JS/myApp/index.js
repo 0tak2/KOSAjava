@@ -11,5 +11,5 @@ for(var i=0; i<4; i++) {
 // 일반적으로 사용하지 않음. 대신 forEach 사용
 
 myArray.forEach(function (item) {
-    console.log(item)
+    console.log("결과는", item)
 })
