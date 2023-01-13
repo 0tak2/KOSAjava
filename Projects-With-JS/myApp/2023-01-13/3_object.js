@@ -39,5 +39,16 @@ console.log(anotherObj2);
 // 문자로 형변환되어 처리됨
 
 // console.log(anotherObj2.10);
-// console.log(anotherObj2.'10'); // . 연산자로 접근할 수 없음
+// console.log(anotherObj2.'10'); // 에러. '.' 연산자로 접근할 수 없음
 console.log(anotherObj2['10']); // 대신 배열처럼 접근 가능. [연관배열] 인덱스로는 문자열을 정확히 넘겨야 함.
+anotherObj2.address = '서울'; // 객체에 정의되지 않은 프로퍼티도 객체 외부에서 할당 가능
+
+
+// ----------------------------------
+// Malfunction
+let anotherObj3 = {
+    name: '홍길동',
+    address: '인천'
+}
+
+anotherObj3.addrass = '서울' // 오타 발생. 그러나 오류 발생되지 않고 새로운 프로퍼티 추가됨
