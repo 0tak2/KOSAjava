@@ -35,5 +35,49 @@ console.log("# EXAMPLE 3");
 
 const dateObj = new Date(); // 현재 시간
 console.log(dateObj); // Mon Jan 16 2023 12:29:19 GMT+0900
-console.log(dateObj.toLocaleString());
+console.log(dateObj.toLocaleString()); // 2023. 1. 16. 오후 12:31:18
 console.log(dateObj.getHours()); // 12
+
+
+
+// ----------------------------------------------------
+console.log("# EXAMPLE 4");
+
+// 생성자 함수는 관용적으로 식별자의 첫 글자를 대문자로 한다.
+function Person() {
+}
+
+const person1 = new Person();
+// 생성자 함수는 일반 함수와 동일하게 생겼다. 
+// 이름이 관용적으로 대문자로 시작할 뿐이다.
+
+const person2 = {};
+
+console.log(person1); // Person {}
+console.log(person2); // {}
+// 콘솔에 조금 다르게 출력되며, 내부 구조도 약간 다르다.
+// 내용이 비어있다는 것은 동일하다.
+
+
+
+// ----------------------------------------------------
+console.log("# EXAMPLE 5");
+
+function Circle(radius) {
+    this.radius = radius; // 객체의 프로퍼티에 반지름 할당
+    this.getDiameter = function() { // 객체의 프로퍼티에 함수 할당
+        return 2 * 3.14 * radius;
+    }
+
+    // 생성자 함수의 형태
+    // 1. this keyword
+    // 2. return이 없음
+    //    대신 묵시적으로 생성된 객체를 리턴.
+    //    따라서 return을 쓰지 않는 것임.
+}
+
+const circle1 = new Circle(5); // 객체 생성
+const circle2 = new Circle(10);
+
+console.log(circle1);
+console.log(circle1.getDiameter());
