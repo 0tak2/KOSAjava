@@ -132,7 +132,7 @@ console.dir(circle1);
 
 ![프로토타입의 프로토타입](./Assets/prototype-of-prototype.PNG)
 
-### 프로토타입 체인
+## 프로토타입 체인
 ```js
 console.log("\nEXAMPLE 8");
 
@@ -160,7 +160,7 @@ console.dir(circle_test);
 
 이렇게 console.dir을 통해 인스펙션하면 객체의 Prototype 객체를 타고 더 상위에 있는 Prototype 객체와 생성자 함수가 있음을 알 수 있다. 이를 프로토타입 체인이라 하며, 스코프 체인과 혼동하지 않도록 주의할 것.
 
-### 유일한 예외
+## 유일한 예외
 ```js
 // const obj = new Object(); // 생성자 함수가 아닌,
 
@@ -176,6 +176,62 @@ console.dir(someWhatObj);
 
 ![프로토타입이 없는 객체](./Assets/no-proto.PNG);
 
+
+## Safe한 Prototype 참조
 위와 같이 '모든' 객체가 [[Prototype]]과 \_\_proto\_\_을 가지고 있는 것은 아님. 어떤 이유에서든 프로토타입 체인이 끊어진 객체가 있을 수 있음. 이 경우 우리가 했던 것처럼 \_\_proto\_\_를 참조하면 오류가 발생할 것임.
 
-따라서 \_\_proto\_\_에 직접 참조하는 것은 권장되지 않음. 대신 자바스크립트가 제공하는 다른 방법을 사용할 수 있음. (참조: [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/proto))
+따라서 \_\_proto\_\_에 직접 참조하는 것은 권장되지 않음. (참조: [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/proto)) 대신 자바스크립트가 제공하는 다른 방법을 사용할 수 있음. -> Object.getPropertyOf(), Object.setPropertyOf()
+
+```js
+const obj = {};
+
+const parent = {
+    x: 1
+};
+
+/* obj.__proto__.DO_SOMETHING // -> Bad. '__proto__' is deprecated. */
+const property = Object.getPrototypeOf(obj);
+
+Object.setPrototypeOf(obj, parent); // set the property of obj to 'parent'
+
+console.log(obj.x); // 1
+```
+
+## 주의
+### Non-constructor 함수
+생성자 함수가 아닌 Non-constructor 함수는 Prototype 객체를 가지고 있지 않으며, prototype 프로퍼티 자체가 없다.
+
+> Non-constructor 함수
+> 1. Defined by method
+> 2. Arrow-function
+
+```js
+// Non-constructor 함수에는 정말 property 객체가 생성되지 않는지 검증
+
+const person = (name) => {
+    this.name = name
+};
+
+console.log(person.prototype) // undefined
+```
+prototype 프로퍼티가 없으므로 undefined가 반환되었음
+
+### Protorype Chain 따라가기
+![두 개의 체인](./Assets/two_chain.jpg)
+
+두 개의 체인이 생기는 것이 볼 수 있으며, 실질적으로 객체까지 내려오는 것은 노란색으로 표시된 라인.
+
+```js
+function Circle(radius) {
+    this.radius = radius;
+}
+
+Circle.test1 = 'test1';
+Circle.prototype.test2 = 'test2';
+
+const circle1 = new Circle(5);
+console.log(circle1.test1); // undefined
+console.log(circle1.test2); // test2
+```
+
+생성자 함수와 객체는 직접적으로 하나의 체인으로 이어지지 않으므로 당연히 첫번째 값으로 undefined가 출력된다.
