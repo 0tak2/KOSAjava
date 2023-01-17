@@ -110,7 +110,6 @@ function outer(){
 const result = outer();
 
 result(); // 10
-result()()
 ```
 
 앞선 논의에 따르면, 10이 출력되는 것이 이상해보인다.  
