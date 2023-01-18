@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <!-- jQuery를 사용하기 위한 CDN 설정 (https://releases.jquery.com/) -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+            integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+            crossorigin="anonymous"></script>
+    <script src="./js/index6_jq1.js"></script> <!-- 순서가 바뀌지 않도록 주의 -->
+</head>
+<body>
+    <h1 id="title">H1 제목 영역</h1> <!-- id는 한 문서에서 유니크해야한다 -->
+    <div>
+        <div class="highlight">가장 좋아하는 가수는?</div>
+        <ul>
+            <li id="hong">홍길동</li> <!-- 클래스는 중복될 수 있다 -->
+            <li id="shin">신사임당</li>
+            <li id="kang" class="highlight">강감찬</li>
+            <li id="lee">이순신</li>
+        </ul>
+    </div>
+
+    <!-- Inline Event Model (HTML) - 어트리뷰트 이용 -->
+    <input type="button" value="빨강" onclick="handleBtn1()">
+    <input type="button" value="삭제" onclick="handleBtn2()">
+    <input type="button" value="이름" onclick="handleBtn3()">
+    <input type="button" value="노랑" onclick="handleBtn4()">
+    <input type="button" value="질문" onclick="handleBtn5()">
+    <input type="button" value="빨리" onclick="handleBtn6()">
+    <input type="button" value="문덕" onclick="handleBtn7()">
+    <input type="button" value="삭제2" onclick="handleBtn8()">
+    <input type="button" value="버튼" onclick="handleBtn9()">
+</body>
+</html>
