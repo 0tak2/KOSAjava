@@ -6,6 +6,7 @@
 
     <!-- jQuery를 사용하기 위한 CDN 설정 (https://releases.jquery.com/) -->
     <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <script src="./js/index7_jq.js"></script>
 </head>
 <body>
     <div>
@@ -18,15 +19,18 @@
             <input type="text" id="myID" size="20">
         </form>
         <ol>
-            <li class=""myList">고양이</li>
-            <li class=""myList">호랑이</li>
-            <li class=""myList">강아지</li>
+            <li class="myList">고양이</li>
+            <li class="myList">호랑이</li>
+            <li class="myList">강아지</li>
         </ol>
     </div>
-    <input type="button" value="클릭">
+    <input type="button" value="클릭" onclick="handleButton()">
+    <input type="button" value="클릭(범수형)" onclick="handleButton_beomsu()">
     <!--
         버튼을 누르면 다음이 순서대로 출력 (각 라인)
         사과 파인애플 참외 myID 고양이 호랑이 강아지
     -->
+
+    <input type="button" value="클릭(풀이)" onclick="handleButton_ans()">
 </body>
 </html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <!-- jQuery를 사용하기 위한 CDN 설정 (https://releases.jquery.com/) -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <script src="./js/index8_jq.js"></script>
+
+    <style>
+        .container {
+            width: 200px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 사용자 입력 양식 중 checkbox -->
+        <label><input type="checkbox"><span>서울</span></label> <br>
+        <label><input type="checkbox"><span>대전</span></label> <br>
+        <label><input type="checkbox"><span>대구</span></label> <br>
+        <label><input type="checkbox"><span>부산</sapn></label> <br><br>
+
+        <input type="button" value="클릭" onclick="handleBtn()">
+        <!-- 체크된 값만 출력하는 구문 작성 -->
+    </div>
+</body>
+</html>
