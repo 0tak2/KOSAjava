@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <h1>제목1 - 큰 글자로 출력</h1>
+    
+    <!-- 문제 없이 출력은 되지만, 모든 데이터는 태그 내에 위치하도록 하는 것이 바람직함 -->
+    소리없는 아우성!
+
+    <div>소리없는 아우성!</div> <!-- <div>를 통해 묶었음. 묶는 것 외의 기능은 없음. -->
+
+    <span>소리없는 아우성!</span> <!-- <div>와 마찬가지로 묶이지만, 블록 레벨의 <div>와 달리 인라인 레벨 -->
+    
+    <span>으아아아아악</span> <!-- 인라인이므로 바로 옆에 붙는다 -->
+
+
+
+    <!-- 공백과 개행은 무시된다. 본격적으로 스타일링을 하기 위해서는 CSS를 사용해야 한다. -->
+    <!-- 그러나 간단하게 아래와 같이 공백을 추가할 수는 있다. -->
+    <br><br><br> <!-- 원하는 만큼 br 태그를 반복하는 것은 적절하지 않은 방법이다 -->
+    <div>진정해</div>
+
+    <!-- 이미지 -->
+    <!-- 너비 조정은 CSS로 할 수도 있고, width 어트리뷰트를 활용할 수도 있다 -->
+    <!-- CSS로 하는 것이 바람직지만, 아직 안 배웠기 때문에... -->
+    <figure>
+        <img src="./images/painting.jpg" width="300px">
+        <figcaption>[덕수 5574] 오백나한도 중 제일백칠십 혜군고존자</figcaption>
+    </figure>
+
+    <br><br>
+
+    <!-- 하이퍼링크 -->
+    <a href="https://www.naver.com/">네이버로 이동</a> <!-- anchor의 약자-->
+
+    <br><br>
+
+    <!-- 사용자 입력 양식 -->
+    <!-- input 태그에 type 어트리뷰트 지정 -->
+    <!-- type 어트리뷰트에 따라 원하는 컨트롤 생성 가능 -->
+    <input type="text">
+    <input type="button">
+    <input type="radio">
+    <input type="checkbox">
+    <textarea>여러 줄의 입력상자는 별도의 태그로 생성</textarea>
+</body>
+</html>
