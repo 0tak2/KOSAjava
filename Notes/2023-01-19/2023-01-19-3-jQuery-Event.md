@@ -215,8 +215,6 @@ function handleOuterDiv() {
 
 버튼에 대한 이벤트가 상위 요소인 div에 전파되어 두 개의 이벤트 리스너가 모두 순차적으로 호출되었다. 의도되지 않은 상황이다. 이를 막기 위해서는 어떻게 해야할까? Event.stopPropagation()을 이용한다.
 
-
-
 ```js
 function handleInnerBtn(event) {
     event.stopPropagation();
@@ -227,7 +225,5 @@ function handleOuterDiv() {
     alert('DIV 클릭됨');
 }
 ```
-
-
 
 그럼 버튼에 대한 이벤트 리스너만 실행된다.

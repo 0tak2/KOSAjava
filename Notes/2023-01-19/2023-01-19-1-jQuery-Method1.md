@@ -110,7 +110,8 @@ function handleEvent(event) {
     <li>홍길동</li>
     <li>신사임당</li>
     <li>강감찬</li>
-    <li onmouseenter="handleMouseEnter(event)" onmouseleave="handleMouseLeave(event)">이순신</li>
+    <li onmouseenter="handleMouseEnter(event)"
+        onmouseleave="handleMouseLeave(event)">이순신</li>
 </ul>
 ```
 
@@ -250,9 +251,9 @@ function handleRemoveBtn() { // 비활성화된 버튼을 찾아 활성화
 }
 ```
 
-![실행 전](C:\Users\user\AppData\Roaming\marktext\images\440d5227e14c73f7a2b621cae13570f2a6d5c01a.jpg)
+![실행 전](./Assets/disabled.jpg)
 
-![활성화](C:\Users\user\AppData\Roaming\marktext\images\160284d59e92b02bcd3917b46db7d22beccbd672.jpg)
+![활성화](./Assets/active.jpg)
 
 위와 같이 removeAttr 함수를 통해 필요 없는 어트리뷰트를 제거할 수 있음
 

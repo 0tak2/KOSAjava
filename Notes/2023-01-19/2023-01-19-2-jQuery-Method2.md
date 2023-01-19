@@ -92,7 +92,7 @@ function handleBtn1() {
         .text('이순신') // 태그 사이의 이너 텍스트 지정
         .attr('id', 'myID') // 해당 어트리뷰트 지정
         .addClass('listItem'); // 클래스 추가
-    
+
     $('ul > li:first').after(li); // 가장 첫번째 li의 위에 있는 형제로 추가
 }
 ```
