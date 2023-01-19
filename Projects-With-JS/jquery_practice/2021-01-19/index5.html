@@ -10,38 +10,30 @@
     <!-- Bootstrap CSS 포함 (CDN)-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 
-    <script src="./js/index4.js"></script>
+    <script src="./js/index5.js"></script>
 </head>
 <body>
     <div class="container-md">
-        <ul>
-            <li>홍길동</li>
-            <li>신사임당</li>
-            <li>강감찬</li>
-        </ul>
-        <br>
+        <div id="outerDiv">
+            <h1>H1 영역</h1>
+            <div id="innerDiv">
+                <ul>
+                    <li>홍길동</li>
+                    <li>김길동</li>
+                </ul>
+            </div>
+        </div>
 
         <button class="btn btn-primary"
-                onclick="handleBtn()">클릭</button>
-        <br>
-        <br>
+                onclick="handleBtn()">버튼</button>
+        <br><br>
+
+        <!-- 일반적인 형태의 1줄짜리 입력 상자. 텍스트필드 -->
+        <input type="text" id="myID" class="form-control" size="20"> <!-- size="20": 20글자가 들어갈 너비 -->
+        <!-- 기본 컴포넌트. 부트스트랩을 적용하기 위해서 form-control 클래스 추가 -->
 
         <button class="btn btn-primary"
-                disabled="disabled"
-                data-name="홍길동">비활성화된 버튼</button>
-        <br>
-        <br>
-
-        <button class="btn btn-primary"
-            onclick="handleRemoveBtn()">속성 삭제</button>
-
-        <button class="btn btn-primary"
-            onclick="handleGetAttr()">속성 가져오기</button>
-
-        <button class="btn btn-primary"
-            onclick="handleChangeAttr()">속성 변경</button>
-        <br>
-        <br>
+                onclick="handlePrintBtn()">입력값 보기</button>
     </div>
 </body>
 </html>

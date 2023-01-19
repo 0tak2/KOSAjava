@@ -1,12 +1,16 @@
 ---
-title: jQuery 메서드
+title: jQuery 메서드 1
+
 ---
 
-# jQuery 메서드
+# jQuery 메서드 1
+
 ## 이벤트 처리
+
 ### 콤보박스
 
 **기본 HTML 문서 작성**
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -43,18 +47,20 @@ title: jQuery 메서드
 > click, dblclick, change, mouseover, mouseenter, mouseleave, keypress, keyup, keydown 등
 
 - 인라인 이벤트 모델 Inline Event Model
+  
   - HTML 요소의 어트리뷰트에 이벤트리스너를 지정
   - 어트리뷰트 이름은 'on + (대상 이벤트 이름)'으로 예약되어있음
 
 - 위임 모델 Delegation Model
+  
   - JavaFX에서 사용해봤던 방식
   - 딜리게이션 모델의 구성요소
     1. Event source 이벤트가 발생한 DOM 객체
     2. Event listener (Event handler) 이벤트를 처리하는 함수/메서드
     3. Event name/type: 발생한 이벤트의 종류
-         - click, dblclick, mouseover, ... 등
+       - click, dblclick, mouseover, ... 등
     4. Event 객체: 발생한 이벤트의 세부 정보
-         - 자바스크립트 엔진/JVM이 만들어 이벤트 핸들러에 전달
+       - 자바스크립트 엔진/JVM이 만들어 이벤트 핸들러에 전달
 
 > **jQuery가 HTML 요소를 찾는 원리**
 > 
@@ -82,6 +88,7 @@ function handleEvent(event) { // event: 이벤트에 대한 세부 정보
 &nbsp;
 
 아래와 같이 이벤트 리스너를 더 간단하게 작성할 수도 있다.
+
 ```js
 function handleEvent(event) {
     $('#result').text($('select > option:selected').text());
@@ -155,17 +162,19 @@ function handleMouseLeave(event) {
 그러나 각 li 요소에 이벤트 리스너를 등록할 때에 중복 코드가 반복된다는 문제가 있다. 이때 JS에서 Propagation 현상이 발생한다는 것을 생각하면, ul 요소에만 이벤트를 등록해도 될 것 같다. 그러나 이렇게 하면 event.target이 ul 요소가 되어서 의도된 대로 동작하지 않는다. 이 문제는 나중에 jQuery를 이용하여 해결해야할 듯 하다.
 
 > **Propagation 현상**
->
+> 
 > 아래와 같은 HTML 문서에서,
+> 
 > ```html
 >        <div class="special-div"
 >             onclick="handleDiv()">
->
+> 
 >            <button class="btn btn-danger"
 >                    onclick="handleBtn()">버튼</button>
 >            <!-- 버튼 클릭시 이중으로 이벤트 처리됨 [Propagation] -->
 >        </div> ```
 > 버튼을 클릭하면, handleBtn()과 handleDiv()가 모두 실행됨
+> ```
 
 ## each
 
@@ -204,6 +213,7 @@ function handleBtn() {
 이렇게 each를 사용하면 Selector에 의해 DOM이 다중 선택된 경우 각 요소에 대한 반복 작업을 수행할 수 있다.
 
 ## 그 외의 메서드
+
 - text()
   - tag 사이의 글자를 반환해줌
   - 혹은 임의의 문자열을 인자로 넘겨 변경 가능
@@ -219,3 +229,118 @@ function handleBtn() {
 - attr()
   - 해당 요소의 어트리뷰트를 반환
   - 혹은 특정 어트리뷰트의 값을 변경
+
+## attr
+
+```html
+ <button class="btn btn-primary"
+         disabled="disabled">비활성화된 버튼</button>
+<br>
+<br>
+
+<button class="btn btn-primary"
+        onclick="handleRemoveBtn()">속성 삭제</button>
+<br>
+<br>
+```
+
+```js
+function handleRemoveBtn() { // 비활성화된 버튼을 찾아 활성화
+    $('button[disabled]').removeAttr('disabled');
+}
+```
+
+![실행 전](C:\Users\user\AppData\Roaming\marktext\images\440d5227e14c73f7a2b621cae13570f2a6d5c01a.jpg)
+
+![활성화](C:\Users\user\AppData\Roaming\marktext\images\160284d59e92b02bcd3917b46db7d22beccbd672.jpg)
+
+위와 같이 removeAttr 함수를 통해 필요 없는 어트리뷰트를 제거할 수 있음
+
+> [참고] 사용자 정의 속성
+> 
+> HTML5부터는 특정 요소에 데이터 저장 목적으로 임의의 속성을 정의할 수 있다. 다만 data- 접두사가 필요
+
+attr 함수를 통해 어트리뷰트를 가져오거나 바꿀 수도 있음
+
+```html
+<button class="btn btn-primary"
+        disabled="disabled"
+        data-name="홍길동">비활성화된 버튼</button>
+<br>
+<br>
+
+<button class="btn btn-primary"
+        onclick="handleRemoveBtn()">속성 삭제</button>
+
+<button class="btn btn-primary"
+        onclick="handleGetAttr()">속성 가져오기</button>
+
+<button class="btn btn-primary"
+        onclick="handleChangeAttr()">속성 변경</button>
+```
+
+```js
+function handleRemoveBtn() { // 비활성화된 버튼을 찾아 활성화
+    $('button[disabled]').removeAttr('disabled');
+}
+
+function handleGetAttr() {
+    console.log($('button[disabled]').attr('data-name'));
+}
+
+function handleChangeAttr() {
+    $('button[disabled]').attr('data-name', '신사임당');
+    console.log($('button[disabled]').attr('data-name'));
+}
+```
+
+## remove와 hide
+
+```html
+<div id="outerDiv">
+  <h1>H1 영역</h1>
+  <div id="innerDiv">
+    <ul>
+      <li>홍길동</li>
+      <li>김길동</li>
+    </ul>
+  </div>
+</div>
+
+<button class="btn btn-primary"
+        onclick="handleBtn()">버튼</button>
+```
+
+```js
+function handleBtn() {
+    //$('#innerDiv').remove();
+    $('#innerDiv').hide(); // style="display: none;"
+}
+```
+
+- remove(): DOM 트리에서 완전 삭제
+
+- hide(): display:none으로 숨김
+  
+  - 다시 보이려면 show()
+
+- empty(): 현재 요소 자체는 남기고, 자손을 삭제
+
+## val
+
+텍스트 필드의 값을 읽어오는 방법
+
+```html
+<!-- 일반적인 형태의 1줄짜리 입력 상자. 텍스트필드 -->
+<input type="text" id="myID" class="form-control" size="20"> <!-- size="20": 20글자가 들어갈 너비 -->
+<!-- 기본 컴포넌트. 부트스트랩을 적용하기 위해서 form-control 클래스 추가 -->
+
+<button class="btn btn-primary"
+        onclick="handlePrintBtn()">입력값 보기</button>
+```
+
+```js
+function handlePrintBtn() {
+    alert($('#myID').val());
+}
+```

@@ -6,3 +6,16 @@ function handleBtn() {
         console.log($(item).text());
     });
 }
+
+function handleRemoveBtn() { // 비활성화된 버튼을 찾아 활성화
+    $('button[disabled]').removeAttr('disabled');
+}
+
+function handleGetAttr() {
+    console.log($('button[disabled]').attr('data-name'));
+}
+
+function handleChangeAttr() {
+    $('button[disabled]').attr('data-name', '신사임당');
+    console.log($('button[disabled]').attr('data-name'));
+}
