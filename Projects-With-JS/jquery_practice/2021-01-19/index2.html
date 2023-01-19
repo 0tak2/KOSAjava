@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <!-- jQuery 포함 (CDN) (https://releases.jquery.com/) -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    
+    <!-- Bootstrap CSS 포함 (CDN)-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+    <script src="./js/index2.js"></script>
+</head>
+<body>
+    <div class="container-md">
+        <select onchange="handleEvent(event)">
+            <option>홍길동</option>
+            <option>신사임당</option>
+            <option>강감찬</option>
+            <option>이순신</option>
+        </select>
+        <br>
+        <br>
+        <br>
+    
+        <div id="result">
+            여기에 선택된 사람 출력
+        </div>
+        <br>
+        
+        <!-- HTML5에 도입된 button 태그.-->
+        <button class="btn btn-primary">전송</button>
+        <!-- btn-primary, btn-warning, btn-error, btn-info -->
+        <!-- 참고: https://getbootstrap.com/docs/5.3/components/buttons/ -->
+    </div>
+</body>
+</html>
