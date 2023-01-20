@@ -1,6 +1,8 @@
+// 전역 스코프의 API 키를 담은 secret 객체
 let kobisKey = secret.kobis_key;
 let kakaoKey = secret.kakao_key;
 
+// 이벤트 핸들러 등록
 $(function() {
     $('#search-btn').on('click', getData);
     $('#date-field').on('change', getData);
@@ -18,7 +20,7 @@ function formatDateStr(dateStr, toISO) {
     const dateObj = new Date(dateStr);
 
     const year = dateObj.getFullYear();
-    const month = ('0' + (dateObj.getMonth() + 1)).slice(-2);
+    const month = ('0' + (dateObj.getMonth() + 1)).slice(-2); // 뒤에서부터 두 글자를 복사하여 새로운 문자열 리턴
     const date = ('0' + dateObj.getDate()).slice(-2);
 
     if (toISO) {
@@ -47,8 +49,9 @@ function deleteOne() {
 
 function isBlocked(url) {
     const blockedHosts = [
-        'postfiles.pstatic.net',
-        't1.daumcdn.net/cafeattach/'
+        'pstatic.net',
+        'daumcdn.net',
+        'daum.net'
     ]
 
     let result = false;
@@ -65,9 +68,11 @@ function getData(event) {
     event.preventDefault();
 
     const targetDate = formatDateStr($('#date-field').val());
-    $.ajax({ // 필요한 여러 정보를 객체로 넣어줌
+
+    // 영화산업진흥위원회 검색
+    $.ajax({
         url: 'http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json', // 서버 url
-        async: true, // 비동기 여부. 기본 값 true
+        async: true,
         data: {
             key: kobisKey,
             targetDt: targetDate
@@ -77,34 +82,34 @@ function getData(event) {
         success: function() {
             console.log('[KOBIS] 통신 성공');
         },
-        error: function() { // 실패시 수행
+        error: function() {
             console.log('[KOBIS] 통신 실패');
             alert('서버와 통신하는 중 문제가 발생했습니다.');
         }
     })
-    .then(function(data) { // 성공시 수행, 서버에서 받은 json이 객체로 변환되어 인자로 전달됨
+    .done(function(data) {
         if (!data.hasOwnProperty('boxOfficeResult')) {
             alert('불러올 수 있는 데이터가 없습니다. \n날짜를 잘못 입력한 것이 아닌지 확인해보십시오.');
             return;
         }
         
         const list = data.boxOfficeResult.dailyBoxOfficeList;
-
+    
         if (list.length === 0) {
             alert('불러올 수 있는 데이터가 없습니다.');
             return;
         }
-
+    
         if($('tbody#result-body').text() !== '') {
             $('tbody#result-body').empty();
         }
-
+    
         list.forEach((item, key) => {
             const checkbox = $('<input />')
                              .attr('type', 'checkbox')
                              .attr('data-key', key)
                              .addClass('delete-checkbox');
-
+    
             const deleteBtn = $('<button></button>')
                              .text('삭제')
                              .addClass('btn')
@@ -114,21 +119,26 @@ function getData(event) {
                              .click(deleteOne);
             
             const checkTd = $('<td></td>')
-                            .append(checkbox)
-                            .addClass('check-td');
-            const rankTd = $('<td></td>').text(item.rank + '위')
-                            .addClass('rank-td');
+                            .append(checkbox);
+    
+            const rankTd = $('<td></td>')
+                           .text(item.rank + '위');
+    
             const posterTd = $('<td></td>')
                              .addClass('poster-td');
-            const titleTd = $('<td></td>').text(item.movieNm)
-                            .addClass('title-td');
-            const audiTd = $('<td></td>').text(Number(item.audiAcc).toLocaleString() + '명')
-                           .addClass('audiAcc-td');
+    
+            const titleTd = $('<td></td>')
+                            .text(item.movieNm);
+    
+            const audiTd = $('<td></td>')
+                           .text(Number(item.audiAcc).toLocaleString() + '명');
+    
             const openDtTd = $('<td></td>')
-                             .text(item.openDt)
-                             .addClass('openDt-td');
-            const delBtnTd = $('<td></td>').append(deleteBtn);
-
+                             .text(item.openDt);
+    
+            const delBtnTd = $('<td></td>')
+                             .append(deleteBtn);
+    
             const tr = $('<tr></tr>');
             tr.append(checkTd);
             tr.append(rankTd);
@@ -137,14 +147,10 @@ function getData(event) {
             tr.append(audiTd);
             tr.append(openDtTd);
             tr.append(delBtnTd);
-            tr.attr('id', 'tr' + key)
-            tr.hide();
-
-            $('tbody#result-body').append(tr);
-        });
-    })
-    .then(function() {
-        $('tbody > tr').each(function(idx, el) {
+            tr.attr('id', 'tr' + key);
+            $('tbody#result-body').append(tr); // 우선 이미지가 없는 상태로 붙여줌
+    
+            // 카카오 이미지 검색
             $.ajax({
                 async: true,
                 url: 'https://dapi.kakao.com/v2/search/image',
@@ -153,13 +159,14 @@ function getData(event) {
                     Authorization: 'KakaoAK ' + kakaoKey
                 },
                 data: {
-                    query: $(el).children('td.title-td').text()
+                    query: item.movieNm
                 },
                 dataType: 'json',
                 success: function(data) {
                     console.log('[KAKAO] 통신 성공');
-                    let img_url = data.documents[0].image_url;
-                    for (const idx in data.documents) {
+                    console.dir(data);
+                    let img_url;
+                    for (const idx in data.documents) { // 접근 불가능한 호스트 필터링
                         currentURL = data.documents[idx].image_url;
                         if (!isBlocked(currentURL)) {
                             img_url = currentURL;
@@ -167,15 +174,15 @@ function getData(event) {
                         }
                     }
                     const imgEl = $('<img />').attr('src', img_url);
-                    $(el).children('td.poster-td').append(imgEl);
-                    $(el).show();
+                    tr.children('td.poster-td').append(imgEl);
                 },
                 error: function(err) {
-                    console.log('[KAKAO] 통신 성공');
+                    console.log('[KAKAO] 통신 실패');
                     console.err(err);
                     console.err(el);
                 }
             });
-        })
+        });
     });
 }
+

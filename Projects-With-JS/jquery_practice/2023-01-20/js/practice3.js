@@ -1,4 +1,4 @@
-let kobisKey;
+let kobisKey = secret.kobis_key;
 
 $(function() {
     $('#search-btn').on('click', getData);
@@ -9,11 +9,8 @@ $(function() {
 
     $('#date-field').val(yesterday.toISOString().split('T')[0]);
 
-    $.get('./js/secret.json').done(function(data) {
-        kobisKey = data.kobis_key;
-        $('#search-btn').click();
-    })
-})
+    $('#search-btn').click();
+});
 
 function dateStrToYYMMDD(dateStr) {
     const dateObj = new Date(dateStr);
