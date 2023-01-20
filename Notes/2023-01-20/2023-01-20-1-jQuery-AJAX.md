@@ -1,8 +1,8 @@
 ---
-title: AJAX
+title: AJAX 개념
 ---
 
-# AJAX
+# AJAX 개념
 
 ## 복습
 
@@ -216,8 +216,6 @@ JavaScript Object Notation
   
   - 문서 구조 표현을 위해 필요한 불필요한 데이터가 들어감. 그러나 XML보다 덜하기 때문에 전체 용량이 훨씬 적음. 
 
-
-
 최근에는 XML보다 JSON이 선호되나, 여전히 레거시 시스템에서는 XML이 이용되기 때문에 두 방식이 혼용
 
 ## Open API
@@ -225,3 +223,65 @@ JavaScript Object Notation
 공공기관, 기업 등에서 제공하는, 누구나 사용가능한 서버 사이드 프로그램 및 이에 접근할 수 있는 인터페이스
 
 우리는 영화진흥위원회 일일 박스오피스 API를 사용하고자 함
+
+[영화진흥위원회 오픈API 일일 박스오피스 API 서비스](https://www.kobis.or.kr/kobisopenapi/homepg/apiservice/searchServiceInfo.do?serviceId=searchDailyBoxOffice)
+
+키를 발급받고, 문서를 꼼꼼히 읽어보자
+
+### 샘플 요청
+
+문서를 참고하여 base URL과 파라미터로 넣어줄 값을 정리해본다.
+
+| 요청 변수    | 값       | 설명                                |
+| -------- | ------- | --------------------------------- |
+| key      | 문자열(필수) | 발급받은키 값을 입력합니다.                   |
+| targetDt | 문자열(필수) | 조회하고자 하는 날짜를 yyyymmdd 형식으로 입력합니다. |
+
+```
+http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json
+
+20230119
+
+90dfd9c8e20f0795f7f84f5f4ccf15a0
+```
+
+이 값들을 쿼리 스트링 방식으로 base URL에 넣어주면 아래와 같을 것이다.
+
+```
+http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=90dfd9c8e20f0795f7f84f5f4ccf15a0&targetDt=20230119
+```
+
+브라우저의 주소창에 입력하면 아래와 같은 응답을 받을 수 있다.
+
+![](Assets/2023-01-20-12-11-17-image.png)
+
+JSON의 각 키값은 레퍼런스 문서를 보면 알 수 있다.
+
+| 응답 필드         | 값   | 설명                                            |
+| ------------- | --- | --------------------------------------------- |
+| boxofficeType | 문자열 | 박스오피스 종류를 출력합니다.                              |
+| showRange     | 문자열 | 박스오피스 조회 일자를 출력합니다.                           |
+| rnum          | 문자열 | 순번을 출력합니다.                                    |
+| rank          | 문자열 | 해당일자의 박스오피스 순위를 출력합니다.                        |
+| rankInten     | 문자열 | 전일대비 순위의 증감분을 출력합니다.                          |
+| rankOldAndNew | 문자열 | 랭킹에 신규진입여부를 출력합니다.<br>“OLD” : 기존 , “NEW” : 신규 |
+| movieCd       | 문자열 | 영화의 대표코드를 출력합니다.                              |
+| movieNm       | 문자열 | 영화명(국문)을 출력합니다.                               |
+| openDt        | 문자열 | 영화의 개봉일을 출력합니다.                               |
+| salesAmt      | 문자열 | 해당일의 매출액을 출력합니다.                              |
+| salesShare    | 문자열 | 해당일자 상영작의 매출총액 대비 해당 영화의 매출비율을 출력합니다.         |
+| salesInten    | 문자열 | 전일 대비 매출액 증감분을 출력합니다.                         |
+| salesChange   | 문자열 | 전일 대비 매출액 증감 비율을 출력합니다.                       |
+| salesAcc      | 문자열 | 누적매출액을 출력합니다.                                 |
+| audiCnt       | 문자열 | 해당일의 관객수를 출력합니다.                              |
+| audiInten     | 문자열 | 전일 대비 관객수 증감분을 출력합니다.                         |
+| audiChange    | 문자열 | 전일 대비 관객수 증감 비율을 출력합니다.                       |
+| audiAcc       | 문자열 | 누적관객수를 출력합니다.                                 |
+| scrnCnt       | 문자열 | 해당일자에 상영한 스크린수를 출력합니다.                        |
+| showCnt       | 문자열 | 해당일자에 상영된 횟수를 출력합니다.                          |
+
+이제 AJAX로 데이터를 받아 화면에 출력하는 코드를 작성해보자.
+
+[KOSAjava/practice2.html at main · 0tak2/KOSAjava · GitHub](https://github.com/0tak2/KOSAjava/blob/main/Projects-With-JS/jquery_practice/2023-01-20/practice2.html)
+
+[KOSAjava/practice2.js at main · 0tak2/KOSAjava · GitHub](https://github.com/0tak2/KOSAjava/blob/main/Projects-With-JS/jquery_practice/2023-01-20/js/practice2.js)

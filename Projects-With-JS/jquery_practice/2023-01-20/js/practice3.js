@@ -53,11 +53,11 @@ function getData(event) {
                 return;
             }
 
-            if($('#result-body').text() !== '') {
-                $('#result-body').empty();
+            if($('tbody#result-body').text() !== '') {
+                $('tbody#result-body').empty();
             }
 
-            list.forEach(item => {
+            list.forEach((item, key) => {
                 const rankTd = $('<td></td>').text(item.rank + '위');
                 const posterTd = $('<td></td>').append('<img src="https://img.cgv.co.kr/Movie/Thumbnail/StillCut/000086/86217/86217206692_727.jpg" width="120px" />');
                 const titleTd = $('<td></td>').text(item.movieNm);
@@ -70,8 +70,9 @@ function getData(event) {
                 tr.append(titleTd);
                 tr.append(audiTd);
                 tr.append(openDtTd);
+                tr.attr('id', key)
 
-                $('#result-body').append(tr);
+                $('tbody#result-body').append(tr);
             });
         },
         error: function() { // 실패시 수행
