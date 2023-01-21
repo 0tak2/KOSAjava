@@ -33,18 +33,18 @@ function formatDateStr(dateStr, toISO) {
 function deleteMultiple() {
     const targetKeysList = [];
 
-    $('input.delete-checkbox:checked').each(function() {
-        targetKeysList.push($(this).attr('data-key'));
+    $('input[type="checkbox"].delete-checkbox:checked').each(function() {
+        targetKeysList.push($(this).parents('tr').attr('data-key'));
     })
 
     targetKeysList.forEach((key) => {
-        $('#tr' + key).remove();
+        $(`tr[data-key="${key}"]`).remove();
     })
 }
 
 function deleteOne() {
-    const targetKey = $(this).attr('data-key');
-    $('#tr' + targetKey).remove();
+    const targetKey = $(this).parents('tr').attr('data-key');
+    $(`tr[data-key="${targetKey}"]`).remove();
 }
 
 function isBlocked(url) {
@@ -107,7 +107,6 @@ function getData(event) {
         list.forEach((item, key) => {
             const checkbox = $('<input />')
                              .attr('type', 'checkbox')
-                             .attr('data-key', key)
                              .addClass('delete-checkbox');
     
             const deleteBtn = $('<button></button>')
@@ -115,7 +114,6 @@ function getData(event) {
                              .addClass('btn')
                              .addClass('btn-danger')
                              .addClass('btn-sm')
-                             .attr('data-key', key)
                              .click(deleteOne);
             
             const checkTd = $('<td></td>')
@@ -124,8 +122,7 @@ function getData(event) {
             const rankTd = $('<td></td>')
                            .text(item.rank + '위');
     
-            const posterTd = $('<td></td>')
-                             .addClass('poster-td');
+            const posterTd = $('<td></td>');
     
             const titleTd = $('<td></td>')
                             .text(item.movieNm);
@@ -147,7 +144,7 @@ function getData(event) {
             tr.append(audiTd);
             tr.append(openDtTd);
             tr.append(delBtnTd);
-            tr.attr('id', 'tr' + key);
+            tr.attr('data-key', key);
             $('tbody#result-body').append(tr); // 우선 이미지가 없는 상태로 붙여줌
     
             // 카카오 이미지 검색
@@ -174,7 +171,7 @@ function getData(event) {
                         }
                     }
                     const imgEl = $('<img />').attr('src', img_url);
-                    tr.children('td.poster-td').append(imgEl);
+                    posterTd.append(imgEl);
                 },
                 error: function(err) {
                     console.log('[KAKAO] 통신 실패');
