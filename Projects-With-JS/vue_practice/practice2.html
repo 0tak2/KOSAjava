@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{ message }}
+
+        <div id="myDiv1"></div>
+        <div id="myDiv2"></div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                message: '소리없는 아우성!'
+            },
+            methods : {
+                myFunc: function() {
+                    console.log('Invoked myFunc()');
+                }
+            },
+            beforeCreate: function() {
+                // beforeCreate 훅 메서드
+                // 라이프사이클 단계 중에서 인스턴스가 생성되고 가장 처음 실행
+                console.log('[!] beforeCreate');
+
+                // 아직 Vue 객체에 대해 data, methods 속성이 정의되지 않은 시점.
+                // 화면에 Vue 객체가 부착되기도 전.
+                console.log(this.message); // this.data.message, this.methods.myFunc 등은 잘못.
+                this.myFunc();
+            },
+            created: function() {
+                console.log('[!] created');
+                console.log(this.message);
+                this.myFunc();
+            },
+            beforeMount: function() {
+                console.log('[!] beforeMount');
+                const myDiv = document.getElementById('myDiv1');
+                myDiv.innerText = '마운트 완료되지 않음 (beforeMount)'; // Not Working
+            },
+            mounted: function() {
+                console.log('[!] mounted');
+                const myDiv = document.getElementById('myDiv2');
+                myDiv.innerText = '마운트 완료됨 (mounted)';
+            }
+        }); 
+
+    </script>
+</body>
+</html>
