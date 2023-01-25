@@ -8,12 +8,53 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
 </head>
 <body>
-    <div id="app">
+    <div id="app1">
+        {{ myMsg }}
+        <button>세요</button>
 
+        <my-component-g></my-component-g> <!-- 전역으로 등록했기 때문에 어디서든 호출 가능 -->
+        <my-component-l></my-component-l>
+    </div>
+
+    <br><br>
+
+    <div id="app2">
+        {{ myMsg }}
+        <my-component-g></my-component-g> <!-- 정상적으로 표시됨 -->
+        <my-component-l></my-component-l> <!-- 표시되지 않음 -->
     </div>
 
     <script>
-        
+        // 전역 컴포넌트 등록
+        Vue.component('my-component-g', {  // 이름 컨벤션: 소문자 케밥 스타일
+            template: '<div>DIV 전역 컴포넌트</div>'
+        });
+
+        // 지역 컴포넌트 등록
+        let cmp = {
+            template: `
+                <div>
+                    DIV 지역 컴포넌트
+                </div>
+            `
+        };
+
+        new Vue({
+            el: '#app1',
+            data: {
+                myMsg: "안녕하"
+            },
+            components: {
+                'my-component-l': cmp
+            }
+        });
+
+        new Vue({
+            el: '#app2',
+            data: {
+                myMsg: "두번째 앱"
+            }
+        });
     </script>
 </body>
 </html>
