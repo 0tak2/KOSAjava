@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{ message }}
+
+        <div id="myDiv"></div>
+        <button v-on:click="myClick">클릭</button> <!-- myClick()을 주면 안됨. 그럼 evaluate 될 때 실행되어 리턴 값이 들어가게 됨. -->
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                message: '소리없는 아우성!'
+            },
+            methods: {
+                myClick: function() {
+                    console.log('Clicked');
+
+                    // const myDiv = document.getElementById('myDiv')
+                    // myDiv.innerText = '클릭됨'
+                    // DOM을 직접 제어하는 경우 update 되지 않는다. 데이터는 변하지 않았다.
+
+                    this.message = "으아아아아아앙으아아아아아아앙아아아앙! (소리 큰 아우성)";
+                    // beforeUpdate -> updated
+                }
+            },
+            beforeUpdate: function() {
+                console.log("Data changed. The app will be rendered.");
+            },
+            updated: function() {
+                console.log("Updated");
+            }
+        }); 
+
+    </script>
+</body>
+</html>

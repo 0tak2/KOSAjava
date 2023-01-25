@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{ message }}
+    </div>
+
+    <script>
+        // Vue Instance 생성
+        new Vue({ // 포함한 Vue 소스코드에 위치. VUe 인스턴스 생성
+            el: '#app',
+            data: {
+                message: '소리없는 아우성!'
+            }
+            // 생성자 함수에 대한 더 자세한 정보는 공식 문서를 참고
+            // https://v2.vuejs.org/v2/guide/instance.html
+        }); 
+
+    </script>
+</body>
+</html>
