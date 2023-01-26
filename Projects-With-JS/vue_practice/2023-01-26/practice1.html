@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        안녕하세요, {{myName}}({{myAge}})
+    </div>
+
+    <script> <!-- 학습을 위해 인라인 방식으로 스크립트 삽입. 이후에 cli 사용 예정 -->
+        // Vue Instance 생성
+        new Vue({ // Vue Instance 자체가 Root Component
+            el: '#app',
+            data: {
+                myName: '홍길동',
+                myAge: 20
+            }
+        }); 
+
+    </script>
+</body>
+</html>

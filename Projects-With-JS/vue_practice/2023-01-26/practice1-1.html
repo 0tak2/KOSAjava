@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        안녕하세요, {{myName}}({{myAge}})
+        <gl-component></gl-component>
+        <lo-component></lo-component>
+    </div>
+
+    <script>
+        // 전역 컴포넌트 등록
+        let glCmp = {
+            template: `
+                <div>전역 컴포넌트 영역</div>
+            `
+        };
+        Vue.component('gl-component', glCmp); // 컴포넌트 이름, 컴포넌트 option 객체
+        // 컴포넌트 이름 -> 태그 명으로 사용
+        // 컨벤션
+        //     1. 소문자 케밥 케이스가 권장됨 (gl-component)
+        //     2. 두 단어 이상이 권장됨
+        //     3. 케밥 케이스가 싫다면 파스칼케이스 사용 (GlComponent)
+
+
+        // 지역 컴포넌트 등록
+        let loCmp = {
+            template: `
+                <div>지역 컴포넌트 영역</div>
+            `
+        }
+
+        new Vue({ // Vue Instance 자체가 Root Component
+            el: '#app',
+            data: {
+                myName: '홍길동',
+                myAge: 20
+            },
+            components: {
+                'lo-component': loCmp
+            }
+        }); 
+
+    </script>
+</body>
+</html>

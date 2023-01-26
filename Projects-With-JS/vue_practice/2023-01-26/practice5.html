@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <child-component></child-component>
+    </div>
+
+    <script>
+        // 전역 컴포넌트를 루트 컴포넌트 하위에서 사용
+        Vue.component('child-component', {
+            template: `
+                <div>
+                    <button v-on:click="childFunc">클릭</button>    
+                </div>
+            `,
+            data() {
+                return {
+                    myVar: 200
+                };
+            },
+            methods: {
+                // 여기에 버튼에 대한 이벤트 핸들러가 있어야 함
+                childFunc() { // 혹은 축약하지 않고: childFunc: function() { ... }
+                    alert("Clicked");
+                }
+            }
+        });
+
+        new Vue({
+            el: '#app'
+        })
+    </script>
+</body>
+</html>
