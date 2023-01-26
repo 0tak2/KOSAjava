@@ -1,0 +1,107 @@
+<!-- 연습 문제 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+    </div>
+
+    <script>
+        // 컴포넌트 A - 자식 C
+        let cmpC = {
+            template: '<div>local component C</div>'
+        };
+
+        // 컴포넌트 A - 자식 D
+        let cmpD = {
+            template: '<div>결과는: {{text}}</div>',
+            props: {
+                text: String
+            }
+        };
+
+        // 컴포넌트 A
+        let cmpA = {
+            template: `
+                <div>
+                    <component-c></component-c>
+                    <component-d v-bind:text="text"></component-d>
+                </div>
+            `,
+            components: {
+                'component-c': cmpC,
+                'component-d': cmpD
+            },
+            props: {
+                text: String
+            }
+        };
+        Vue.component('component-a', cmpA); // 전역으로 등록
+
+        // 컴포넌트 B - 자식 F
+        let cmpF = {
+                    template: `
+                        <div>
+                            <input type="textfield" v-model="text">
+                            <button v-on:click="handleClick">클릭클릭!</button>
+                        </div>
+                    `,
+                    data() {
+                        return {
+                            text: ''
+                        }
+                    },
+                    methods: {
+                        handleClick() {
+                            console.log("Component F: ", this.text);
+                            this.$emit('userinput', this.text) // to B
+                        }
+                    }
+        };
+
+        // 컴포넌트 B
+        let cmpB = {
+            template: `
+                <div>
+                    <component-f v-on:userinput="handleUserinput"></component-f>
+                </div>
+            `,
+            components: {
+                'component-f': cmpF
+            },
+            methods: {
+                handleUserinput(text) {
+                    console.log("Component B: ", text);
+                    this.$emit('userinput', text); // to Root
+                }
+            }
+        };
+        Vue.component('component-b', cmpB); // 전역으로 등록
+
+        new Vue({
+            el: '#app',
+            template: `
+                <div>
+                    <component-a v-bind:text="text"></component-a>
+                    <component-b v-on:userinput="handleUserinput"></component-b>
+                </div>
+            `,
+            data: {
+                text: ''
+            },
+            methods: {
+                handleUserinput(text) {
+                    console.log("Root: ", text);
+                    this.text = text;
+                }
+            }
+        })
+    </script>
+</body>
+</html>

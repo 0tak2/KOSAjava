@@ -9,7 +9,7 @@
 </head>
 <body>
     <div id="app">
-        <child-component></child-component>
+        <child-component v-on:print_msg="printMsg"></child-component> <!-- 하위 컴포넌트에서 emit한 이벤트를 받을 수 있도록 처리 -->
     </div>
 
     <script>
@@ -28,13 +28,24 @@
             methods: {
                 // 여기에 버튼에 대한 이벤트 핸들러가 있어야 함
                 childFunc() { // 혹은 축약하지 않고: childFunc: function() { ... }
-                    alert("Clicked");
+                    this.$emit('print_msg', 100, 'Hello', {
+                        msg: '전달된 이벤트'
+                    }); // 이벤트를 발생시킴. 사용자 정의 이름과 추가적인 데이터 지정 가능
                 }
             }
         });
 
         new Vue({
-            el: '#app'
+            el: '#app',
+            methods: {
+                printMsg(...args) {
+                    console.log('이벤트 발생');
+
+                    args.forEach((item) => {
+                        console.log(item);
+                    })
+                }
+            }
         })
     </script>
 </body>

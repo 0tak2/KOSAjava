@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <child-component></child-component>
+    </div>
+
+    <script>
+        // 이벤트 버스를 이용하기 위해 Vue Instane 생성
+        let eventBus = new Vue(); // option 객체 없이 생성자 함수 호출 빛 변수에 할당
+
+        // 하위 컴포넌트 전역 등록
+        Vue.component('child-component', {
+            template: `
+                <button v-on:click="btnClick">클릭</button>
+            `,
+            methods: {
+                btnClick() {
+                    // 이벤트 버스에 대해 이벤트 발생
+                    eventBus.$emit('simpleEvent', 200);
+                }
+            }
+        });
+
+        new Vue({
+            el: '#app',
+            created() {
+                eventBus.$on('simpleEvent', function(value) {
+                    console.log('이벤트 버스에 대해 이벤트 발생함', value)
+                })
+            }
+        })
+    </script>
+</body>
+</html>
