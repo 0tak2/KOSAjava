@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{ myName }}, 안녕하세요
+        <global-component/>
+    </div>
+
+    <script>
+        Vue.component('global-component', {
+            template: `
+                <div>
+                    변수의 값은: {{ val }}    
+                </div>
+            `,
+            data() {
+                return {
+                    val: '소리 큰 아우성!! 아아아아아아아아아아악!!!'
+                }
+            }
+        })
+
+        new Vue({
+            el: '#app',
+            data: {
+                myName: '홍길동'
+            }
+        });
+    </script>
+</body>
+</html>

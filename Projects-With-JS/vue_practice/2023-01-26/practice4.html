@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- 3. 컴포넌트 배치 및 prop 넘겨주기 -->
+        <!-- v:bind 디렉티브 사용 // 어트리뷰트 네임으로는 prop명을 케밥 스타일로 바꾸어 씀 -->
+        <child-component v-bind:msg-from-parent="msg" v-bind:another="num"></child-component>
+    </div>
+
+    <script>
+        // [상위] Vue Instance ───────┬──────> [하위] 전역 컴포넌트
+        //                          props
+
+        // 1. 컴포넌트 하나를 전역 컴포넌트로 등록 후,
+        Vue.component('child-component', {
+
+            // [간편] 배열로 props 지정
+            // props: ['msgFromParent', 'another'], // 일반적으로 prop명은 카멜 케이스로 쓴다
+
+            // [권장] 객체 리터럴로 props 지정. prop별 타입 지정 가능
+            props: {
+                msgFromParent: String, // value에 데이터 타입을 나타내는 생성자 함수 지정
+                another: Number
+            },
+            template: `
+                <div>
+                    자식 컴포넌트: <br>
+                    My parent says "{{ msgFromParent }}" <br>
+                    Today's lucky number is {{ another }}
+                </div>
+            `
+        });
+
+        // 2. 해당 컴포넌트를 Vue 인스턴스에 하위 컴포넌트로 등록
+        new Vue({
+            el: '#app',
+            data: {
+                msg: 'Hi, there~',
+                num: 100
+            }
+        });
+
+    </script>
+</body>
+</html>
