@@ -17,10 +17,37 @@
 </head>
 <body>
     <div id="app">
+        <div v-bind:id="myID">소리없는 아우성!!!</div>
+        <button v-on:click="toggle">토글</button> <br>
+        <a v-if="flag" href="https://www.naver.com/">네이버</a>
+        <a v-show="flag" href="https://www.kakao.com/">카카오</a>
+
+        <br><br>
+        <div>{{ myTxt }}</div>
+        <input type="text" v-model="myTxt">
+        <button v-on:click="printInputVal">입력상자의 value 출력</button>
     </div>
 
     <script>
         new Vue({
+            data: {
+                flag: false,
+                myID: 'myDIV',
+                myTxt: ''
+            },
+            methods: {
+                toggle: function() {
+                    this.flag = !this.flag;
+                },
+                printInputVal: function() {
+                    alert(this.myTxt)
+                }
+            },
+            watch: {
+                myTxt: function(val, oldVal) {
+                    console.log('[myTxt]', oldVal, '=>', val);
+                }
+            }
         }).$mount('#app');
     </script>
 </body>
