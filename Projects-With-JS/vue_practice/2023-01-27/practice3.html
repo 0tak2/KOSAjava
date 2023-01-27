@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    
+    <!-- Vue Router -->
+    <script src="https://unpkg.com/vue-router@3.5.3/dist/vue-router.js"></script>
+</head>
+<body>
+    <div id="app">
+        <router-view name="header"></router-view>
+        <router-view></router-view> <!-- 이름이 없으면 default로 취급되며, 한 개만 있을 수 있음 -->
+        <router-view name="footer"></router-view>
+    </div>
+
+    <script>
+        // 각 위치에 넣어줄 세 개의 컴포넌트 작성
+        let headerCmp = {
+            template: `
+            <div>
+                header 컴포넌트 영역
+            </div>
+            `
+        };
+
+        let mainCmp = {
+            template: `
+            <div>
+                main 컴포넌트 영역
+            </div>
+            `
+        };
+
+        let footerCmp = {
+            template: `
+            <div>
+                footer 컴포넌트 영역
+            </div>
+            `
+        };
+
+        let router = new VueRouter({
+            routes: [{
+                path: '/',    // 경로 root
+                components: {    // component가 아니라 components임에 주의
+                    header: headerCmp, // 키는 router-view의 name 값
+                    footer: footerCmp,
+                    default: mainCmp
+                }
+            }]
+        });
+
+        new Vue({
+            router
+        }).$mount('#app');
+    </script>
+</body>
+</html>

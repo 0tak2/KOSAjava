@@ -46,23 +46,23 @@
 
         // 컴포넌트 B - 자식 F
         let cmpF = {
-                    template: `
-                        <div>
-                            <input type="textfield" v-model="text">
-                            <button v-on:click="handleClick">클릭클릭!</button>
-                        </div>
-                    `,
-                    data() {
-                        return {
-                            text: ''
-                        }
-                    },
-                    methods: {
-                        handleClick() {
-                            console.log("Component F: ", this.text);
-                            this.$emit('userinput', this.text) // to B
-                        }
-                    }
+            template: `
+                <div>
+                    <input type="textfield" v-model="text">
+                    <button v-on:click="handleClick">클릭클릭!</button>
+                </div>
+            `,
+            data() {
+                return {
+                    text: ''
+                }
+            },
+            methods: {
+                handleClick() {
+                    console.log("Component F: ", this.text);
+                    this.$emit('userinput', this.text) // to B
+                }
+            }
         };
 
         // 컴포넌트 B
@@ -79,6 +79,7 @@
                 handleUserinput(text) {
                     console.log("Component B: ", text);
                     this.$emit('userinput', text); // to Root
+                    console.log(this);
                 }
             }
         };
