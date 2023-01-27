@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    
+    <!-- Vue Router -->
+    <script src="https://unpkg.com/vue-router@3.5.3/dist/vue-router.js"></script>
+</head>
+<body>
+    <div id="app">
+        <router-view></router-view>
+    </div>
+
+    <script>
+        // member 컴포넌트
+        let memberComponent = {
+            template: `
+                <div>
+                    <span>member 컴포넌트 영역</span>
+                    <router-view></router-view>    
+                </div>
+            ` // router-view가 내부에 다시 등장 [Nested Routing]
+        };
+
+        // profile 컴포넌트
+        let profileComponent = {
+            template: `
+                <div>
+                    <span>profile 컴포넌트 영역</span>
+                </div>
+            `
+        };
+
+        // post 컴포넌트
+        let postsComponent = {
+            template: `
+                <div>
+                    <span>post 컴포넌트 영역</span>
+                </div>
+            `
+        };
+
+        // 경로 설정
+        let routes = [{
+                path: '/member',
+                component: memberComponent,
+                children: [
+                    {
+                        path:'profile', // /member/profile -- 여기에는 앞에 슬래시 안 붙임
+                        component: profileComponent
+                    },
+                    {
+                        path: 'posts',
+                        component: postsComponent
+                    }
+                ]
+        }];
+
+        // Vue 라우터 객체 생성 후 Vue 인스턴스에 넣어줌
+        let router = new VueRouter({
+            routes
+        });
+
+        new Vue({
+            router
+        }).$mount('#app');
+    </script>
+</body>
+</html>

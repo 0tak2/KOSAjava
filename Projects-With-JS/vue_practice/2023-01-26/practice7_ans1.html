@@ -1,0 +1,62 @@
+<!-- 연습 문제 교수님 풀이 (구조 잡기 까지) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+
+    <!-- jQuery 포함 (CDN) (https://releases.jquery.com/) -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="app">
+        <global-component-a></global-component-a>
+        <global-component-b></global-component-b>
+    </div>
+
+    <script>
+        Vue.component('global-component-a', {
+            template: `
+                <div>
+                    <local-component-c></local-component-c>
+                    <local-component-d></local-component-d>
+                </div>`,
+            components: {
+                'local-component-c': {
+                    template: '<div>local component c</div>'
+                },
+                'local-component-d': {
+                    template: '<div>처리된 데이터: {{ }}</div>'
+                }
+            }
+        });
+
+        Vue.component('global-component-b', {
+            template: '<local-component-f></local-component-f>',
+            components: {
+                'local-component-f': {
+                    template: `
+                    <div>
+                        <input type="text">
+                        <button v-on:click="btnClick">클릭클릭</button>
+                    </div>
+                    `,
+                    methods: {
+                        btnClick: function() {
+                            let val = $('input[type="text"]').val();
+                            alert(val);
+                        }
+                    }
+                }
+            }
+        });
+
+        new Vue({
+            el: '#app'
+        });
+    </script>
+</body>
+</html>

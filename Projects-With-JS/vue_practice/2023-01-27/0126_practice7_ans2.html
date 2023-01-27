@@ -1,0 +1,88 @@
+<!-- 연습 문제 교수님 풀이 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+
+    <!-- jQuery 포함 (CDN) (https://releases.jquery.com/) -->
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="app">
+        <global-component-a v-bind:input-data="input"></global-component-a>
+        <global-component-b v-on:event-b="handleEvent"></global-component-b>
+    </div>
+
+    <script>
+        Vue.component('global-component-a', {
+            template: `
+                <div>
+                    <local-component-c></local-component-c>
+                    <local-component-d v-bind:input-data="inputData"></local-component-d>
+                </div>`,
+            components: {
+                'local-component-c': {
+                    template: '<div>local component c</div>'
+                },
+                'local-component-d': {
+                    template: '<div>처리된 데이터: {{ inputData }}</div>',
+                    props: {
+                        inputData: String
+                    }
+                }
+            },
+            props: {
+                inputData: String
+            }
+        });
+
+        Vue.component('global-component-b', {
+            template: '<local-component-f v-on:event-f="myFunc"></local-component-f>',
+            components: {
+                'local-component-f': {
+                    template: `
+                    <div>
+                        <input type="text">
+                        <button v-on:click="btnClick">클릭클릭</button>
+                    </div>
+                    `,
+                    methods: {
+                        btnClick: function() {
+                            let val = $('input[type="text"]').val();
+                            console.log('F got an input data from the user: ', val);
+
+                            console.log('F will emeit an event to B: ', val);
+                            this.$emit('event-f', val);
+                        }
+                    }
+                }
+            },
+            methods: {
+                myFunc: function(data) {
+                    console.log('B got the event from F: ', data);
+                    console.log('B will emeit an event to root: ', data);
+                    this.$emit('event-b', data);
+                }
+            }
+        });
+
+        new Vue({
+            el: '#app',
+            methods: {
+                handleEvent: function(data) {
+                    console.log('Root got the event from B: ', data);
+                    this.input = data;
+                    console.log('Root set data to: ', data);
+                }
+            },
+            data: {
+                input: ''
+            }
+        });
+    </script>
+</body>
+</html>

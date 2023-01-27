@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    
+    <!-- Vue Router -->
+    <script src="https://unpkg.com/vue-router@3.5.3/dist/vue-router.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>Vue 라우터 예제</h1>
+
+        <p>
+            <!-- 링크를 두 개 만든다 -->
+            <router-link to="/main">메인 컴포넌트로 이동</router-link>
+            <router-link to="/sub">서브 컴포넌트로 이동</router-link>
+        </p>
+
+        <router-view>
+        </router-view>
+    </div>
+
+    <script>
+        // 메인 컴포넌트와 서브 컴포넌트 정의
+        let mainComponent = {
+            template: `
+                <div>
+                    메인 컴포넌트
+                </div>
+            `
+        };
+
+        let subComponent = {
+            template: `
+                <div>
+                    서브 컴포넌트
+                </div>
+            `
+        };
+
+        // 경로 설정 -- 배열 이용
+        let routes = [
+            {
+                path: '/main',
+                component: mainComponent
+            },
+            {
+                path: '/sub',
+                component: subComponent
+            }
+        ];
+
+        let router = new VueRouter({
+            routes // 'routes: routes'와 같다.
+        });
+
+        new Vue({
+            router
+        }).$mount('#app');
+    </script>
+</body>
+</html>
