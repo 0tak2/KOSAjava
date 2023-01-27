@@ -12,6 +12,8 @@
 
     <!-- Axios -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script src="./js/secret.js"></script>
 </head>
 <body>
     <div id="app">
@@ -22,7 +24,23 @@
         new Vue({
             methods: {
                 handleBtn: function() {
-                    
+                    axios({
+                        url: 'http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json',
+                        method: 'GET',
+                        // data: {}, // data: post, put, delete 메서드 요청시 지정
+                        params: {    // params: get 요청시 URL 파라미터로 전달
+                            key: secret.kobis_key,
+                            targetDt: '20230126'
+                        },
+                        reponseType: 'json' // 기본값 json
+                    }).then(function(response) { // 프로미스를 이용한 비동기 처리
+                        console.log('성공', response.data); // jQuery와 다르게 서버 응답 본문 뿐 아니라 상태 정보 등까지 담고 있다.
+                        response.data.boxOfficeResult.dailyBoxOfficeList.forEach(element => {
+                            console.log(element.rank + '위', element.movieNm);
+                        });
+                    }).catch(function() {
+                        console.log('실패');
+                    });
                 }
             }
         })

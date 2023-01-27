@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    
+    <!-- Vue Router -->
+    <script src="https://unpkg.com/vue-router@3.5.3/dist/vue-router.js"></script>
+
+    <!-- Axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <style>
+        .red {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+
+
+    <div id="app">
+        <div>텍스트 연동은 콧수염으로: {{ message }}</div>    
+        <div v-bind:class="className">스타일 연동은 v-bind로</div>
+
+        <my-component v-bind:my-data="message2"></my-component>
+    </div>
+
+    <script>
+        // 전역 컴포넌트
+        Vue.component('my-component', {
+            template: '<div>전달된 데이터: {{ myData }}</div>',
+            props: ['myData']
+        })
+
+        new Vue({
+            data: {
+                message: '홍길동',
+                className: 'red',
+                message2: '안뇽'
+            }
+        }).$mount('#app');
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    
+    <!-- Vue Router -->
+    <script src="https://unpkg.com/vue-router@3.5.3/dist/vue-router.js"></script>
+
+    <!-- Axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div>{{ myComputed }}</div>
+        <div>{{ myComputed }}</div>
+        <div>{{ myComputed }}</div>
+    </div>
+
+    <script>
+        new Vue({
+            data: {
+                message: '솔트룩스 화이팅~~ㅠㅠ'
+            },
+            computed: {
+                myComputed: function() {
+                    console.log('Invoked myComputed');
+                    return this.message.split('').reverse().join('')
+                }
+            }
+        }).$mount('#app');
+    </script>
+</body>
+</html>
