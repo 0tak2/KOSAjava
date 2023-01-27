@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+    
+    <!-- Vue Router -->
+    <script src="https://unpkg.com/vue-router@3.5.3/dist/vue-router.js"></script>
+
+    <!-- Axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script src="./js/secret.js"></script>
+</head>
+<body>
+    <div id="app">
+        <ul>
+            <li v-for="name in names">{{ name }}</li>
+        </ul>
+    </div>
+
+    <script>
+        new Vue({
+            data: {
+                names: ['홍길동', '강감찬', '신사임당']
+            }
+        }).$mount('#app');
+    </script>
+</body>
+</html>
