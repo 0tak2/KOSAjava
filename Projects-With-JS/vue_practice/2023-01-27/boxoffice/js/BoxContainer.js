@@ -4,31 +4,42 @@ export const boxContainer = {
     template: `
         <v-container fluidr>
             <v-text-field label="조회일자" v-on:click="toggleDate" v-model="pickedDate"></v-text-field>
+
             <v-row v-if="showDate" justify="center" class="date-control">
                 <v-date-picker v-model="pickedDate" v-on:click:date="handleClickDate"></v-date-picker>
             </v-row>
 
-            <div class="movie-info" v-if="!isLoading" v-for="item in kobisData">
-                <span class="movie-info-cell">
-                    <img v-bind:src="movieImgArr[item.rnum]">
-                </span>
+            <v-btn elevation="2" color="error" class="deleteSelected">선택 삭제</v-btn>
 
-                <span class="movie-info-cell">
-                    {{item.rank}}위
-                </span>
-
-                <span class="movie-info-cell">
-                    &lt;{{item.movieNm}}&gt;
-                </span>
-                
-                <span class="movie-info-cell">
-                    {{item.audiCnt}}명
-                </span>
-                
-                <span class="movie-info-cell">
-                    {{item.openDt}} 개봉
-                </span>
-            </div>
+            <v-simple-table>
+                <thead>
+                    <tr>
+                        <th>선택</th>
+                        <th>순위</th>
+                        <th>포스터</th>
+                        <th>표제</th>
+                        <th>관람객수</th>
+                        <th>개봉일</th>
+                        <th>삭제</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        v-for="item in kobisData"
+                        :key="item.kobisData"
+                    >
+                        <td><input type="checkbox" v-model="selected[item.rnum]"></td>
+                        <td>{{ item.rank }}</td>
+                        <td><img v-bind:src="movieImgArr[item.rnum]"></td>
+                        <td>{{ item.movieNm }}</td>
+                        <td>{{ Number(item.audiAcc).toLocaleString() }}명</td>
+                        <td>{{ item.openDt }}</td>
+                        <td>
+                            <v-btn small depressed color="error">삭제</v-btn>
+                        </td>
+                    </tr>
+                </tbody>
+            </v-simple-table>
         </v-container>
     `,
     data() {
@@ -37,12 +48,16 @@ export const boxContainer = {
             pickedDate: '',
             kobisData: [],
             movieImgArr: [],
-            isLoading: true
+            isLoading: true,
+            selected: new Array(10).fill(false)
         }
     },
     watch: {
         pickedDate(val, oldVal) {
             this.getKobisData(val);
+        },
+        selected(val, oldVal) {
+            console.log(val);
         }
     },
     methods: {

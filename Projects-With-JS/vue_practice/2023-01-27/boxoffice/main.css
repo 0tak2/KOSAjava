@@ -1,11 +1,8 @@
 .date-control {
     position: absolute;
+    z-index: 10;
 }
 
-.movie-info-cell {
-    padding-left: 10px;
-}
-
-.movie-info {
-    margin: 20px;
+.deleteSelected {
+    margin-bottom: 30px;
 }
