@@ -1,4 +1,4 @@
-import { secret } from "./secret.js";
+import { secret } from "../secret.js";
 import { boxControl } from "./BoxControl.js";
 import { boxTable } from "./BoxTable.js";
 
@@ -31,10 +31,10 @@ export const boxContainer = {
             </v-btn>
 
             <box-table
-                v-bind:kobis-data-prop="kobisData"
+                v-bind:kobis-data="kobisData"
                 v-bind:movie-img-data="movieImgArr"
                 v-bind:selected="selected"
-                v-on:updated="updateKobisData">
+                v-on:deleteOne="deleteOne">
             </box-table>
         </v-container>
     `,
@@ -55,6 +55,10 @@ export const boxContainer = {
                     this.selected = new Array(10).fill(false)
                 }
             })
+        },
+        deleteOne(idx) {
+            console.log("asdf");
+            this.kobisData = this.kobisData.filter(item => item.rnum !== idx);
         },
         updateKobisData(newData) {
             this.kobisData = newData
@@ -80,6 +84,8 @@ export const boxContainer = {
                 console.log('[KOBIS] 성공');
                 this.kobisData = response.data.boxOfficeResult.dailyBoxOfficeList;
 
+                this.isLoading = false; // 이미지 검색이 완료되기 전에 화면 표시
+
                 this.kobisData.forEach(el => {
                     this.getKakaoImg(parseInt(el.rnum - 1), el.movieNm);
                 });
@@ -102,9 +108,6 @@ export const boxContainer = {
             .then((response) => {
                 console.log('[kakao] 성공');
                 this.$set(this.movieImgArr, idx, response.data.documents[0].thumbnail_url);
-                if (idx === 9) {
-                    this.isLoading = false;
-                }
             })
             .catch(function (error) {
                 console.log('[kakao] 실패', error);

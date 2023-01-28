@@ -1,4 +1,4 @@
-import { boxContainer } from './BoxContainer.js'
+import { boxContainer } from './components/BoxContainer.js'
 
 new Vue({
     el: '#app',
