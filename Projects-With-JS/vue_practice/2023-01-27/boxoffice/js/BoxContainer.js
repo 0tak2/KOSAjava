@@ -1,50 +1,38 @@
 import { secret } from "./secret.js";
+import { boxControl } from "./BoxControl.js";
+import { boxTable } from "./BoxTable.js";
 
 export const boxContainer = {
+    components: {
+        'box-control': boxControl,
+        'box-table': boxTable
+    },
     template: `
         <v-container fluidr>
-            <v-text-field label="조회일자" v-on:click="toggleDate" v-model="pickedDate"></v-text-field>
+            <box-control
+                v-model="pickedDate"
+                v-on:request="onRequest">
+            </box-control>
 
-            <v-row v-if="showDate" justify="center" class="date-control">
-                <v-date-picker v-model="pickedDate" v-on:click:date="handleClickDate"></v-date-picker>
-            </v-row>
+            <v-btn
+                elevation="2"
+                color="error"
+                class="deleteSelected"
+                v-on:click="deleteSelected"
+            >
+                선택 삭제
+            </v-btn>
 
-            <v-btn elevation="2" color="error" class="deleteSelected">선택 삭제</v-btn>
-
-            <v-simple-table>
-                <thead>
-                    <tr>
-                        <th>선택</th>
-                        <th>순위</th>
-                        <th>포스터</th>
-                        <th>표제</th>
-                        <th>관람객수</th>
-                        <th>개봉일</th>
-                        <th>삭제</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr
-                        v-for="item in kobisData"
-                        :key="item.kobisData"
-                    >
-                        <td><input type="checkbox" v-model="selected[item.rnum]"></td>
-                        <td>{{ item.rank }}</td>
-                        <td><img v-bind:src="movieImgArr[item.rnum]"></td>
-                        <td>{{ item.movieNm }}</td>
-                        <td>{{ Number(item.audiAcc).toLocaleString() }}명</td>
-                        <td>{{ item.openDt }}</td>
-                        <td>
-                            <v-btn small depressed color="error">삭제</v-btn>
-                        </td>
-                    </tr>
-                </tbody>
-            </v-simple-table>
+            <box-table
+                v-bind:kobis-data-prop="kobisData"
+                v-bind:movie-img-data="movieImgArr"
+                v-bind:selected="selected"
+                v-on:updated="updateKobisData">
+            </box-table>
         </v-container>
     `,
     data() {
         return {
-            showDate: false,
             pickedDate: '',
             kobisData: [],
             movieImgArr: [],
@@ -52,19 +40,29 @@ export const boxContainer = {
             selected: new Array(10).fill(false)
         }
     },
-    watch: {
-        pickedDate(val, oldVal) {
-            this.getKobisData(val);
-        },
-        selected(val, oldVal) {
-            console.log(val);
-        }
-    },
     methods: {
+        deleteSelected() {
+            this.selected.forEach((val, i) => {
+                if (val) {
+                    this.kobisData = this.kobisData.filter(item => parseInt(item.rnum)-1 !== i);
+                    this.selected = new Array(10).fill(false)
+                }
+            })
+        },
+        updateKobisData(newData) {
+            this.kobisData = newData
+        },
+        onRequest() {
+            this.getKobisData(this.pickedDate);
+        },
         getKobisData(date) {
             this.isLoading = true;
 
-            const dateWithoutDash = date.replace(/\-/g, '');
+            const year = date.split('-')[0]
+            const month = '0'.concat(date.split('-')[1]).slice(-2);
+            const days = '0'.concat(date.split('-')[2]).slice(-2);
+            const dateWithoutDash = [year, month, days].join('');
+            
             axios.get('http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json',  {
                 params: {
                     key: secret.kobis_key,
@@ -76,7 +74,7 @@ export const boxContainer = {
                 this.kobisData = response.data.boxOfficeResult.dailyBoxOfficeList;
 
                 this.kobisData.forEach(el => {
-                    this.getKakaoImg(parseInt(el.rnum), el.movieNm);
+                    this.getKakaoImg(parseInt(el.rnum - 1), el.movieNm);
                 });
             })
             .catch(function (error) {
@@ -96,7 +94,7 @@ export const boxContainer = {
             })
             .then((response) => {
                 console.log('[kakao] 성공');
-                this.movieImgArr[idx] = response.data.documents[0].thumbnail_url;
+                this.$set(this.movieImgArr, idx, response.data.documents[0].thumbnail_url);
                 if (idx === 10) {
                     this.isLoading = false;
                 }
@@ -106,12 +104,6 @@ export const boxContainer = {
             })
             .then(function () {
             });
-        },
-        toggleDate() {
-            this.showDate=!this.showDate;
-        },
-        handleClickDate(date) {
-            this.showDate=false;
         }
     },
     created() {
