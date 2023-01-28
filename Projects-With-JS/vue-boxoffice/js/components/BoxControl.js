@@ -31,7 +31,6 @@ export const boxControl = {
         onKeydown(keyboardEvent) {
             if (keyboardEvent.key === 'Enter') {
                 this.handleSearchBtn();
-                this.handleClickDate();
             }
         },
         handleClickDate(date) {
@@ -40,6 +39,7 @@ export const boxControl = {
         },
         handleSearchBtn() {
             this.$emit('request'); 
+            this.handleClickDate();
         }
     },
     watch: {

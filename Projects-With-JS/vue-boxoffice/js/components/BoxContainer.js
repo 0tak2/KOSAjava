@@ -13,7 +13,19 @@ export const boxContainer = {
                 <v-progress-circular
                     indeterminate
                     color="primary"
+                    v-if="!isError"
                 ></v-progress-circular>
+                <div v-if="isError" class='err'>
+                    오류가 발생했습니다. 새로 고침하여 다시 시도해보십시오.<br>
+                    무시하고 이 창을 닫으려면 아래 버튼을 클릭하십시오.<br>
+                    {{ errmsg }}
+                    <br><br>
+
+                    <v-btn
+                        color="error"
+                        v-on:click="() => {this.isError=false; this.isLoading=false;}"
+                    >오류 무시</v-btn>
+                </div>
             </v-overlay>
 
             <box-control
@@ -40,6 +52,8 @@ export const boxContainer = {
     `,
     data() {
         return {
+            isError: false,
+            errmsg: '',
             pickedDate: '',
             kobisData: [],
             movieImgArr: [],
@@ -57,7 +71,6 @@ export const boxContainer = {
             })
         },
         deleteOne(idx) {
-            console.log("asdf");
             this.kobisData = this.kobisData.filter(item => item.rnum !== idx);
         },
         updateKobisData(newData) {
@@ -90,8 +103,10 @@ export const boxContainer = {
                     this.getKakaoImg(parseInt(el.rnum - 1), el.movieNm);
                 });
             })
-            .catch(function (error) {
+            .catch((error) => {
                 console.log('[KOBIS] 실패', error);
+                this.isError = true;
+                this.errmsg = error;
             })
             .then(function () {
             });
@@ -109,8 +124,10 @@ export const boxContainer = {
                 console.log('[kakao] 성공');
                 this.$set(this.movieImgArr, idx, response.data.documents[0].thumbnail_url);
             })
-            .catch(function (error) {
+            .catch((error) => {
                 console.log('[kakao] 실패', error);
+                this.isError = true;
+                this.errmsg = error;
             })
             .then(function () {
             });
