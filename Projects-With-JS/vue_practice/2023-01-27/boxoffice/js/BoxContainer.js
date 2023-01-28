@@ -9,6 +9,13 @@ export const boxContainer = {
     },
     template: `
         <v-container fluidr>
+            <v-overlay v-bind:value="isLoading">
+                <v-progress-circular
+                    indeterminate
+                    color="primary"
+                ></v-progress-circular>
+            </v-overlay>
+
             <box-control
                 v-model="pickedDate"
                 v-on:request="onRequest">
@@ -95,7 +102,7 @@ export const boxContainer = {
             .then((response) => {
                 console.log('[kakao] 성공');
                 this.$set(this.movieImgArr, idx, response.data.documents[0].thumbnail_url);
-                if (idx === 10) {
+                if (idx === 9) {
                     this.isLoading = false;
                 }
             })
