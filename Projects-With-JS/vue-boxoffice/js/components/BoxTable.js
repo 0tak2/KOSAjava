@@ -30,24 +30,14 @@ export const boxTable= {
                 </tbody>
         </v-simple-table>
     `,
-    computed: {
-        kobisData: {
-            get() {
-                return this.kobisDataProp;
-            },
-            set(newData) {
-                this.$emit('updated', newData);
-            }
-        }
-    },
     props: {
-        kobisDataProp: Array,
+        kobisData: Array,
         movieImgData: Array,
         selected: Array
     },
     methods: {
         handleDeleteBtn(idx) {
-            this.kobisData = this.kobisData.filter(item => item.rnum !== idx);
+            this.$emit('deleteOne', idx);
         }
     }
 }
