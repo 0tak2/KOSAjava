@@ -76,12 +76,18 @@ export const boxContainer = {
             isDetailLoading: true,
             selected: [],
             showDetail: false,
-            detailMovieCd: '',
+            detailMovieCd: '', // Todo: 합치기
             detailMovieInfo: {},
             detailMovieImg: ''
         }
     },
     methods: {
+        /**
+         * boxTable의 deleteSelected 이벤트에 대한 리스너
+         * data 중 selected 배열을 순회하며, 값이 true인 경우,
+         * data 중 kobisData에서 filter를 이용해 해당 인덱스의 값을 제거한다.
+         * @type { void ) => void }
+         */
         onDeleteSelected() {
             this.selected.forEach((val, i) => {
                 if (val) {
@@ -90,6 +96,11 @@ export const boxContainer = {
                 }
             });
         },
+        /**
+         * boxTable의 deleteOne 이벤트에 대한 리스너
+         * data 중 kobisData에서 filter를 이용해 념겨받은 인덱스의 값을 제거한다.
+         * @type { (idx: number) => void }
+         */
         onDeleteOne(idx) {
             this.kobisData = this.kobisData.filter(item => item.rnum !== idx);
         },
