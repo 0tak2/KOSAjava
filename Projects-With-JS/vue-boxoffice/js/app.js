@@ -1,10 +1,31 @@
 import { boxContainer } from './components/BoxContainer.js'
 
+let router = new VueRouter({
+    routes: [
+        {
+            path: '/',
+            name: 'main',
+            component: boxContainer
+        },
+        {
+            path: '/:date',
+            name: 'mainWithDate',
+            component: boxContainer
+        },
+        {
+            path: '/:date/:movieCd',
+            name: 'mainWithDateAndCd',
+            component: boxContainer
+        },
+    ]
+});
+
 new Vue({
     el: '#app',
+    router,
     vuetify: new Vuetify(),
     components: {
-        'box-container': boxContainer
+        boxContainer
     },
     template: `
     <v-app>
@@ -13,7 +34,7 @@ new Vue({
         </v-app-bar>
 
         <v-main>
-            <box-container></box-container>
+            <router-view></router-view>
         </v-main>
 
         <v-footer app>

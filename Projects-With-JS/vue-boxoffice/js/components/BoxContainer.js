@@ -1,11 +1,13 @@
 import { secret } from "../secret.js";
 import { boxControl } from "./BoxControl.js";
 import { boxTable } from "./BoxTable.js";
+import { detailContainer } from "./DetailContainer.js";
 
 export const boxContainer = {
     components: {
         'box-control': boxControl,
-        'box-table': boxTable
+        'box-table': boxTable,
+        'detail-container': detailContainer
     },
     template: `
         <v-container fluidr>
@@ -37,7 +39,7 @@ export const boxContainer = {
                 elevation="2"
                 color="error"
                 class="deleteSelected"
-                v-on:click="deleteSelected"
+                v-on:click="onDeleteSelected"
             >
                 선택 삭제
             </v-btn>
@@ -46,8 +48,15 @@ export const boxContainer = {
                 v-bind:kobis-data="kobisData"
                 v-bind:movie-img-data="movieImgArr"
                 v-bind:selected="selected"
-                v-on:deleteOne="deleteOne">
+                v-on:deleteOne="onDeleteOne"
+                v-on:getDetail="onGetDetail">
             </box-table>
+
+            <detail-container
+                v-on:close="onDetailClose"
+                v-if="showDetail"
+                v-bind:movieCd="this.detailMovieCd"
+            ></detail-container>
         </v-container>
     `,
     data() {
@@ -58,11 +67,13 @@ export const boxContainer = {
             kobisData: [],
             movieImgArr: [],
             isLoading: true,
-            selected: new Array(10).fill(false)
+            selected: new Array(10).fill(false),
+            showDetail: false,
+            detailMovieCd: ''
         }
     },
     methods: {
-        deleteSelected() {
+        onDeleteSelected() {
             this.selected.forEach((val, i) => {
                 if (val) {
                     this.kobisData = this.kobisData.filter(item => parseInt(item.rnum)-1 !== i);
@@ -70,14 +81,21 @@ export const boxContainer = {
                 }
             })
         },
-        deleteOne(idx) {
+        onDeleteOne(idx) {
             this.kobisData = this.kobisData.filter(item => item.rnum !== idx);
+        },
+        onGetDetail(mvcode) {
+            if (this.$route.params.movieCd !== this.pickedDate) {
+                this.$router.push({ name: 'mainWithDateAndCd', params: { date: this.pickedDate, movieCd: mvcode } });
+            }
         },
         updateKobisData(newData) {
             this.kobisData = newData
         },
         onRequest() {
-            this.getKobisData(this.pickedDate);
+            if (this.$route.params.date !== this.pickedDate) {
+                this.$router.push({ name: 'mainWithDate', params: { date: this.pickedDate } });
+            }
         },
         getKobisData(date) {
             this.isLoading = true;
@@ -131,13 +149,47 @@ export const boxContainer = {
             })
             .then(function () {
             });
+        },
+        onChangeDateParam(route) {
+            if (route.params.date === undefined) {
+                const now = new Date();
+                const yesterday = new Date(now.setDate(now.getDate() - 1));
+                this.pickedDate = (new Date(yesterday - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10);
+            } else {
+                this.pickedDate = route.params.date;
+            }
+    
+            this.getKobisData(this.pickedDate);
+        },
+        onChangeMovieCdParam(route) {
+            if (route.params.movieCd === undefined) {
+                this.detailMovieCd = '';
+            } else {
+                this.detailMovieCd = route.params.movieCd;
+            }
+        },
+        onDetailClose() {
+            this.$router.push({ name: 'mainWithDate', params: { date: this.pickedDate } });
+        }
+    },
+    watch: {
+        $route(to, from) {
+            if(to.params.date !== from.params.date)
+                this.onChangeDateParam(to);
+            
+            if(to.params.movieCd !== from.params.movieCd)
+                this.onChangeMovieCdParam(to);
+        },
+        detailMovieCd(val, oldVal) {
+            if(val !== '') {
+                this.showDetail = true;
+            } else {
+                this.showDetail = false;
+            }
         }
     },
     created() {
-        const now = new Date();
-        const yesterday = new Date(now.setDate(now.getDate() - 1));
-
-        this.pickedDate = (new Date(yesterday - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10)
-        this.getKobisData(this.pickedDate);
+        this.onChangeDateParam(this.$route);
+        this.onChangeMovieCdParam(this.$route);
     }
 }
