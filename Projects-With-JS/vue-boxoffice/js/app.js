@@ -37,7 +37,7 @@ new Vue({
             <router-view></router-view>
         </v-main>
 
-        <v-footer app>
+        <v-footer app class="footer">
             <small>박스오피스</small>
         </v-footer>
     </v-app>
