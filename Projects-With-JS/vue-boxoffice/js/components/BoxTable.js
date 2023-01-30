@@ -6,11 +6,11 @@ export const boxTable= {
                         <tr>
                             <th>선택</th>
                             <th>순위</th>
-                            <th>포스터</th>
+                            <th>이미지</th>
                             <th>표제</th>
                             <th>관람객수</th>
                             <th>개봉일</th>
-                            <th>삭제</th>
+                            <th>기능</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -21,7 +21,9 @@ export const boxTable= {
                             <td><input type="checkbox" v-model="selected[item.rnum - 1]"></td>
                             <td>{{ item.rank }}</td>
                             <td><img v-bind:src="movieImgData[item.rnum - 1]"></td>
-                            <td>{{ item.movieNm }}</td>
+                            <td>
+                                <span class="title-link" v-on:click="handleDetailBtn(item.movieCd)">{{ item.movieNm }}</span>
+                            </td>
                             <td>{{ Number(item.audiAcc).toLocaleString() }}명</td>
                             <td>{{ item.openDt }}</td>
                             <td>
@@ -48,6 +50,9 @@ export const boxTable= {
     methods: {
         handleDeleteBtn(idx) {
             this.$emit('deleteOne', idx);
+        },
+        handleDetailBtn(mvcode) {
+            this.$emit('getDetail', mvcode);
         }
     },
     updated() {
