@@ -10,7 +10,7 @@ export const boxTable= {
                             <th>표제</th>
                             <th>관람객수</th>
                             <th>개봉일</th>
-                            <th>기능</th>
+                            <th>삭제</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -20,9 +20,9 @@ export const boxTable= {
                         >
                             <td><input type="checkbox" v-model="selected[item.rnum - 1]"></td>
                             <td>{{ item.rank }}</td>
-                            <td><img v-bind:src="movieImgData[item.rnum - 1]"></td>
+                            <td><img v-bind:src="item.imgurl"></td>
                             <td>
-                                <span class="title-link" v-on:click="handleDetailBtn(item.movieCd)">{{ item.movieNm }}</span>
+                                <span class="title-link" v-on:click.stop="handleDetailBtn(item.movieCd)">{{ item.movieNm }}</span>
                             </td>
                             <td>{{ Number(item.audiAcc).toLocaleString() }}명</td>
                             <td>{{ item.openDt }}</td>
@@ -39,20 +39,20 @@ export const boxTable= {
     `,
     props: {
         kobisData: Array,
-        movieImgData: Array,
         selected: Array
     },
     data() {
         return {
-            noData: false
+            noData: false,
+            dialog: false
         }
     },
     methods: {
         handleDeleteBtn(idx) {
             this.$emit('deleteOne', idx);
         },
-        handleDetailBtn(mvcode) {
-            this.$emit('getDetail', mvcode);
+        handleDetailBtn(movieCd) {
+            this.$emit('showDetail', movieCd);
         }
     },
     updated() {

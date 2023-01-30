@@ -1,13 +1,13 @@
 import { secret } from "../secret.js";
 import { boxControl } from "./BoxControl.js";
 import { boxTable } from "./BoxTable.js";
-import { detailContainer } from "./DetailContainer.js";
+import { detailDialogPanel } from "./DetailDialogPanel.js";
 
 export const boxContainer = {
     components: {
         'box-control': boxControl,
         'box-table': boxTable,
-        'detail-container': detailContainer
+        'detail-dialog-panel': detailDialogPanel
     },
     template: `
         <v-container fluidr>
@@ -46,17 +46,24 @@ export const boxContainer = {
 
             <box-table
                 v-bind:kobis-data="kobisData"
-                v-bind:movie-img-data="movieImgArr"
                 v-bind:selected="selected"
                 v-on:deleteOne="onDeleteOne"
-                v-on:getDetail="onGetDetail">
+                v-on:showDetail="onShowDetail">
             </box-table>
 
-            <detail-container
-                v-on:close="onDetailClose"
-                v-if="showDetail"
-                v-bind:movieCd="this.detailMovieCd"
-            ></detail-container>
+            <v-dialog
+                v-model="showDetail"
+                max-width="300"
+                v-on:click:outside="onDetailClose"
+            >
+                <detail-dialog-panel
+                    v-on:close="onDetailClose"
+                    v-bind:movieInfo="detailMovieInfo"
+                    v-bind:movieImg="detailMovieImg"
+                    v-bind:isLoading="isDetailLoading"
+                >
+                </detail-dialog-panel>
+            </v-dialog>
         </v-container>
     `,
     data() {
@@ -65,11 +72,13 @@ export const boxContainer = {
             errmsg: '',
             pickedDate: '',
             kobisData: [],
-            movieImgArr: [],
             isLoading: true,
-            selected: new Array(10).fill(false),
+            isDetailLoading: true,
+            selected: [],
             showDetail: false,
-            detailMovieCd: ''
+            detailMovieCd: '',
+            detailMovieInfo: {},
+            detailMovieImg: ''
         }
     },
     methods: {
@@ -77,20 +86,20 @@ export const boxContainer = {
             this.selected.forEach((val, i) => {
                 if (val) {
                     this.kobisData = this.kobisData.filter(item => parseInt(item.rnum)-1 !== i);
-                    this.selected = new Array(10).fill(false)
+                    this.selected = [];
                 }
-            })
+            });
         },
         onDeleteOne(idx) {
             this.kobisData = this.kobisData.filter(item => item.rnum !== idx);
         },
-        onGetDetail(mvcode) {
+        onShowDetail(mvcode) {
             if (this.$route.params.movieCd !== this.pickedDate) {
                 this.$router.push({ name: 'mainWithDateAndCd', params: { date: this.pickedDate, movieCd: mvcode } });
             }
         },
         updateKobisData(newData) {
-            this.kobisData = newData
+            this.kobisData = newData;
         },
         onRequest() {
             if (this.$route.params.date !== this.pickedDate) {
@@ -112,24 +121,53 @@ export const boxContainer = {
                 }
             })
             .then((response) => {
-                console.log('[KOBIS] 성공');
+                console.log('[KOBIS-Main] 성공');
                 this.kobisData = response.data.boxOfficeResult.dailyBoxOfficeList;
 
                 this.isLoading = false; // 이미지 검색이 완료되기 전에 화면 표시
 
                 this.kobisData.forEach(el => {
-                    this.getKakaoImg(parseInt(el.rnum - 1), el.movieNm);
+                    this.getKakaoImg(el.movieNm, true, el);
                 });
             })
             .catch((error) => {
-                console.log('[KOBIS] 실패', error);
+                console.log('[KOBIS-Main] 실패', error);
                 this.isError = true;
                 this.errmsg = error;
             })
             .then(function () {
             });
         },
-        getKakaoImg(idx, query) {
+        getKobisDetail(code) {
+            this.isDetailLoading = true;
+            axios.get('http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json',  {
+                params: {
+                    key: secret.kobis_key,
+                    movieCd: code
+                }
+            })
+            .then((response) => {
+                let movieInfoTailed = response.data.movieInfoResult.movieInfo;
+                const openDtRaw = movieInfoTailed.openDt;
+                const year = openDtRaw.slice(0, 4);
+                const months = openDtRaw.slice(4, 6);
+                const day = openDtRaw.slice(6);
+                movieInfoTailed.openDt = year + '년 ' + months + '월 ' + day + '일';
+
+                this.detailMovieInfo = movieInfoTailed;
+                console.log('[KOBIS-DetailInfo] 성공');
+
+                this.getKakaoImg(this.detailMovieInfo.movieNm, false);
+            })
+            .catch((error) => {
+                console.log('[KOBIS-DetailInfo] 실패', error);
+                this.isError = true;
+                this.errmsg = error;
+            })
+            .then(function () {
+            });
+        },
+        getKakaoImg(query, isBatch, arrEl) {
             axios.get('https://dapi.kakao.com/v2/search/image',  {
                 headers: {
                     Authorization: 'KakaoAK ' + secret.kakao_key
@@ -139,8 +177,13 @@ export const boxContainer = {
                 }
             })
             .then((response) => {
+                if (isBatch) {
+                    this.$set(arrEl, 'imgurl', response.data.documents[0].thumbnail_url);
+                } else {
+                    this.detailMovieImg = response.data.documents[0].thumbnail_url;
+                }
                 console.log('[kakao] 성공');
-                this.$set(this.movieImgArr, idx, response.data.documents[0].thumbnail_url);
+                this.isDetailLoading = false;
             })
             .catch((error) => {
                 console.log('[kakao] 실패', error);
@@ -169,6 +212,7 @@ export const boxContainer = {
             }
         },
         onDetailClose() {
+            this.detailMovieInfo = {};
             this.$router.push({ name: 'mainWithDate', params: { date: this.pickedDate } });
         }
     },
@@ -183,6 +227,7 @@ export const boxContainer = {
         detailMovieCd(val, oldVal) {
             if(val !== '') {
                 this.showDetail = true;
+                this.getKobisDetail(val);
             } else {
                 this.showDetail = false;
             }

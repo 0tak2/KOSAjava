@@ -33,13 +33,53 @@
     position: fixed;
     width: 600px;
     margin: 0 auto;
-    top: 80px;
+    top: 100px;
     left: 0;
     right: 0;
     z-index: 100;
 }
 
-.thumbnail-img-detail {
+.detail-thumbnail-img {
     margin-top: 15px;
     text-align: center;
+}
+
+.detail-movieNm {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+ul.detail-list {
+    list-style: none;
+    padding: 15px;
+}
+
+ul.detail-list > li {
+    padding: 5px 0;
+}
+
+span.detail-list-subtitle {
+    font-weight: 800;
+    margin-right: 8px;
+}
+
+.footer {
+    height: 40px;
+    text-align: center;
+}
+
+.v-chip {
+    margin: 2px;
+}
+
+/* 영화 상세 정보 스크롤 */
+.v-card {
+    display: flex !important;
+    flex-direction: column;
+}
+
+.v-card__text {
+    flex-grow: 1;
+    overflow: auto;
 }
