@@ -1,13 +1,13 @@
 import { secret } from "../secret.js";
 import { boxControl } from "./BoxControl.js";
 import { boxTable } from "./BoxTable.js";
-import { detailDialogPanel } from "./DetailDialogPanel.js";
+import { detailContainer } from "./DetailContainer.js";
 
 export const boxContainer = {
     components: {
         'box-control': boxControl,
         'box-table': boxTable,
-        'detail-dialog-panel': detailDialogPanel
+        'detail-container': detailContainer
     },
     template: `
         <v-container fluidr>
@@ -56,13 +56,11 @@ export const boxContainer = {
                 max-width="300"
                 v-on:click:outside="onDetailClose"
             >
-                <detail-dialog-panel
+                <detail-container
                     v-on:close="onDetailClose"
-                    v-bind:movieInfo="detailMovieInfo"
-                    v-bind:movieImg="detailMovieImg"
-                    v-bind:isLoading="isDetailLoading"
+                    v-bind:movieCd="detailMovieCd"
                 >
-                </detail-dialog-panel>
+                </detail-container>
             </v-dialog>
         </v-container>
     `,
@@ -127,7 +125,7 @@ export const boxContainer = {
                 this.isLoading = false; // 이미지 검색이 완료되기 전에 화면 표시
 
                 this.kobisData.forEach(el => {
-                    this.getKakaoImg(el.movieNm, true, el);
+                    this.getKakaoImg(el.movieNm, el);
                 });
             })
             .catch((error) => {
@@ -138,36 +136,7 @@ export const boxContainer = {
             .then(function () {
             });
         },
-        getKobisDetail(code) {
-            this.isDetailLoading = true;
-            axios.get('http://www.kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieInfo.json',  {
-                params: {
-                    key: secret.kobis_key,
-                    movieCd: code
-                }
-            })
-            .then((response) => {
-                let movieInfoTailed = response.data.movieInfoResult.movieInfo;
-                const openDtRaw = movieInfoTailed.openDt;
-                const year = openDtRaw.slice(0, 4);
-                const months = openDtRaw.slice(4, 6);
-                const day = openDtRaw.slice(6);
-                movieInfoTailed.openDt = year + '년 ' + months + '월 ' + day + '일';
-
-                this.detailMovieInfo = movieInfoTailed;
-                console.log('[KOBIS-DetailInfo] 성공');
-
-                this.getKakaoImg(this.detailMovieInfo.movieNm, false);
-            })
-            .catch((error) => {
-                console.log('[KOBIS-DetailInfo] 실패', error);
-                this.isError = true;
-                this.errmsg = error;
-            })
-            .then(function () {
-            });
-        },
-        getKakaoImg(query, isBatch, arrEl) {
+        getKakaoImg(query, el) {
             axios.get('https://dapi.kakao.com/v2/search/image',  {
                 headers: {
                     Authorization: 'KakaoAK ' + secret.kakao_key
@@ -177,16 +146,12 @@ export const boxContainer = {
                 }
             })
             .then((response) => {
-                if (isBatch) {
-                    this.$set(arrEl, 'imgurl', response.data.documents[0].thumbnail_url);
-                } else {
-                    this.detailMovieImg = response.data.documents[0].thumbnail_url;
-                }
-                console.log('[kakao] 성공');
+                this.$set(el, 'imgurl', response.data.documents[0].thumbnail_url);
+                console.log('[Kakao-Main] 성공');
                 this.isDetailLoading = false;
             })
             .catch((error) => {
-                console.log('[kakao] 실패', error);
+                console.log('[Kakao-Main] 실패', error);
                 this.isError = true;
                 this.errmsg = error;
             })
@@ -227,7 +192,6 @@ export const boxContainer = {
         detailMovieCd(val, oldVal) {
             if(val !== '') {
                 this.showDetail = true;
-                this.getKobisDetail(val);
             } else {
                 this.showDetail = false;
             }
