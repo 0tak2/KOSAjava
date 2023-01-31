@@ -31,7 +31,6 @@ export const boxContainer = {
             </v-overlay>
 
             <box-control
-                v-model="pickedDate"
                 v-on:request="onRequest">
             </box-control>
 
@@ -99,7 +98,8 @@ export const boxContainer = {
         updateKobisData(newData) {
             this.kobisData = newData;
         },
-        onRequest() {
+        onRequest(date) {
+            this.pickedDate = date;
             if (this.$route.params.date !== this.pickedDate) {
                 this.$router.push({ name: 'mainWithDate', params: { date: this.pickedDate } });
             }
@@ -163,6 +163,7 @@ export const boxContainer = {
                 const now = new Date();
                 const yesterday = new Date(now.setDate(now.getDate() - 1));
                 this.pickedDate = (new Date(yesterday - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10);
+                this.$router.push({ name: 'mainWithDate', params: { date: this.pickedDate } });
             } else {
                 this.pickedDate = route.params.date;
             }
