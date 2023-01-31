@@ -70,12 +70,9 @@ export const boxContainer = {
             pickedDate: '',
             kobisData: [],
             isLoading: true,
-            isDetailLoading: true,
             selected: [],
             showDetail: false,
-            detailMovieCd: '',
-            detailMovieInfo: {},
-            detailMovieImg: ''
+            detailMovieCd: ''
         }
     },
     methods: {
