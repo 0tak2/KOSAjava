@@ -47,6 +47,10 @@ export const boxTable= {
             dialog: false
         }
     },
+    model: {
+        prop: 'selected',
+        event: 'select'
+    },
     methods: {
         handleDeleteBtn(idx) {
             this.$emit('deleteOne', idx);
