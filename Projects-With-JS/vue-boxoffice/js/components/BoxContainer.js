@@ -78,10 +78,12 @@ export const boxContainer = {
     methods: {
         onDeleteSelected() {
             this.selected.forEach((val, i) => {
-                if (val) {
-                    this.kobisData = this.kobisData.filter(item => parseInt(item.rnum)-1 !== i);
-                    this.selected = [];
-                }
+                // if (val) {
+                //     this.kobisData = this.kobisData.filter(item => parseInt(item.rnum)-1 !== i);
+                //     this.selected = [];
+                // }
+                this.$delete(this.kobisData, i + 1);
+                this.selected = [];
             });
         },
         onDeleteOne(idx) {
@@ -133,13 +135,13 @@ export const boxContainer = {
             .then(function () {
             });
         },
-        getKakaoImg(query, el) {
+        getKakaoImg(keyword, el) {
             axios.get('https://dapi.kakao.com/v2/search/image',  {
                 headers: {
                     Authorization: 'KakaoAK ' + secret.kakao_key
                 },
                 params: {
-                    query
+                    query: keyword + " 포스터"
                 }
             })
             .then((response) => {

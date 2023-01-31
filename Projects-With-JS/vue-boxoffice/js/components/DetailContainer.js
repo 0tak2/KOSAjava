@@ -79,13 +79,13 @@ export const detailContainer = {
             .then(function () {
             });
         },
-        getKakaoImg(query) {
+        getKakaoImg(keyword) {
             axios.get('https://dapi.kakao.com/v2/search/image',  {
                 headers: {
                     Authorization: 'KakaoAK ' + secret.kakao_key
                 },
                 params: {
-                    query
+                    query: keyword + " 포스터"
                 }
             })
             .then((response) => {
