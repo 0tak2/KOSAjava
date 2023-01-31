@@ -45,7 +45,7 @@ export const boxContainer = {
 
             <box-table
                 v-bind:kobis-data="kobisData"
-                v-bind:selected="selected"
+                v-model:selected="selected"
                 v-on:deleteOne="onDeleteOne"
                 v-on:showDetail="onShowDetail">
             </box-table>
