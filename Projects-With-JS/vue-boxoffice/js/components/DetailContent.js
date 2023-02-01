@@ -27,6 +27,7 @@ export const detailContent = {
                     >
                         {{ actor.peopleNm }}
                     </v-chip>
+                    <span v-if="movieInfo.actors.length === 0">배우 정보가 없습니다</span>
                 </li>
             </ul>
         </v-card-text>
