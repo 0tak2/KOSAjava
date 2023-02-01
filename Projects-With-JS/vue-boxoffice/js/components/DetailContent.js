@@ -4,7 +4,7 @@ export const detailContent = {
             <div class="detail-thumbnail-img">
                 <img v-bind:src="movieInfo.imgurl">
             </div>
-            <ul class="detail-list">
+            <ul class="detail-list" v-if="Object.keys(movieInfo).length > 0">
                 <li class="detail-movieNm">{{movieInfo.movieNm}} ({{movieInfo.prdtYear}})</li>
                 <li><span class="detail-list-subtitle">영제 </span> {{movieInfo.movieNmEn}}</li>
                 <li><span class="detail-list-subtitle">개봉연도 </span> {{movieInfo.openDt}}</li>
