@@ -8,6 +8,9 @@ export const detailContent = {
                 <li class="detail-movieNm">{{movieInfo.movieNm}} ({{movieInfo.prdtYear}})</li>
                 <li><span class="detail-list-subtitle">영제 </span> {{movieInfo.movieNmEn}}</li>
                 <li><span class="detail-list-subtitle">개봉연도 </span> {{movieInfo.openDt}}</li>
+                <li><span class="detail-list-subtitle">제작국가 </span> 
+                    <span v-for="nation in movieInfo.nations">{{nation.nationNm}} </span>
+                </li>
                 <li><span class="detail-list-subtitle">상영시간 </span> {{movieInfo.showTm}}분</li>
                 <li><span class="detail-list-subtitle">감독 </span>
                     <v-chip outlined
