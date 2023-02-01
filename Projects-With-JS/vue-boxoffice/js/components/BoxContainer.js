@@ -78,12 +78,10 @@ export const boxContainer = {
     methods: {
         onDeleteSelected() {
             this.selected.forEach((val, i) => {
-                // if (val) {
-                //     this.kobisData = this.kobisData.filter(item => parseInt(item.rnum)-1 !== i);
-                //     this.selected = [];
-                // }
-                this.$delete(this.kobisData, i + 1);
-                this.selected = [];
+                if (val) {
+                    this.kobisData = this.kobisData.filter(item => parseInt(item.rnum)-1 !== i);
+                    this.selected = [];
+                }
             });
         },
         onDeleteOne(idx) {
