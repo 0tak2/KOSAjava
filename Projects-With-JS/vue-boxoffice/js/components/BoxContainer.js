@@ -145,7 +145,6 @@ export const boxContainer = {
             .then((response) => {
                 this.$set(el, 'imgurl', response.data.documents[0].thumbnail_url);
                 console.log('[Kakao-Main] 성공');
-                this.isDetailLoading = false;
             })
             .catch((error) => {
                 console.log('[Kakao-Main] 실패', error);
