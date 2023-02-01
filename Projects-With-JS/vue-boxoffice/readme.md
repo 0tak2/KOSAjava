@@ -19,6 +19,12 @@
     - detailContainer: 영화 상세 정보를 불러오는 컴포넌트; boxContainer에서 모델로 띄움
     - detailContent: 영화 상세 정보를 카드 형식으로 렌더링하는 컴포넌트
 
+## URL 구조
+
+- '/': 메인 컴포넌트(boxContainer) 마운팅; 바로 어제 일자의 아래 URL로 이동
+- '/:date': 메인 컴포넌트(boxContainer) 마운팅; 입력한 일자의 데이터를 조회
+- '/:date/:movieCd': 메인 컴포넌트(boxContainer) 마운팅하며, 상세정보 모달 출력. 입력한 코드에 해당하는 영화의 상세정보 조회
+
 ## 테스트 방법
 
 1. 현재 디렉토리(vue-boxoffice) 클론
