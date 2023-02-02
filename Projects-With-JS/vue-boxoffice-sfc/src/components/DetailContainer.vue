@@ -35,7 +35,7 @@
 /* eslint-disable import/extensions */
 import axios from 'axios';
 import DetailContent from '@/components/DetailContent.vue';
-import { secret } from '@/secret.js';
+import secret from '@/secret.js';
 
 export default {
   components: {
