@@ -62,7 +62,7 @@ import BoxControl from '@/components/BoxControl.vue';
 import BoxTable from '@/components/BoxTable.vue';
 import DetailContainer from '@/components/DetailContainer.vue';
 
-import { secret } from '@/secret.js';
+import secret from '@/secret.js';
 
 export default {
   components: {
