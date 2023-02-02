@@ -1,0 +1,64 @@
+<template>
+  <div>
+    <input
+      type="text"
+      placeholder="할 일을 입력하세요"
+      v-model="newTodoItem"
+      @keyup.enter="addTodo"
+    />
+    <span class="addContainer" v-on:click="addTodo">
+      <i class="addBtn fa fa-plus" aria-hidden="true"></i>
+    </span>
+  </div>
+</template>
+  
+<script>
+import eventBus from '../eventBus.js';
+
+export default {
+  data() {
+    return {
+      newTodoItem: "",
+    };
+  },
+  methods: {
+    addTodo() {
+      // 입력한 할 일을 저장
+      // 백엔드가 없으므로 외부 서버 대신 브라우저 LocalStorage 사용
+
+      if (this.newTodoItem !== "") {
+        localStorage.setItem(Number(new Date()), this.newTodoItem); // 키 값과 밸류 값을 동일하게 저장
+        eventBus.$emit('added');
+        this.newTodoItem = "";
+      }
+    },
+  },
+};
+</script>
+  
+<style scoped>
+input:focus {
+  outline: none;
+}
+.inputBox {
+  background: white;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 5px;
+}
+.inputBox input {
+  border-style: none;
+  font-size: 0.9rem;
+}
+.addContainer {
+  float: right;
+  background: linear-gradient(to right, #6478fb, #8763fb);
+  display: inline-block;
+  width: 3rem;
+  border-radius: 0 5px 5px 0;
+}
+.addBtn {
+  color: white;
+  vertical-align: middle;
+}
+</style>
