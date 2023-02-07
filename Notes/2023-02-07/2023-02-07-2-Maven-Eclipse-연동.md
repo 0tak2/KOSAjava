@@ -45,5 +45,60 @@ web.xml을 찾지 못한다는 오류가 발생하지만, 우리는 어노테이
 pom.xml이 생성된 것을 확인할 수 있다.
 이제 프로젝트에 대해 우클릭하면 Maven 메뉴가 생긴다. 여기서 Update Project를 해준다.  
 
+### pom.xml을 이용한 의존성 관리
 
+pom.xml을 열고, \<project\> 바로 아래에 \<dependencies\> 태그를 만든다.
+
+이 프로젝트가 의존하는 라이브러리에 대한 정보를 \<dependencies\> 요소 내에 기록하면 된다.
+
+#### Servlet 라이브러리
+
+우리는 Tomcat 9을 사용하므로, Tomcat 9에 해당하는 버전의 서블릿 라이브러리를 포함해야 한다.
+
+우선 톰캣의 [문서](https://tomcat.apache.org/tomcat-9.0-doc/index.html)에 접속한다.   
+왼쪽 메뉴의 Reference를 보면 [Servlet 4.0 Javadocs](https://tomcat.apache.org/tomcat-9.0-doc/servletapi/index.html)가 있다. 이를 보면 우리가 사용하는 톰캣 버전이 9.0.71이고, 포함해야할 서블릿 라이브러리 버전이 4.0임을 알 수 있다.
+
+[Maven Repository](https://mvnrepository.com/)로 이동하면 포함할 수 있는 디펜던시에 대한 정보를 찾을 수 있다. tomcat 9 servlet를 검색하면 이용할 수 있는 다양한 모듈이 표시된다. 
+
+![a0b46ac80203659ea2f5c8f23e646fef.png](Assets/a0b46ac80203659ea2f5c8f23e646fef.png)
+
+우리는 이 라이브러리를 사용해보려고 한다. 하단 목록에서 9.0.71을 찾아 누른다.
+
+![3cb68eb97d6f3e912488bf6c3dc7f0ef.png](Assets/3cb68eb97d6f3e912488bf6c3dc7f0ef.png)
+
+![0b20a7b127542a54f3b7b9a6d1fa93c8.png](Assets/0b20a7b127542a54f3b7b9a6d1fa93c8.png)
+
+pom.xml에 들어갈 xml을 자동으로 제공해주며, 복사하여 우리 프로젝트의 pom.xml에 추가한다.
+
+
+마찬가지로 mysql connector j를 검색하여 Connector/J를 추가한다.
+
+그럼 pom.xml의 \<dependencies\>는 아래와 같은 모습이 된다.
+
+```xml
+  <dependencies>
+  <!-- 필요 라이브러리를 포함시킨다 -->
+  	<!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-servlet-api -->
+	<dependency>
+	    <groupId>org.apache.tomcat</groupId>
+	    <artifactId>tomcat-servlet-api</artifactId>
+	    <version>9.0.71</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+	<dependency>
+	    <groupId>mysql</groupId>
+	    <artifactId>mysql-connector-java</artifactId>
+	    <version>8.0.28</version>
+	</dependency>
+  </dependencies>
+```
+
+저장하면 이클립스가 자동으로 다운로드 받는다. 기본 다운로드 디렉토리는 유저 홈 디렉토리의 .m2이다.
+
+![aada55c85142f93e0951b5d410ee599c.png](Assets/aada55c85142f93e0951b5d410ee599c.png)
+
+![981a84b80a46421960612773fe61644a.png](Assets/981a84b80a46421960612773fe61644a.png)
+
+앞으로는 모든 실습에서 Maven을 이용해 프로젝트를 생성하고, 의존성을 관리할 것이다.
 
