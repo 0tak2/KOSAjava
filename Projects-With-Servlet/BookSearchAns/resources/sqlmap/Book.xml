@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+          PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" 
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+          
+<mapper namespace="myBook">
+
+	<select id="selectBookByKeyword" parameterType="Book"
+	        resultType="Book">		
+		<![CDATA[
+			SELECT bisbn, btitle, bauthor, bprice
+			FROM booksTbl 
+			WHERE btitle LIKE CONCAT('%', #{btitle}, '%') AND
+			      bprice < #{bprice}	
+		]]>
+	</select>
+
+</mapper>
