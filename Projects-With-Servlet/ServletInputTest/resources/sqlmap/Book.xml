@@ -6,7 +6,7 @@
 		<![CDATA[ 
 			SELECT bisbn, btitle, bauthor, bprice
 			FROM booksTBL
-			WHERE btitle like CONCAT('%', #{btitle}, '%') and bprice < #{bprice}
+			WHERE btitle LIKE CONCAT('%', #{btitle}, '%') AND bprice < #{bprice}
 		]]>
 	</select>
 </mapper>
