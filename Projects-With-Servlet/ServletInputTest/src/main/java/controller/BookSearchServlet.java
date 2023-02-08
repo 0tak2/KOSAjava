@@ -2,6 +2,7 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -47,10 +48,10 @@ public class BookSearchServlet extends HttpServlet {
 		// 1. 입력 처리
 		request.setCharacterEncoding("UTF-8");
 		String keyword = request.getParameter("keyword");
+		String priceStr = request.getParameter("price");
 		
 		int price = 0;
-		if (request.getParameterValues("price") != null) {
-			String priceStr = request.getParameterValues("price")[0];
+		if (priceStr != null) {
 			price = Integer.parseInt(priceStr);
 		}
 		
