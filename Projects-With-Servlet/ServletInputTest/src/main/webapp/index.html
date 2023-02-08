@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>입력 연습</h1>
+	
+	<!-- 서버에 데이터를 보낼 때에는 GET 혹은 POST -->
+	<!-- POST 요청 시 FORM 태그(기본)를 이용하거나 자바스크립트 이용. -->
+	<form action="/inputTest" method="POST">
+		<span>사용자 ID: </span>
+		<input type="text" name="userID">  <br><br>
+		<button type="submit">전송</button>
+	</form>
+	
+	<!-- GET 요청 -->
+<!-- 	<form action="http://127.0.0.1:8080/input/inputTest" method="GET">
+		<span>사용자 ID: </span>
+		<input type="text" name="userID">  <br><br>
+		<button type="submit">전송</button>
+	</form>
+	
+	<br>혹은<br>
+	
+	<a href="http://127.0.0.1:8080/input/inputTest?userID=강감찬">
+		'http://127.0.0.1:8080/input/inputTest?userID=강감찬'으로 직접 이동
+	</a> -->
+	
+	<a href="inputTest?userID=강감찬">
+		'inputTest?userID=강감찬'으로 직접 이동
+	</a>
+</body>
+</html>
