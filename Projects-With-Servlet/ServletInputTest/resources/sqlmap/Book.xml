@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="liverary.book">
+	<select id="select"
+		parameterType="Book" resultType="Book">
+		<![CDATA[ 
+			SELECT bisbn, btitle, bauthor, bprice
+			FROM booksTBL
+			WHERE btitle like CONCAT('%', #{btitle}, '%') and bprice < #{bprice}
+		]]>
+	</select>
+</mapper>
