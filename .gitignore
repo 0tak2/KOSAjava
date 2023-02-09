@@ -28,3 +28,7 @@ node_modules/
 # some secret files
 secret.json
 secret.js
+
+# IDE
+.classpath
+.project
