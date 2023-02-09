@@ -22,7 +22,7 @@
 	 
 	 <!-- 별명지정하는게 나와요! 타이핑 줄이기위해서 사용해요! -->
 	 <typeAliases>
-	 	<typeAlias type="vo.Account" alias="Account"/>
+	 	<typeAlias type="member.vo.Member" alias="Member"/>
 	 </typeAliases>
 
 	<!-- Database 연결 정보 선언 -->
@@ -56,7 +56,7 @@
 	
 	<!-- mapping된 SQL 구문이 있는 XML 파일에 대한 설정! -->
 	<mappers>
-		<mapper resource="./sqlmap/Account.xml"/>
+		<mapper resource="./sqlmap/Member.xml"/>
 	</mappers>
 
 
