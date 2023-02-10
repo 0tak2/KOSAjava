@@ -50,4 +50,81 @@ public class BoardService {
 		return result;
 	}
 
+	public boolean writeComment(Comment param) {
+		SqlSession sqlSession = MyBatisConnectionFactory.getSqlSessionFactory().openSession();
+		
+		BoardDAO dao = new BoardDAO(sqlSession);
+		int result = dao.insertComment(param);
+		
+		if (result == 1) {
+			sqlSession.commit();
+			sqlSession.close();
+			return true;
+		} else {
+			sqlSession.rollback();
+			sqlSession.close();
+			return false;
+		}
+	}
+
+	public boolean deleteArticle(Article param) {
+		SqlSession sqlSession = MyBatisConnectionFactory.getSqlSessionFactory().openSession();
+		
+		BoardDAO dao = new BoardDAO(sqlSession);
+		int result = dao.deleteArticle(param);
+		
+		if (result == 1) {
+			sqlSession.commit();
+			sqlSession.close();
+			return true;
+		} else {
+			sqlSession.rollback();
+			sqlSession.close();
+			return false;
+		}
+	}
+
+	public boolean editArticle(Article param) {
+		SqlSession sqlSession = MyBatisConnectionFactory.getSqlSessionFactory().openSession();
+		
+		BoardDAO dao = new BoardDAO(sqlSession);
+		int result = dao.editArticle(param);
+		
+		if (result == 1) {
+			sqlSession.commit();
+			sqlSession.close();
+			return true;
+		} else {
+			sqlSession.rollback();
+			sqlSession.close();
+			return false;
+		}
+	}
+
+	public Comment getOneComment(Comment param) {
+		SqlSession sqlSession = MyBatisConnectionFactory.getSqlSessionFactory().openSession();
+		
+		BoardDAO dao = new BoardDAO(sqlSession);
+		Comment result = dao.selectOneComment(param);
+		
+		return result;
+	}
+
+	public boolean editComment(Comment param) {
+		SqlSession sqlSession = MyBatisConnectionFactory.getSqlSessionFactory().openSession();
+		
+		BoardDAO dao = new BoardDAO(sqlSession);
+		int result = dao.editComment(param);
+		
+		if (result == 1) {
+			sqlSession.commit();
+			sqlSession.close();
+			return true;
+		} else {
+			sqlSession.rollback();
+			sqlSession.close();
+			return false;
+		}
+	}
+
 }

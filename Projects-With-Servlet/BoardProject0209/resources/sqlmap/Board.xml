@@ -24,18 +24,60 @@
 		]]>
 	</select>
 	
-	<select id="allComments" parameterType="Article" resultType="Comment">		
+	<select id="selectAllComments" parameterType="Article" resultType="Comment">		
 		<![CDATA[
-			SELECT commentNum, commentContent, commentAuthor, commentDate, commentArticle
-			FROM comments
+			SELECT commentNum, commentContent, commentAuthor, memberName, commentDate, commentArticle
+			FROM comments C
+			INNER JOIN members M
+			on C.commentAuthor = M.memberId
 			WHERE commentArticle = #{articleNum}
 		]]>
 	</select>
 	
-	<insert id="insert" parameterType="Article">
+	<select id="selectComment" parameterType="Comment" resultType="Comment">
+		<![CDATA[
+			SELECT commentNum, commentContent, commentAuthor, memberName, commentDate, commentArticle
+			FROM comments C
+			INNER JOIN members M
+			on C.commentAuthor = M.memberId
+			WHERE commentNum = #{commentNum}
+		]]>
+	</select>
+	
+	<insert id="insertArticle" parameterType="Article">
 		<![CDATA[
 			INSERT INTO articles(articleTitle, articleAuthor, articleContent, articleLike)
 			VALUES(#{articleTitle}, #{articleAuthor}, #{articleContent}, 0);
 		]]>
 	</insert>
+	
+	<insert id="insertComment" parameterType="Comment">
+		<![CDATA[
+			INSERT INTO comments(commentContent, commentAuthor, commentArticle)
+			VALUES(#{commentContent}, #{commentAuthor}, #{commentArticle});
+		]]>
+	</insert>
+	
+	<delete id="deleteArticle" parameterType="Article">
+		<![CDATA[
+			DELETE FROM articles
+			WHERE articleNum = #{articleNum}
+		]]>
+	</delete>
+	
+	<update id="updateArticle" parameterType="Article">
+		<![CDATA[
+			UPDATE articles
+			SET articleTitle=#{articleTitle}, articleContent=#{articleContent}
+			WHERE articleNum = #{articleNum}
+		]]>
+	</update>
+	
+	<update id="updateComment" parameterType="Comment">
+			<![CDATA[
+			UPDATE comments
+			SET commentContent=#{commentContent}
+			WHERE commentNum = #{commentNum}
+		]]>
+	</update>
 </mapper>

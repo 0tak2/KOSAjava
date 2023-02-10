@@ -6,6 +6,43 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+<script src="
+https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js
+"></script>
+
+<script>
+function deleteComment(commentNum) {
+	console.log("DELETE COMMENT:", commentNum);
+	$.ajax({
+	    url : "comment",
+	    type : "DELETE",
+	    data : {
+	    	
+	    }
+	    success: function(result) {
+	        console.log( result );
+	    }
+	});
+
+}
+function updateComment(commentNum) {
+	console.log("EDIT COMMENT:", commentNum);
+	const commentContent = $(`table[data-num=${commentNum}] > `)
+	
+	$.ajax({
+	    url : "comment",
+	    type : "PUT",
+	    data : {
+	    	commentNum: commentNum,
+	    	commentContent
+	    }
+	    success: function(result) {
+	        console.log( result );
+	    }
+	});
+}
+</script>
 </head>
 <body>
 	<% Article article = (Article)request.getAttribute("article"); %>
@@ -32,14 +69,44 @@
 			<td><%= article.getArticleContent() %></td>
 		</tr>
 	</table>
-	<a href="main">삭제</a>
-	<a href="main">수정</a><br><br>
 	
+	<form action="deleteArticle" method="post">
+		<input type="hidden" name="articleNum" value="<%= article.getArticleNum() %>">
+		<button type="submit">삭제</button>
+	</form>
+	<form action="editArticle" method="get">
+		<input type="hidden" name="articleNum" value="<%= article.getArticleNum() %>">
+		<button type="submit">수정</button>
+	</form><br><br>
+	
+	<h3>댓글</h3>
 	<% for(Comment comment : commentsList) { %>
-		<%= comment.getCommentAuthor() %>:
-		<%= comment.getCommentContent() %>
-		<br>
+		<table data-num="<%= comment.getCommentNum() %>">
+			<tr>
+				<td>작성시각</td>
+				<td><%= comment.getCommentDate() %></td>
+			</tr>
+			<tr>
+				<td>작성자</td>
+				<td><%= comment.getMemberName() %>(<%= comment.getCommentAuthor() %>)</td>
+			</tr>
+			<tr>
+				<td>내용</td>
+				<td><%= comment.getCommentContent() %></td>
+			</tr>
+		</table>
+		<button onClick="updateComment(<%= comment.getCommentNum() %>)">수정</button>
+		<button onClick="deleteComment(<%= comment.getCommentNum() %>)">삭제</button>
 	<% } %>
+	<form action="writeComment" method="POST">
+		<input type="hidden" name="articleNum" value="<%= article.getArticleNum() %>">
+		<table>
+			<tr>
+				<td><input type="text" name="commentContent"></td>
+				<td><button>등록</button></td>
+			</tr>
+		</table>
+	</form>
 	
 	<br>
 	<a href="main">목록으로</a>
