@@ -16,12 +16,14 @@
 	<a href="writeArticle.html">글쓰기</a>
 	<table border=1>
 		<thead>
-			<th>글 번호</th>
-			<th>글 제목</th>
-			<th>작성자</th>
-			<th>작성일</th>
-			<th>댓글 수</th>
-			<th>좋아요</th>
+			<tr>
+				<th>글 번호</th>
+				<th>글 제목</th>
+				<th>작성자</th>
+				<th>작성일</th>
+				<th>댓글 수</th>
+				<th>좋아요</th>
+			</tr>
 		</thead>
 		<tbody>
 			<%
