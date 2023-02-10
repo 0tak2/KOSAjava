@@ -12,6 +12,8 @@ https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js
 "></script>
 
 <script>
+let isEditing = -1;
+
 function deleteComment(commentNum) {
 	console.log("DELETE COMMENT:", commentNum);
 	$.ajax({
@@ -19,28 +21,69 @@ function deleteComment(commentNum) {
 	    type : "DELETE",
 	    data : {
 	    	
-	    }
+	    },
 	    success: function(result) {
 	        console.log( result );
 	    }
 	});
 
 }
+
 function updateComment(commentNum) {
-	console.log("EDIT COMMENT:", commentNum);
-	const commentContent = $(`table[data-num=${commentNum}] > `)
 	
+}
+
+function cancleEdit(commentNum) {
+	if (isEditing === -1) {
+		return;
+	}
+	
+	const tdCell = $('table[data-num=' + commentNum + ']').find('td.comment-content-cell');
+	tdCell.find('input').remove();
+	tdCell.find('span.comment-content').show();
+	isEditing = -1;
+}
+
+function showUpdateControl(commentNum) {
+	console.log("EDIT COMMENT:", commentNum);
+	if (isEditing !== -1) {
+		cancleEdit(isEditing);
+	}
+	
+	const tdCell = $('table[data-num=' + commentNum + ']').find('td.comment-content-cell');
+	$.ajax({
+	    url : "comment",
+	    type : "GET",
+	    data : {
+	    	commentNum: commentNum
+	    },
+	    success: function(result) {
+	    	console.log(result)
+	    	tdCell.children('span.comment-content').hide();		
+	    	tdCell.append('<input type="text"/>');
+	    	tdCell.append('<input type="button" value="완료" onclick="updateComment(' + commentNum + ')" />');
+	    	tdCell.append('<input type="button" value="취소" onclick="cancleEdit(' + commentNum + ')" />');
+	    	isEditing = commentNum;
+	    },
+	    error: function(error) {
+	    	console.error(error)
+	    	alert('자신이 작성한 댓글만 수정할 수 있습니다.');
+	    }
+	});
+	
+
+	/*
 	$.ajax({
 	    url : "comment",
 	    type : "PUT",
 	    data : {
-	    	commentNum: commentNum,
-	    	commentContent
-	    }
+	    	commentNum: commentNum
+	    },
 	    success: function(result) {
 	        console.log( result );
 	    }
 	});
+	*/
 }
 </script>
 </head>
@@ -84,19 +127,19 @@ function updateComment(commentNum) {
 		<table data-num="<%= comment.getCommentNum() %>">
 			<tr>
 				<td>작성시각</td>
-				<td><%= comment.getCommentDate() %></td>
+				<td><span><%= comment.getCommentDate() %></span></td>
 			</tr>
 			<tr>
 				<td>작성자</td>
-				<td><%= comment.getMemberName() %>(<%= comment.getCommentAuthor() %>)</td>
+				<td><span><%= comment.getMemberName() %>(<%= comment.getCommentAuthor() %>)</span></td>
 			</tr>
 			<tr>
 				<td>내용</td>
-				<td><%= comment.getCommentContent() %></td>
+				<td class="comment-content-cell"><span class="comment-content"><%= comment.getCommentContent() %>></span></td>
 			</tr>
 		</table>
 		<button onClick="updateComment(<%= comment.getCommentNum() %>)">수정</button>
-		<button onClick="deleteComment(<%= comment.getCommentNum() %>)">삭제</button>
+		<button onClick="deleteComment(<%= comment.showUpdateControl() %>)">삭제</button>
 	<% } %>
 	<form action="writeComment" method="POST">
 		<input type="hidden" name="articleNum" value="<%= article.getArticleNum() %>">
