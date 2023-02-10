@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+          PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" 
+          "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+          
+<mapper namespace="myBoard">
+
+	<select id="allArticles" resultType="Article">		
+		<![CDATA[
+			SELECT articleNum, articleTitle, articleContent, articleAuthor, memberName, articleDate, articleLike
+			FROM articles A
+			INNER JOIN members M
+			ON A.articleAuthor = M.memberId
+		]]>
+	</select>
+	
+	<select id="oneArticle" parameterType="Article" resultType="Article">		
+		<![CDATA[
+			SELECT articleNum, articleTitle, articleContent, articleAuthor, memberName, articleDate, articleLike
+			FROM articles A
+			INNER JOIN members M
+			ON A.articleAuthor = M.memberId
+			WHERE articleNum = #{articleNum}
+		]]>
+	</select>
+	
+	<select id="allComments" parameterType="Article" resultType="Comment">		
+		<![CDATA[
+			SELECT commentNum, commentContent, commentAuthor, commentDate, commentArticle
+			FROM comments
+			WHERE commentArticle = #{articleNum}
+		]]>
+	</select>
+	
+	<insert id="insert" parameterType="Article">
+		<![CDATA[
+			INSERT INTO articles(articleTitle, articleAuthor, articleContent, articleLike)
+			VALUES(#{articleTitle}, #{articleAuthor}, #{articleContent}, 0);
+		]]>
+	</insert>
+</mapper>
