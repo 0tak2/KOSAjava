@@ -2,7 +2,6 @@ package board.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import board.service.BoardService;
-import board.vo.Article;
 import board.vo.Comment;
 import member.vo.Member;
 
@@ -30,6 +28,45 @@ public class CommentAjax extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
+    
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// 로그인 검사
+		HttpSession session = request.getSession(false);
+		if (session == null) {
+			response.sendRedirect("loginFail.html");
+			return;
+		}
+		
+		// 1. 입력
+		int commentNum = Integer.parseInt(request.getParameter("commentNum"));
+		Member currentUser = (Member)session.getAttribute("member");
+		
+		// 2. 로직
+		boolean isAuthorized = false;
+		
+		Comment param = new Comment();
+		param.setCommentNum(commentNum);
+		BoardService service = new BoardService();
+		Comment result = service.getOneComment(param);
+		
+		if (result.getCommentAuthor().equals(currentUser.getMemberId())) {
+			isAuthorized = true;
+		}
+		
+		// 3. 출력
+		response.setContentType("text/plain; charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		if (isAuthorized) {
+			response.setStatus(HttpServletResponse.SC_OK);
+			out.println("authorized");
+		} else {
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			out.println("unauthorized");
+		}
+	}
 
 	/**
 	 * @see HttpServlet#doPut(HttpServletRequest, HttpServletResponse)
