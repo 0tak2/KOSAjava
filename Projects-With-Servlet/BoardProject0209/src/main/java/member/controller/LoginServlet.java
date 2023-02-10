@@ -1,6 +1,7 @@
 package member.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import board.service.BoardService;
+import board.vo.Article;
 import member.service.MemberService;
 import member.vo.Member;
 
@@ -40,12 +43,12 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 1. 뷰로부터 입력을 받음
+		// 1. [입력] 뷰로부터 입력을 받음
 		request.setCharacterEncoding("UTF-8");
 		String userID = request.getParameter("userID");
 		String userPW = request.getParameter("userPW");
 		
-		// 2. 서비스로 VO 넘김
+		// 2. [로직] 서비스로 VO 넘김
 		Member member = new Member();
 		member.setMemberId(userID);
 		member.setMemberPw(userPW);
@@ -60,7 +63,7 @@ public class LoginServlet extends HttpServlet {
 		// 로그인에 성공하면, 결과에서 회원 이름까지 VO에 포함해 들고온다.
 		// 로그인에 실패하면 null 리턴	
 		
-		// 3. 뷰로 넘김
+		// 3. [출력] 뷰로 넘김
 		if (result != null) {
 			// 로그인 성공
 			// 1. 로그인 세션 생성
@@ -72,12 +75,7 @@ public class LoginServlet extends HttpServlet {
 			HttpSession session = request.getSession(true);
 			session.setAttribute("member", result); // VO 자체를 저장
 			
-			// 게시판 JSP(=Servlet)로 이동 => 서블릿에서 서블릿으로 이동
-			// HTML 페이지로 이동하는 것과 다름. RequestDispatcher(JSP_Location) 사용
-			RequestDispatcher dispatcher
-				= request.getRequestDispatcher("loginSuccess.jsp");
-			dispatcher.forward(request, response); // 해당 JSP에 현재 Request와 Response 객체를 넘기며 제어권을 넘긴다.
-			
+			response.sendRedirect("main");
 		} else {
 			// 로그인 실패
 			// 오류 페이지 전송 (HTML)
