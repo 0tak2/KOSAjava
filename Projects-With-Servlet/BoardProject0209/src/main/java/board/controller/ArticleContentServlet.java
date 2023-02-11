@@ -14,6 +14,8 @@ import javax.servlet.http.HttpSession;
 import board.service.BoardService;
 import board.vo.Article;
 import board.vo.Comment;
+import common.login.CheckLogin;
+import member.vo.Member;
 
 /**
  * Servlet implementation class ArticleContentServlet
@@ -35,9 +37,8 @@ public class ArticleContentServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 로그인 검사
-		HttpSession session = request.getSession(false);
-		if (session == null) {
-			response.sendRedirect("loginFail.html");
+		boolean isLogin = CheckLogin.checkLogin(request, response);
+		if (!isLogin) {
 			return;
 		}
 		

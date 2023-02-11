@@ -12,12 +12,13 @@ import javax.servlet.http.HttpSession;
 
 import board.service.BoardService;
 import board.vo.Comment;
+import common.login.CheckLogin;
 import member.vo.Member;
 
 /**
  * Servlet implementation class CommentAjax
  */
-@WebServlet("/comment")
+@WebServlet("/ajax/comment")
 public class CommentAjax extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -34,13 +35,13 @@ public class CommentAjax extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 로그인 검사
-		HttpSession session = request.getSession(false);
-		if (session == null) {
-			response.sendRedirect("loginFail.html");
+		boolean isLogin = CheckLogin.checkLogin(request, response, true);
+		if (!isLogin) {
 			return;
 		}
 		
 		// 1. 입력
+		HttpSession session = request.getSession();
 		int commentNum = Integer.parseInt(request.getParameter("commentNum"));
 		Member currentUser = (Member)session.getAttribute("member");
 		
@@ -73,13 +74,14 @@ public class CommentAjax extends HttpServlet {
 	 */
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 로그인 검사
-		HttpSession session = request.getSession(false);
-		if (session == null) {
-			response.sendRedirect("loginFail.html");
+		boolean isLogin = CheckLogin.checkLogin(request, response, true);
+		if (!isLogin) {
 			return;
 		}
 		
+		
 		// 1. 입력
+		HttpSession session = request.getSession();
 		request.setCharacterEncoding("UTF-8");
 		int commentNum = Integer.parseInt(request.getParameter("commentNum"));
 		String commentContent = request.getParameter("commentContent");
@@ -121,7 +123,11 @@ public class CommentAjax extends HttpServlet {
 	 * @see HttpServlet#doDelete(HttpServletRequest, HttpServletResponse)
 	 */
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		// 로그인 검사
+		boolean isLogin = CheckLogin.checkLogin(request, response, true);
+		if (!isLogin) {
+			return;
+		}
 	}
 
 }

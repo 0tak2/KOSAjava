@@ -32,14 +32,6 @@ public class LoginServlet extends HttpServlet {
     }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
-	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -47,6 +39,7 @@ public class LoginServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		String userID = request.getParameter("userID");
 		String userPW = request.getParameter("userPW");
+		String nextUrl = request.getParameter("nextUrl");
 		
 		// 2. [로직] 서비스로 VO 넘김
 		Member member = new Member();
@@ -75,7 +68,12 @@ public class LoginServlet extends HttpServlet {
 			HttpSession session = request.getSession(true);
 			session.setAttribute("member", result); // VO 자체를 저장
 			
-			response.sendRedirect("main");
+			if (nextUrl != null) {
+				response.sendRedirect(nextUrl);
+			} else {
+				response.sendRedirect("main");
+			}
+			
 		} else {
 			// 로그인 실패
 			// 오류 페이지 전송 (HTML)

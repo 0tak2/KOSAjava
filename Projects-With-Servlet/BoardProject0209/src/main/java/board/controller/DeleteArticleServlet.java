@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import board.service.BoardService;
 import board.vo.Article;
+import common.login.CheckLogin;
 import member.vo.Member;
 
 /**
@@ -34,13 +35,13 @@ public class DeleteArticleServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 로그인 검사
-		HttpSession session = request.getSession(false);
-		if (session == null) {
-			response.sendRedirect("loginFail.html");
+		boolean isLogin = CheckLogin.checkLogin(request, response);
+		if (!isLogin) {
 			return;
 		}
 		
 		// 1. 입력
+		HttpSession session = request.getSession();
 		request.setCharacterEncoding("UTF-8");
 		int articleNum = Integer.parseInt(request.getParameter("articleNum"));
 		
