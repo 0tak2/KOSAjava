@@ -52,7 +52,7 @@ function showUpdateControl(commentNum) {
 	
 	const tdCell = $('table[data-num=' + commentNum + ']').find('td.comment-content-cell');
 	$.ajax({
-	    url : "comment",
+	    url : "ajax/comment",
 	    type : "GET",
 	    data : {
 	    	commentNum: commentNum
@@ -135,11 +135,11 @@ function showUpdateControl(commentNum) {
 			</tr>
 			<tr>
 				<td>내용</td>
-				<td class="comment-content-cell"><span class="comment-content"><%= comment.getCommentContent() %>></span></td>
+				<td class="comment-content-cell"><span class="comment-content"><%= comment.getCommentContent() %></span></td>
 			</tr>
 		</table>
-		<button onClick="updateComment(<%= comment.getCommentNum() %>)">수정</button>
-		<button onClick="deleteComment(<%= comment.showUpdateControl() %>)">삭제</button>
+		<button onClick="showUpdateControl(<%= comment.getCommentNum() %>)">수정</button>
+		<button onClick="deleteComment(<%= comment.getCommentNum() %>)">삭제</button>
 	<% } %>
 	<form action="writeComment" method="POST">
 		<input type="hidden" name="articleNum" value="<%= article.getArticleNum() %>">

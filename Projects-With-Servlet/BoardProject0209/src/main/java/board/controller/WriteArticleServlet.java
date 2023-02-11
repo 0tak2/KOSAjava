@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import board.service.BoardService;
 import board.vo.Article;
+import common.login.CheckLogin;
 import member.vo.Member;
 
 /**
@@ -41,12 +42,14 @@ public class WriteArticleServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 1. 입력
-		HttpSession session = request.getSession(false);
-		if (session == null) {
-			response.sendRedirect("loginFail.html");
+		// 로그인 검사
+		boolean isLogin = CheckLogin.checkLogin(request, response);
+		if (!isLogin) {
 			return;
 		}
+		
+		// 1. 입력
+		HttpSession session = request.getSession();
 		Member currentUser = (Member)session.getAttribute("member");
 		String articleAuthor = currentUser.getMemberId();
 		

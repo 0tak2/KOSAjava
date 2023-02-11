@@ -11,6 +11,7 @@
 	<!-- JSP에서는 클라이언트 스레드에 할당된 세션을 바로 'session'으로 참조할 수 있음. -->
 	<!-- 즉, request.getSession()과 같은 구문이 필요 없음. -->
 	<h1><%= ((Member)session.getAttribute("member")).getMemberName() %>님 환영합니다.</h1>
+	<a href="logout">로그아웃</a>
 	
 	<h3>게시글 목록</h3>
 	<a href="writeArticle.html">글쓰기</a>
