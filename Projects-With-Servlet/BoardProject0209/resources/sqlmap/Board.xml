@@ -5,16 +5,17 @@
           
 <mapper namespace="myBoard">
 
-	<select id="allArticles" resultType="Article">		
+	<select id="selectAllArticles" resultType="Article">		
 		<![CDATA[
 			SELECT articleNum, articleTitle, articleContent, articleAuthor, memberName, articleDate, articleLike
 			FROM articles A
 			INNER JOIN members M
 			ON A.articleAuthor = M.memberId
+			ORDER BY articleNum DESC
 		]]>
 	</select>
 	
-	<select id="oneArticle" parameterType="Article" resultType="Article">		
+	<select id="selectOneArticle" parameterType="Article" resultType="Article">		
 		<![CDATA[
 			SELECT articleNum, articleTitle, articleContent, articleAuthor, memberName, articleDate, articleLike
 			FROM articles A
@@ -31,6 +32,7 @@
 			INNER JOIN members M
 			on C.commentAuthor = M.memberId
 			WHERE commentArticle = #{articleNum}
+			ORDER BY commentDate ASC
 		]]>
 	</select>
 	
@@ -62,6 +64,13 @@
 		<![CDATA[
 			DELETE FROM articles
 			WHERE articleNum = #{articleNum}
+		]]>
+	</delete>
+	
+	<delete id="deleteComment" parameterType="Comment">
+		<![CDATA[
+			DELETE FROM comments
+			WHERE commentNum = #{commentNum}
 		]]>
 	</delete>
 	

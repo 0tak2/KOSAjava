@@ -51,6 +51,19 @@ public class EditArticleServlet extends HttpServlet {
 		Article result = service.getArticle(param);
 		
 		// 3. 출력
+		Member currentUser = (Member)request.getSession().getAttribute("member");
+		if (!result.getArticleAuthor().equals(currentUser.getMemberId())) {
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println("<html><script>");
+			
+			out.println("alert('작성자만 수정할 수 있습니다.'); history.back();");
+
+			out.println("</script></html>");
+			out.close();
+			return;
+		}
+		
 		RequestDispatcher dispatcher
 			= request.getRequestDispatcher("editArticle.jsp");
 		

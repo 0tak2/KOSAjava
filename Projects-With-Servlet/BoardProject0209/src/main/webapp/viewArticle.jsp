@@ -1,11 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="board.vo.Article, board.vo.Comment, java.util.List" %>
+
+<% Article article = (Article)request.getAttribute("article"); %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>게시글 보기 - <%= article.getArticleTitle() %></title>
 
 <script src="
 https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js
@@ -16,24 +19,63 @@ let isEditing = -1;
 
 function deleteComment(commentNum) {
 	console.log("DELETE COMMENT:", commentNum);
+	
+	const commentWrapper = $(event.target).parent();
+	
 	$.ajax({
-	    url : "comment",
-	    type : "DELETE",
+	    url : "ajax/deleteComment",
+	    type : "POST",
 	    data : {
-	    	
+	    	commentNum: commentNum,
 	    },
 	    success: function(result) {
-	        console.log( result );
+	    	commentWrapper.remove();
+	    },
+	    error: function(error) {
+	    	console.error(error)
+	    	if (error.status === 400) {
+	    		alert('자신이 작성한 댓글만 삭제할 수 있습니다.');
+	    	} else {
+	    		alert('댓글 삭제에 실패했습니다. 오류가 반복되면 관리자에게 문의하십시오.');
+	    	}
 	    }
 	});
 
 }
 
 function updateComment(commentNum) {
+	console.log("EDIT COMMENT:", commentNum);
 	
+	const newCommentContent = 
+		$(event.target).parent().children('input[type=text]').val();
+	
+	console.log(commentNum);
+	console.log(newCommentContent);
+	
+	$.ajax({
+	    url : "ajax/editComment",
+	    type : "POST",
+	    data : {
+	    	commentNum: commentNum,
+	    	commentContent: newCommentContent
+	    },
+	    success: function(result) {
+	    	cancelEdit(commentNum);
+	    	const tdCell = $('table[data-num=' + commentNum + ']').find('td.comment-content-cell');
+	    	tdCell.find('span.comment-content').text(result);
+	    },
+	    error: function(error) {
+	    	console.error(error)
+	    	if (error.status === 400) {
+	    		alert('자신이 작성한 댓글만 수정할 수 있습니다.');
+	    	} else {
+	    		alert('댓글 수정에 실패했습니다. 오류가 반복되면 관리자에게 문의하십시오.');
+	    	}
+	    }
+	});
 }
 
-function cancleEdit(commentNum) {
+function cancelEdit(commentNum) {
 	if (isEditing === -1) {
 		return;
 	}
@@ -45,50 +87,42 @@ function cancleEdit(commentNum) {
 }
 
 function showUpdateControl(commentNum) {
-	console.log("EDIT COMMENT:", commentNum);
 	if (isEditing !== -1) {
-		cancleEdit(isEditing);
+		cancelEdit(isEditing);
 	}
 	
 	const tdCell = $('table[data-num=' + commentNum + ']').find('td.comment-content-cell');
 	$.ajax({
-	    url : "ajax/comment",
+	    url : "ajax/editComment",
 	    type : "GET",
 	    data : {
 	    	commentNum: commentNum
 	    },
 	    success: function(result) {
 	    	console.log(result)
-	    	tdCell.children('span.comment-content').hide();		
-	    	tdCell.append('<input type="text"/>');
+	    	tdCell.children('span.comment-content').hide();
+	    	
+	    	const inputText = $('<input type="text" />');
+	    	inputText.val(result);
+	    	
+	    	tdCell.append(inputText);
 	    	tdCell.append('<input type="button" value="완료" onclick="updateComment(' + commentNum + ')" />');
-	    	tdCell.append('<input type="button" value="취소" onclick="cancleEdit(' + commentNum + ')" />');
+	    	tdCell.append('<input type="button" value="취소" onclick="cancelEdit(' + commentNum + ')" />');
 	    	isEditing = commentNum;
 	    },
 	    error: function(error) {
-	    	console.error(error)
-	    	alert('자신이 작성한 댓글만 수정할 수 있습니다.');
+	    	if (error.status === 400) {
+	    		alert('자신이 작성한 댓글만 수정할 수 있습니다.');
+	    	} else {
+	    		alert('댓글 작성자 확인에 실패했습니다. 오류가 반복되면 관리자에게 문의하십시오.');
+	    	}
 	    }
 	});
 	
-
-	/*
-	$.ajax({
-	    url : "comment",
-	    type : "PUT",
-	    data : {
-	    	commentNum: commentNum
-	    },
-	    success: function(result) {
-	        console.log( result );
-	    }
-	});
-	*/
 }
 </script>
 </head>
 <body>
-	<% Article article = (Article)request.getAttribute("article"); %>
 	<% List<Comment> commentsList = (List<Comment>)request.getAttribute("comments"); %>
 	<table border=1>
 		<tr>
@@ -124,22 +158,24 @@ function showUpdateControl(commentNum) {
 	
 	<h3>댓글</h3>
 	<% for(Comment comment : commentsList) { %>
-		<table data-num="<%= comment.getCommentNum() %>">
-			<tr>
-				<td>작성시각</td>
-				<td><span><%= comment.getCommentDate() %></span></td>
-			</tr>
-			<tr>
-				<td>작성자</td>
-				<td><span><%= comment.getMemberName() %>(<%= comment.getCommentAuthor() %>)</span></td>
-			</tr>
-			<tr>
-				<td>내용</td>
-				<td class="comment-content-cell"><span class="comment-content"><%= comment.getCommentContent() %></span></td>
-			</tr>
-		</table>
-		<button onClick="showUpdateControl(<%= comment.getCommentNum() %>)">수정</button>
-		<button onClick="deleteComment(<%= comment.getCommentNum() %>)">삭제</button>
+		<div class="comment-content-wrapper">
+			<table data-num="<%= comment.getCommentNum() %>">
+				<tr>
+					<td>작성시각</td>
+					<td><span><%= comment.getCommentDate() %></span></td>
+				</tr>
+				<tr>
+					<td>작성자</td>
+					<td><span><%= comment.getMemberName() %>(<%= comment.getCommentAuthor() %>)</span></td>
+				</tr>
+				<tr>
+					<td>내용</td>
+					<td class="comment-content-cell"><span class="comment-content"><%= comment.getCommentContent() %></span></td>
+				</tr>
+			</table>
+			<button onClick="showUpdateControl(<%= comment.getCommentNum() %>)">수정</button>
+			<button onClick="deleteComment(<%= comment.getCommentNum() %>)">삭제</button>
+		</div>
 	<% } %>
 	<form action="writeComment" method="POST">
 		<input type="hidden" name="articleNum" value="<%= article.getArticleNum() %>">

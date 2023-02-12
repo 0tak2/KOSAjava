@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>게시판</title>
 </head>
 <body>
 	<!-- JSP에서는 클라이언트 스레드에 할당된 세션을 바로 'session'으로 참조할 수 있음. -->

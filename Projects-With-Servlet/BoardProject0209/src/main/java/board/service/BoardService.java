@@ -12,13 +12,18 @@ import common.mybatis.MyBatisConnectionFactory;
 public class BoardService {
 
 	public List<Article> getAllArticles() {
-		BoardDAO dao = new BoardDAO();
+		SqlSession sqlSession = MyBatisConnectionFactory.getSqlSessionFactory().openSession();
+		
+		BoardDAO dao = new BoardDAO(sqlSession);
+		
 		List<Article> list = dao.selectAll();
 		return list;
 	}
 
 	public Article getArticle(Article param) {
-		BoardDAO dao = new BoardDAO();
+		SqlSession sqlSession = MyBatisConnectionFactory.getSqlSessionFactory().openSession();
+		
+		BoardDAO dao = new BoardDAO(sqlSession);
 		
 		Article result = dao.selectOne(param);
 		return result;
@@ -110,11 +115,30 @@ public class BoardService {
 		return result;
 	}
 
-	public boolean editComment(Comment param) {
+	public Comment editComment(Comment param) {
 		SqlSession sqlSession = MyBatisConnectionFactory.getSqlSessionFactory().openSession();
 		
 		BoardDAO dao = new BoardDAO(sqlSession);
 		int result = dao.editComment(param);
+		
+		Comment newComment = dao.selectOneComment(param);
+		
+		if (result == 1 && newComment != null) {
+			sqlSession.commit();
+			sqlSession.close();
+			return newComment;
+		} else {
+			sqlSession.rollback();
+			sqlSession.close();
+			return null;
+		}
+	}
+
+	public boolean deleteComment(Comment param) {
+		SqlSession sqlSession = MyBatisConnectionFactory.getSqlSessionFactory().openSession();
+		
+		BoardDAO dao = new BoardDAO(sqlSession);
+		int result = dao.deleteComment(param);
 		
 		if (result == 1) {
 			sqlSession.commit();

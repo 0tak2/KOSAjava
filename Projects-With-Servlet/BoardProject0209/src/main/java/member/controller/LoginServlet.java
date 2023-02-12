@@ -68,7 +68,7 @@ public class LoginServlet extends HttpServlet {
 			HttpSession session = request.getSession(true);
 			session.setAttribute("member", result); // VO 자체를 저장
 			
-			if (nextUrl != null) {
+			if (!nextUrl.equals("null")) {
 				response.sendRedirect(nextUrl);
 			} else {
 				response.sendRedirect("main");

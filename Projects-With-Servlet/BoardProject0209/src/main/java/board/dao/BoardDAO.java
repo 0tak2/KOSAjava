@@ -21,17 +21,15 @@ public class BoardDAO {
 
 	public List<Article> selectAll() {
 		// 데이터베이스 처리 - MyBatis 이용
-		SqlSession sqlSession = MyBatisConnectionFactory.getSqlSessionFactory().openSession();
-		List<Article> result = sqlSession.selectList("myBoard.allArticles");
-		sqlSession.close();
+		List<Article> result = session.selectList("myBoard.selectAllArticles");
+		session.close();
 
 		return result;
 	}
 
 	public Article selectOne(Article param) {
-		SqlSession sqlSession = MyBatisConnectionFactory.getSqlSessionFactory().openSession();
-		Article result = sqlSession.selectOne("myBoard.oneArticle", param);
-		sqlSession.close();
+		Article result = session.selectOne("myBoard.selectOneArticle", param);
+		session.close();
 
 		return result;
 	}
@@ -68,6 +66,11 @@ public class BoardDAO {
 
 	public int editComment(Comment param) {
 		int affectedRows = session.update("myBoard.updateComment", param);
+		return affectedRows;
+	}
+
+	public int deleteComment(Comment param) {
+		int affectedRows = session.delete("myBoard.deleteComment", param);
 		return affectedRows;
 	}
 

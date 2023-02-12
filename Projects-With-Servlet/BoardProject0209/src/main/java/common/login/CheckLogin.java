@@ -9,10 +9,18 @@ import javax.servlet.http.HttpSession;
 
 public class CheckLogin {
 	public static boolean checkLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		return checkLogin(request, response, false);
+		return checkLogin(request, response, false, null);
 	}
 	
-	public static boolean checkLogin(HttpServletRequest request, HttpServletResponse response, boolean invoke400) throws IOException {
+	public static boolean checkLogin(HttpServletRequest request, HttpServletResponse response, String nextUrl) throws IOException {
+		return checkLogin(request, response, false, nextUrl);
+	}
+	
+	public static boolean checkLogin(HttpServletRequest request, HttpServletResponse response, boolean ajax) throws IOException {
+		return checkLogin(request, response, true, null);
+	}
+
+	public static boolean checkLogin(HttpServletRequest request, HttpServletResponse response, boolean ajax, String nextUrl) throws IOException {
 		boolean isLogin = true;
 		
 		HttpSession session = request.getSession(false);
@@ -20,7 +28,9 @@ public class CheckLogin {
 		String url = request.getRequestURL().toString();
 		String queryString = request.getQueryString();
 		String fullUrl = null;
-		if (queryString != null) {
+		if (nextUrl != null) {
+			fullUrl = nextUrl;
+		} else if (queryString != null) {
 			fullUrl = url + "?" + queryString;			
 		} else {
 			fullUrl = url;
@@ -35,14 +45,14 @@ public class CheckLogin {
 		}
 		
 		if (!isLogin) {
-			if (invoke400) {
+			if (ajax) {
 				response.setContentType("text/plain; charset=UTF-8");
 				PrintWriter out = response.getWriter();
 				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-				out.println("unauthorized");
+				out.println("not logined");
 			}
 			response.sendRedirect("login.jsp?nextUrl=" + fullUrl);
-		}
+		} 
 		
 		return false;
 	}
