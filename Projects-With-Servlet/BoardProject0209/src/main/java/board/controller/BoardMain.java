@@ -18,7 +18,7 @@ import common.login.CheckLogin;
 /**
  * Servlet implementation class BoardMain
  */
-@WebServlet(urlPatterns = {"/main", ""})
+@WebServlet("/main")
 public class BoardMain extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        

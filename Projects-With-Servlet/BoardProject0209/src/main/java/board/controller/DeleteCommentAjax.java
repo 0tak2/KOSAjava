@@ -16,16 +16,16 @@ import common.login.CheckLogin;
 import member.vo.Member;
 
 /**
- * Servlet implementation class WriteCommentServlet
+ * Servlet implementation class CommentAjax
  */
-@WebServlet("/writeComment")
-public class WriteCommentServlet extends HttpServlet {
+@WebServlet("/ajax/deleteComment")
+public class DeleteCommentAjax extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public WriteCommentServlet() {
+    public DeleteCommentAjax() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -35,7 +35,7 @@ public class WriteCommentServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 로그인 검사
-		boolean isLogin = CheckLogin.checkLogin(request, response, "main");
+		boolean isLogin = CheckLogin.checkLogin(request, response, true);
 		if (!isLogin) {
 			return;
 		}
@@ -43,30 +43,39 @@ public class WriteCommentServlet extends HttpServlet {
 		// 1. 입력
 		HttpSession session = request.getSession();
 		request.setCharacterEncoding("UTF-8");
-		int articleNum = Integer.parseInt(request.getParameter("articleNum"));
-		
+		int commentNum = Integer.parseInt(request.getParameter("commentNum"));
+
 		Member currentUser = (Member) session.getAttribute("member");
-		String commentAuthor = currentUser.getMemberId();
-		
-		String commentContent = request.getParameter("commentContent");
 		
 		// 2. 로직
+		boolean result = false;
 		BoardService service = new BoardService();
-		Comment newComment = new Comment(commentContent, commentAuthor, articleNum);
-		boolean success = service.writeComment(newComment);
+		
+		//  현재 로그인 사용자가 게시글 작성자인지 확인 후 수정
+		Comment param = new Comment();
+		param.setCommentNum(commentNum);
+
+		Comment comment = service.getOneComment(param);
+		if (comment.getCommentAuthor().equals(currentUser.getMemberId())) {
+			boolean successDB = service.deleteComment(param);
+			result = successDB;
+		} else {
+			result = false;
+		}
 		
 		// 3. 출력
-		response.setContentType("text/html; charset=UTF-8");
+		response.setContentType("text/plain; charset=UTF-8");
 		PrintWriter out = response.getWriter();
-		out.println("<html><script>");
-		
-		if (success) {
-			out.printf("window.location.href='viewArticle?articleId=' + %d;", articleNum);
+		if (result) {
+			response.setStatus(HttpServletResponse.SC_OK);
+			out.println("success");
 		} else {
-			out.printf("alert('실패'); window.location.href='viewArticle?articleId=' + %d;", articleNum);
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			out.println("error");
 		}
-
-		out.println("</script></html>");
+		out.println(commentNum);
+		
+		out.close();
 	}
 
 }
