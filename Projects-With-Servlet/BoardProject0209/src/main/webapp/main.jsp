@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="member.vo.Member, board.vo.Article, java.util.List " %> <!-- 페이지 디렉티브로 임포트 -->
+<%@ page import="member.vo.Member,board.vo.ArticleExtended,java.util.List" %> <!-- 페이지 디렉티브로 임포트 -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,14 +28,15 @@
 		</thead>
 		<tbody>
 			<%
-				List<Article> list = (List<Article>)request.getAttribute("boardList"); // 세션과 마찬가지로 request 바로 참조
-				for(Article article : list) { %>
+				List<ArticleExtended> list = (List<ArticleExtended>)request.getAttribute("boardList"); // 세션과 마찬가지로 request 바로 참조
+				for(ArticleExtended article : list) {
+			%>
 			<tr>
 				<td><%= article.getArticleNum() %></td>
 				<td><a href="viewArticle?articleId=<%= article.getArticleNum() %>"><%= article.getArticleTitle() %></a></td>
 				<td><%= article.getMemberName() %></td>
 				<td><%= article.getArticleDate() %></td>
-				<td>0</td>
+				<td><%= article.getArticleComments() %></td>
 				<td><%= article.getArticleLike() %></td>
 			</tr>
 			<% } %>

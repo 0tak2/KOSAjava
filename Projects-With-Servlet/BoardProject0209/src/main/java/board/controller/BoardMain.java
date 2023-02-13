@@ -9,10 +9,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import board.service.BoardService;
-import board.vo.Article;
+import board.vo.ArticleExtended;
 import common.login.CheckLogin;
 
 /**
@@ -40,7 +38,7 @@ public class BoardMain extends HttpServlet {
 			return;
 		}
 		
-		List<Article> list = null;
+		List<ArticleExtended> list = null;
 		BoardService service = new BoardService();
 		list = service.getAllArticles();
 		

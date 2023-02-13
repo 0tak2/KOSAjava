@@ -4,28 +4,47 @@
           "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
           
 <mapper namespace="myBoard">
-
-	<select id="selectAllArticles" resultType="Article">		
+	<select id="selectAllArticles" resultType="ArticleExtended">		
 		<![CDATA[
-			SELECT articleNum, articleTitle, articleContent, articleAuthor, memberName, articleDate, articleLike
+			SELECT articleNum, articleTitle, articleContent, articleAuthor, memberName, articleDate,
+					IF(likeCount IS NULL, 0, likeCount) AS articleLike,
+					IF(commentCount IS NULL, 0, commentCount) AS articleComments
 			FROM articles A
 			INNER JOIN members M
 			ON A.articleAuthor = M.memberId
-			ORDER BY articleNum DESC
+			LEFT JOIN (
+				SELECT likeArticle, COUNT(likeNum) AS likeCount
+				FROM likes
+				GROUP BY likeArticle
+			) L
+			ON A.articleNum = L.likeArticle
+			LEFT JOIN (
+				SELECT commentArticle, COUNT(commentNum) AS commentCount
+				FROM comments
+				GROUP BY commentArticle
+			) C
+			ON A.articleNum = C.commentArticle
+			ORDER BY articleNum DESC;
 		]]>
 	</select>
 	
-	<select id="selectOneArticle" parameterType="Article" resultType="Article">		
+	<select id="selectOneArticle" parameterType="ArticleExtended" resultType="ArticleExtended">		
 		<![CDATA[
-			SELECT articleNum, articleTitle, articleContent, articleAuthor, memberName, articleDate, articleLike
+			SELECT articleNum, articleTitle, articleContent, articleAuthor, memberName, articleDate, IF(likeCount IS NULL, 0, likeCount) AS articleLike
 			FROM articles A
 			INNER JOIN members M
 			ON A.articleAuthor = M.memberId
-			WHERE articleNum = #{articleNum}
+			LEFT JOIN (
+				SELECT likeArticle, COUNT(likeNum) AS likeCount
+				FROM likes
+				GROUP BY likeArticle
+			) L
+			ON A.articleNum = L.likeArticle
+			WHERE articleNum = #{articleNum};
 		]]>
 	</select>
 	
-	<select id="selectAllComments" parameterType="Article" resultType="Comment">		
+	<select id="selectAllComments" parameterType="ArticleExtended" resultType="Comment">		
 		<![CDATA[
 			SELECT commentNum, commentContent, commentAuthor, memberName, commentDate, commentArticle
 			FROM comments C
@@ -46,10 +65,18 @@
 		]]>
 	</select>
 	
-	<insert id="insertArticle" parameterType="Article">
+	<select id="selectLike" parameterType="Like" resultType="Like">
 		<![CDATA[
-			INSERT INTO articles(articleTitle, articleAuthor, articleContent, articleLike)
-			VALUES(#{articleTitle}, #{articleAuthor}, #{articleContent}, 0);
+			SELECT likeNum, likeMemberId, likeArticle
+			FROM likes
+			WHERE likeArticle = #{likeArticle} AND likeMemberId = #{likeMemberId}
+		]]>
+	</select>
+	
+	<insert id="insertArticle" parameterType="ArticleExtended">
+		<![CDATA[
+			INSERT INTO articles(articleTitle, articleAuthor, articleContent)
+			VALUES(#{articleTitle}, #{articleAuthor}, #{articleContent});
 		]]>
 	</insert>
 	
@@ -60,7 +87,14 @@
 		]]>
 	</insert>
 	
-	<delete id="deleteArticle" parameterType="Article">
+	<insert id="insertLike" parameterType="Like">
+		<![CDATA[
+			INSERT INTO likes(likeMemberId, likeArticle)
+			VALUES(#{likeMemberId}, #{likeArticle});
+		]]>
+	</insert>
+	
+	<delete id="deleteArticle" parameterType="ArticleExtended">
 		<![CDATA[
 			DELETE FROM articles
 			WHERE articleNum = #{articleNum}
@@ -74,7 +108,15 @@
 		]]>
 	</delete>
 	
-	<update id="updateArticle" parameterType="Article">
+	<delete id="deleteLike" parameterType="Like">
+		<![CDATA[
+			DELETE FROM likes
+			WHERE likeMemberId = #{likeMemberId}
+				AND likeArticle = #{likeArticle}
+		]]>
+	</delete>
+	
+	<update id="updateArticle" parameterType="ArticleExtended">
 		<![CDATA[
 			UPDATE articles
 			SET articleTitle=#{articleTitle}, articleContent=#{articleContent}

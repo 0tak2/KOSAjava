@@ -11,21 +11,21 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import board.service.BoardService;
-import board.vo.ArticleExtended;
+import board.vo.Like;
 import common.login.CheckLogin;
 import member.vo.Member;
 
 /**
- * Servlet implementation class DeleteArticleServlet
+ * Servlet implementation class UnsetLikeServlet
  */
-@WebServlet("/deleteArticle")
-public class DeleteArticleServlet extends HttpServlet {
+@WebServlet("/ajax/unLike")
+public class UnsetLikeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DeleteArticleServlet() {
+    public UnsetLikeServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -35,7 +35,7 @@ public class DeleteArticleServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 로그인 검사
-		boolean isLogin = CheckLogin.checkLogin(request, response);
+		boolean isLogin = CheckLogin.checkLogin(request, response, true);
 		if (!isLogin) {
 			return;
 		}
@@ -44,36 +44,29 @@ public class DeleteArticleServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		request.setCharacterEncoding("UTF-8");
 		int articleNum = Integer.parseInt(request.getParameter("articleNum"));
-		
+
 		Member currentUser = (Member) session.getAttribute("member");
 		
 		// 2. 로직
-		boolean success = false;
 		BoardService service = new BoardService();
-		
-		//  현재 로그인 사용자가 게시글 작성자인지 확인 후 삭제
-		ArticleExtended param = new ArticleExtended();
-		param.setArticleNum(articleNum);
-		ArticleExtended article = service.getArticle(param);
-		if (article.getArticleAuthor().equals(currentUser.getMemberId())) {
-			boolean successDB = service.deleteArticle(param);
-			success = successDB;
-		} else {
-			success = false;
-		}
+		Like param = new Like();
+		param.setLikeArticle(articleNum);
+		param.setLikeMemberId(currentUser.getMemberId());
+
+		boolean result = service.unSetLike(param);
 		
 		// 3. 출력
-		response.setContentType("text/html; charset=UTF-8");
+		response.setContentType("text/plain; charset=UTF-8");
 		PrintWriter out = response.getWriter();
-		out.println("<html><script>");
-		
-		if (success) {
-			out.println("alert('성공적으로 삭제했습니다.'); window.location.href='main';");
+		if (result) {
+			response.setStatus(HttpServletResponse.SC_OK);
+			out.println("success");
 		} else {
-			out.println("alert('자신이 쓴 글만 삭제할 수 있습니다.'); window.location.href='main';");
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			out.println("error");
 		}
-
-		out.println("</script></html>");
+		
+		out.close();
 	}
 
 }

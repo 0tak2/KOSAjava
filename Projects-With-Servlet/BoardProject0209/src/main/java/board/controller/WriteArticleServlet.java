@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import board.service.BoardService;
-import board.vo.Article;
+import board.vo.ArticleExtended;
 import common.login.CheckLogin;
 import member.vo.Member;
 
@@ -59,7 +59,7 @@ public class WriteArticleServlet extends HttpServlet {
 		
 		// 2. 로직
 		BoardService service = new BoardService();
-		Article newArticle = new Article(articleTitle, articleContent, articleAuthor);
+		ArticleExtended newArticle = new ArticleExtended(articleTitle, articleContent, articleAuthor);
 		boolean success = service.writeArticle(newArticle);
 		
 		// 3. 출력
