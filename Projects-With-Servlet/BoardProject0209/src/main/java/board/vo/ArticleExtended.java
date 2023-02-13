@@ -1,6 +1,6 @@
 package board.vo;
 
-public class Article {
+public class ArticleExtended {
 	private int articleNum;
 	private String articleTitle;
 	private String articleContent;
@@ -8,12 +8,13 @@ public class Article {
 	private String memberName;
 	private String articleDate;
 	private int articleLike;
+	private int articleComments;
 	
-	public Article() {
+	public ArticleExtended() {
 	}
 
-	public Article(int articleNum, String articleTitle, String articleContent, String articleAuthor, String memberName,
-			String articleDate, int articleLike) {
+	public ArticleExtended(int articleNum, String articleTitle, String articleContent, String articleAuthor,
+			String memberName, String articleDate, int articleLike, int articleComments) {
 		super();
 		this.articleNum = articleNum;
 		this.articleTitle = articleTitle;
@@ -22,9 +23,10 @@ public class Article {
 		this.memberName = memberName;
 		this.articleDate = articleDate;
 		this.articleLike = articleLike;
+		this.articleComments = articleComments;
 	}
 
-	public Article(String articleTitle, String articleContent, String articleAuthor) {
+	public ArticleExtended(String articleTitle, String articleContent, String articleAuthor) {
 		super();
 		this.articleTitle = articleTitle;
 		this.articleContent = articleContent;
@@ -86,6 +88,12 @@ public class Article {
 	public void setArticleLike(int articleLike) {
 		this.articleLike = articleLike;
 	}
-	
-	
+
+	public int getArticleComments() {
+		return articleComments;
+	}
+
+	public void setArticleComments(int articleComments) {
+		this.articleComments = articleComments;
+	}
 }

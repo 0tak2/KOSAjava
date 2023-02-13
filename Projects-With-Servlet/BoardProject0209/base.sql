@@ -22,16 +22,15 @@ CREATE TABLE articles (
 	articleContent  VARCHAR(256)  NOT NULL,
 	articleAuthor  VARCHAR(10),
 	articleDate  DATETIME  NOT NULL DEFAULT NOW(),
-	articleLike  INTEGER,
 	FOREIGN KEY (articleAuthor) REFERENCES members(memberId)
 );
 
 -- 게시글 테이블 테스트 데이터
-INSERT INTO articles(articleTitle, articleAuthor, articleContent, articleLike)
-		VALUES('플스 팔아요', 'hong', '싸게 팝니다. 네고 사절', 5);
+INSERT INTO articles(articleTitle, articleAuthor, articleContent)
+		VALUES('플스 팔아요', 'hong', '싸게 팝니다. 네고 사절');
 
-INSERT INTO articles(articleTitle, articleAuthor, articleContent, articleLike)
-		VALUES('갤럭시 팔아요', 'hong', '5만원에 팝니다. 네고 사절', 2);
+INSERT INTO articles(articleTitle, articleAuthor, articleContent)
+		VALUES('갤럭시 팔아요', 'hong', '5만원에 팝니다. 네고 사절');
 
 -- 댓글 테이블 만들기
 CREATE TABLE comments (
@@ -51,5 +50,14 @@ INSERT INTO comments(commentContent, commentAuthor, commentArticle)
 INSERT INTO comments(commentContent, commentAuthor, commentArticle)
 		VALUES('가격 인하 - 3만원... 제발 사주세요', 'hong', 2);
 
+-- 좋아요 테이블 만들기
+CREATE TABLE likes (
+	likeNum  INTEGER  NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	likeMemberId  VARCHAR(10),
+	likeArticle  INTEGER,
+	FOREIGN KEY (likeMemberId) REFERENCES members(memberId),
+	FOREIGN KEY (likeArticle) REFERENCES articles(articleNum) ON DELETE CASCADE
+);
 
-
+-- 좋아요 테이블 테스트 데이터
+INSERT INTO likes(likeMemberId, likeArticle) VALUES('hong', 1);

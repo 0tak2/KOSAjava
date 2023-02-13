@@ -5,31 +5,32 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
 import board.dao.BoardDAO;
-import board.vo.Article;
+import board.vo.ArticleExtended;
 import board.vo.Comment;
+import board.vo.Like;
 import common.mybatis.MyBatisConnectionFactory;
 
 public class BoardService {
 
-	public List<Article> getAllArticles() {
+	public List<ArticleExtended> getAllArticles() {
 		SqlSession sqlSession = MyBatisConnectionFactory.getSqlSessionFactory().openSession();
 		
 		BoardDAO dao = new BoardDAO(sqlSession);
 		
-		List<Article> list = dao.selectAll();
+		List<ArticleExtended> list = dao.selectAll();
 		return list;
 	}
 
-	public Article getArticle(Article param) {
+	public ArticleExtended getArticle(ArticleExtended param) {
 		SqlSession sqlSession = MyBatisConnectionFactory.getSqlSessionFactory().openSession();
 		
 		BoardDAO dao = new BoardDAO(sqlSession);
 		
-		Article result = dao.selectOne(param);
+		ArticleExtended result = dao.selectOne(param);
 		return result;
 	}
 
-	public boolean writeArticle(Article param) {
+	public boolean writeArticle(ArticleExtended param) {
 		SqlSession sqlSession = MyBatisConnectionFactory.getSqlSessionFactory().openSession();
 		
 		BoardDAO dao = new BoardDAO(sqlSession);
@@ -46,7 +47,7 @@ public class BoardService {
 		}
 	}
 
-	public List<Comment> getAllComments(Article param) {
+	public List<Comment> getAllComments(ArticleExtended param) {
 		SqlSession sqlSession = MyBatisConnectionFactory.getSqlSessionFactory().openSession();
 		
 		BoardDAO dao = new BoardDAO(sqlSession);
@@ -72,7 +73,7 @@ public class BoardService {
 		}
 	}
 
-	public boolean deleteArticle(Article param) {
+	public boolean deleteArticle(ArticleExtended param) {
 		SqlSession sqlSession = MyBatisConnectionFactory.getSqlSessionFactory().openSession();
 		
 		BoardDAO dao = new BoardDAO(sqlSession);
@@ -89,7 +90,7 @@ public class BoardService {
 		}
 	}
 
-	public boolean editArticle(Article param) {
+	public boolean editArticle(ArticleExtended param) {
 		SqlSession sqlSession = MyBatisConnectionFactory.getSqlSessionFactory().openSession();
 		
 		BoardDAO dao = new BoardDAO(sqlSession);
@@ -139,6 +140,49 @@ public class BoardService {
 		
 		BoardDAO dao = new BoardDAO(sqlSession);
 		int result = dao.deleteComment(param);
+		
+		if (result == 1) {
+			sqlSession.commit();
+			sqlSession.close();
+			return true;
+		} else {
+			sqlSession.rollback();
+			sqlSession.close();
+			return false;
+		}
+	}
+
+	public Like getLike(Like param) {
+		SqlSession sqlSession = MyBatisConnectionFactory.getSqlSessionFactory().openSession();
+		
+		BoardDAO dao = new BoardDAO(sqlSession);
+		Like result = dao.selectLike(param);
+		
+		return result;
+	}
+
+	public boolean setLike(Like param) {
+		SqlSession sqlSession = MyBatisConnectionFactory.getSqlSessionFactory().openSession();
+		
+		BoardDAO dao = new BoardDAO(sqlSession);
+		int result = dao.insertLike(param);
+		
+		if (result == 1) {
+			sqlSession.commit();
+			sqlSession.close();
+			return true;
+		} else {
+			sqlSession.rollback();
+			sqlSession.close();
+			return false;
+		}
+	}
+
+	public boolean unSetLike(Like param) {
+		SqlSession sqlSession = MyBatisConnectionFactory.getSqlSessionFactory().openSession();
+		
+		BoardDAO dao = new BoardDAO(sqlSession);
+		int result = dao.deleteLike(param);
 		
 		if (result == 1) {
 			sqlSession.commit();

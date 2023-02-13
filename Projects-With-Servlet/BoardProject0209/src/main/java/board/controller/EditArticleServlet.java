@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import board.service.BoardService;
-import board.vo.Article;
+import board.vo.ArticleExtended;
 import common.login.CheckLogin;
 import member.vo.Member;
 
@@ -46,9 +46,9 @@ public class EditArticleServlet extends HttpServlet {
 		
 		// 2. 로직
 		BoardService service = new BoardService();
-		Article param = new Article();
+		ArticleExtended param = new ArticleExtended();
 		param.setArticleNum(articleNum);
-		Article result = service.getArticle(param);
+		ArticleExtended result = service.getArticle(param);
 		
 		// 3. 출력
 		Member currentUser = (Member)request.getSession().getAttribute("member");
@@ -96,11 +96,11 @@ public class EditArticleServlet extends HttpServlet {
 		BoardService service = new BoardService();
 		
 		//  현재 로그인 사용자가 게시글 작성자인지 확인 후 수정
-		Article param = new Article();
+		ArticleExtended param = new ArticleExtended();
 		param.setArticleNum(articleNum);
 		param.setArticleTitle(articleTitle);
 		param.setArticleContent(articleContnet);
-		Article article = service.getArticle(param);
+		ArticleExtended article = service.getArticle(param);
 		if (article.getArticleAuthor().equals(currentUser.getMemberId())) {
 			boolean successDB = service.editArticle(param);
 			success = successDB;

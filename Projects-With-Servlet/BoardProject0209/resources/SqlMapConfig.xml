@@ -23,8 +23,9 @@
 	 <!-- 별명지정하는게 나와요! 타이핑 줄이기위해서 사용해요! -->
 	 <typeAliases>
 	 	<typeAlias type="member.vo.Member" alias="Member"/>
-	 	<typeAlias type="board.vo.Article" alias="Article"/>
+	 	<typeAlias type="board.vo.ArticleExtended" alias="ArticleExtended"/>
 	 	<typeAlias type="board.vo.Comment" alias="Comment" />
+	 	<typeAlias type="board.vo.Like" alias="Like" />
 	 </typeAliases>
 
 	<!-- Database 연결 정보 선언 -->

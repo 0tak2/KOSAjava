@@ -1,8 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="board.vo.Article, board.vo.Comment, java.util.List" %>
+<%@ page import="board.vo.ArticleExtended,board.vo.Comment,java.util.List" %>
 
-<% Article article = (Article)request.getAttribute("article"); %>
+<%
+ArticleExtended article = (ArticleExtended)request.getAttribute("article");
+%>
+<% List<Comment> commentsList = (List<Comment>)request.getAttribute("comments"); %>
+<% boolean didLike = (Boolean)request.getAttribute("didLike"); %>
 
 <!DOCTYPE html>
 <html>
@@ -87,6 +91,8 @@ function cancelEdit(commentNum) {
 }
 
 function showUpdateControl(commentNum) {
+	console.log('SHOW UPDATE CONTROL:', commentNum);
+	
 	if (isEditing !== -1) {
 		cancelEdit(isEditing);
 	}
@@ -120,10 +126,60 @@ function showUpdateControl(commentNum) {
 	});
 	
 }
+
+function likeArticle(articleNum) {
+	console.log('LIKE:', articleNum);
+	
+	const likeCountWrapper = $('span.like-count-wrapper');
+	const likeCount = Number(likeCountWrapper.text());
+	const likeWrapper = $('span.like-control-wrapper');
+	const cancelBtn = $('<button>좋아요 취소</button>').click(() => unlikeArticle(articleNum));
+	
+	$.ajax({
+	    url : "ajax/setLike",
+	    type : "POST",
+	    data : {
+	    	articleNum
+	    },
+	    success: function(result) {
+	    	console.log(result)
+	    	likeWrapper.empty();
+	    	likeWrapper.append(cancelBtn);
+	    	likeCountWrapper.text(likeCount + 1);
+	    },
+	    error: function(error) {
+	    	alert('좋아요에 실패했습니다.')
+	    }
+	});
+}
+
+function unlikeArticle(articleNum) {
+	console.log('UNLIKE:', articleNum);
+	const likeCountWrapper = $('span.like-count-wrapper');
+	const likeCount = Number(likeCountWrapper.text());
+	const likeWrapper = $('span.like-control-wrapper');
+	const likeBtn = $('<button>👍</button>').click(() => likeArticle(articleNum));
+	
+	$.ajax({
+	    url : "ajax/unLike",
+	    type : "POST",
+	    data : {
+	    	articleNum
+	    },
+	    success: function(result) {
+	    	console.log(result)
+	    	likeWrapper.empty();
+	    	likeWrapper.append(likeBtn);
+	    	likeCountWrapper.text(likeCount - 1);
+	    },
+	    error: function(error) {
+	    	alert('좋아요 취소에 실패했습니다.')
+	    }
+	});
+}
 </script>
 </head>
 <body>
-	<% List<Comment> commentsList = (List<Comment>)request.getAttribute("comments"); %>
 	<table border=1>
 		<tr>
 			<td>제목</td>
@@ -139,7 +195,18 @@ function showUpdateControl(commentNum) {
 		</tr>
 		<tr>
 			<td>좋아요</td>
-			<td><%= article.getArticleLike() %> <a href="">나도 좋아요!</a></td>
+			<td>
+				<span class="like-count-wrapper">
+					<%= article.getArticleLike() %>				
+				</span>
+				<span class="like-control-wrapper">
+					<% if(didLike) { %>
+						<button onClick="unlikeArticle(<%= article.getArticleNum() %>)">좋아요 취소</button>
+					<% } else { %>
+						<button onClick="likeArticle(<%= article.getArticleNum() %>)">👍</button>
+					<% } %>
+				</span>
+			</td>
 		</tr>
 		<tr>
 			<td>내용</td>

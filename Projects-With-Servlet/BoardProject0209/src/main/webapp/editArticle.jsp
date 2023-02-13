@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="board.vo.Article" %>
+<%@ page import="board.vo.ArticleExtended" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +8,9 @@
 <title>게시글 수정</title>
 </head>
 <body>
-	<% Article article = (Article)request.getAttribute("article"); %>
+	<%
+	 ArticleExtended article = (ArticleExtended)request.getAttribute("article");
+	%>
 	<form action="editArticle" method="post">
 		<input type="hidden" name="articleNum" value="<%= article.getArticleNum() %>">
 		<table border=1>
