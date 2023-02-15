@@ -1,8 +1,8 @@
 -- 스키마 만들기
-DROP DATABASE IF EXISTS simpleboard;
-CREATE DATABASE simpleboard;
+DROP DATABASE IF EXISTS simpleboard2;
+CREATE DATABASE simpleboard2;
 
-USE simpleboard;
+USE simpleboard2;
 
 -- 멤버 테이블 만들기
 CREATE TABLE members (

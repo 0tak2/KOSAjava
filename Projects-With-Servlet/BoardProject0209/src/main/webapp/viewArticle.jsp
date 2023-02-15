@@ -240,6 +240,7 @@ function unlikeArticle(articleNum) {
 					<td class="comment-content-cell"><span class="comment-content"><%= comment.getCommentContent() %></span></td>
 				</tr>
 			</table>
+			
 			<button onClick="showUpdateControl(<%= comment.getCommentNum() %>)">수정</button>
 			<button onClick="deleteComment(<%= comment.getCommentNum() %>)">삭제</button>
 		</div>
