@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="foo0" class="springioc.sample2.Foo"></bean> <!-- 디폴트 생성자 -->
+	<bean id="foo1" class="springioc.sample2.Foo">
+		<constructor-arg value="abc" />
+	</bean>
+	<bean id="foo2" class="springioc.sample2.Foo">
+		<constructor-arg index="0" type="java.lang.String" value="abc" />
+		<constructor-arg index="1" type="int" value="1000" />
+	</bean>  
+	
+	<!-- 우선 Bar를 빈으로 등록한다 -->
+	<bean id="myBar" class="springioc.sample2.Bar"></bean>
+	
+	<bean id="foo3" class="springioc.sample2.Foo">
+		<!-- <constructor-arg value="myBar???" /> 이렇게는 불가능하다 -->
+		<constructor-arg ref="myBar"></constructor-arg> <!-- 빈을 주입하려면 ref 어트리뷰트에 빈의 id를 기입 -->
+	</bean>  
+</beans>
