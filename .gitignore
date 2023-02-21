@@ -32,3 +32,4 @@ secret.js
 # IDE
 .classpath
 .project
+.idea/
