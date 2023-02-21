@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="messageBean" class="springioc.sample1.MessageBeanImpl" scope="singleton">
+		<constructor-arg> <!-- 생성자 인자 -->
+			<value>딸기</value>
+		</constructor-arg>
+		<property name="cost"> <!-- setter 인자  -->
+			<value>3000</value>
+		</property>
+	</bean>
+	
+	<bean id="messageBean_1" class="springioc.sample1.MessageBeanImpl" scope="singleton">
+	</bean> <!-- 이 경우 디폴트 생성자로 빈을 만들게 됨 -->
+	
+	<bean id="messageBean_2" class="springioc.sample1.MessageBeanImpl" scope="singleton">
+		<property name="cost">
+			<value>3500</value>
+		</property>
+	</bean> <!-- 이 경우 디폴트 생성자로 빈을 만들고 세터로 값을 넣어주게 됨. -->
+	
+	<bean id="messageBean_3" class="springioc.sample1.MessageBeanImpl" scope="singleton">
+		<constructor-arg>
+			<value>바나나</value>
+		</constructor-arg>
+		<constructor-arg>
+			<value>7000</value>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="messageBean_3_1" class="springioc.sample1.MessageBeanImpl" scope="singleton">
+		<constructor-arg value="오렌지" />
+		<constructor-arg value="6500" />
+	</bean>
+	
+	<bean id="messageBean_3_2" class="springioc.sample1.MessageBeanImpl" scope="singleton">
+		<constructor-arg index="1" type="int" value="6500" />
+		<constructor-arg index="0" type="java.lang.String" value="고오급 오렌지" />
+	</bean>
+</beans>
