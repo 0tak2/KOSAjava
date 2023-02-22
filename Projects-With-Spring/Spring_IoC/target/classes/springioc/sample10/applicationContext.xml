@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="myObj" class="springioc.sample10.TestBaen" autowire="constructor" />
+	
+	<bean id="data1" class="springioc.sample10.DataBean" primary="true" />
+	<bean id="data2" class="springioc.sample10.DataBean" />
+</beans>
