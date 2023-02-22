@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="consoleRef" class="springioc.sample6.ConsoleOutput" />
+	
+	<bean id="fileRef" class="springioc.sample6.FileOutput"
+		c:filePath="/home/limo/text.txt" p:filePath="/home/limo/text.txt" /> <!-- 중복 지정됨. 일반적으로는 1번만 -->
+
+<!-- 	<bean id="myBeanOld" class="springioc.sample6.MessageBeanImpl">
+		<constructor-arg name="name" value="홍길동" />
+		<property name="phone" value="010-1234-3456" />
+		<property name="output" ref="myConsole"></property>
+	</bean> -->
+
+	<bean id="myBean" class="springioc.sample6.MessageBeanImpl"
+		c:name="강감찬" p:phone="010-1232-3445" p:output-ref="consoleRef" />
+		
+	<bean id="anotherBean" class="springioc.sample6.MessageBeanImpl"
+		c:name="신사임당" p:phone="010-1232-3445" p:output-ref="fileRef" />
+</beans>
