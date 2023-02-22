@@ -13,6 +13,8 @@
 		<config>src/springioc/sample4/applicationContext.xml</config>
 		<config>src/springioc/sample5/applicationContext.xml</config>
 		<config>src/springioc/sample5/beans.xml</config>
+		<config>src/springioc/sample6/applicationContext.xml</config>
+		<config>src/springioc/sample7/applicationContext.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

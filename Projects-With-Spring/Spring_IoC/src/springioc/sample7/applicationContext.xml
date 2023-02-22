@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="developer" class="springioc.sample7.Developer">
+		<constructor-arg index="0" value="홍길동"></constructor-arg>
+		<constructor-arg index="1" type="int" value="5000"></constructor-arg>
+		<constructor-arg index="2" value="개발1팀"></constructor-arg>
+	</bean>
+	
+	<bean id="emp" class="springioc.sample7.Emp"
+		c:name="신사임당" c:salary="7000"/>
+	
+	<bean id="engineer" class="springioc.sample7.Engineer"
+		c:dept="개발1팀" c:emp-ref="emp"/>
+</beans>
