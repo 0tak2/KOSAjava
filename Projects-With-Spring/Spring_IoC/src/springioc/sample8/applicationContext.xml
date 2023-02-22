@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="myObj" class="springioc.sample8.TestBaen" autowire="byName" />
+	<!-- 아래의 작업을 자동으로 해준다
+	<bean id="myObj" class="springioc.sample8.TestBaen">
+		<property name="data1" ref="data1" />
+		<property name="data2" ref="data2" />
+	</bean>
+	-->
+	
+	<bean id="data1" class="springioc.sample8.DataBean" /> <!-- 두 개는 구분되는 다른 빈 -->
+	<bean id="data2" class="springioc.sample8.DataBean" />
+</beans>
