@@ -30,19 +30,35 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 
-	<filter>
-		<filter-name>encodingFilter</filter-name> <!-- 필터 이름 짓기 -->
-		<filter-class> <!-- 필터의 클래스를 지정. 풀패키지 경 -->
-			org.springframework.web.filter.CharacterEncodingFilter <!-- 스프링이 제공 -->
+	<!-- <filter>
+		<filter-name>encodingFilter</filter-name> 필터 이름 짓기
+		<filter-class> 필터의 클래스를 지정. 풀패키지 경
+			org.springframework.web.filter.CharacterEncodingFilter 스프링이 제공
 		</filter-class>
-		<init-param> <!-- 넣어줄 인자 -->
+		<init-param> 넣어줄 인자
 			<param-name>encoding</param-name>
 			<param-value>UTF-8</param-value>
 		</init-param>
 	</filter>
 	
 	<filter-maping>
-		<filter-name>encodingFilter</filter-name> <!-- 필터 이름 -->
-		<url-pattern>/*</url-pattern> <!-- 모든 요청에 맵핑 -->
-	</filter-maping>
+		<filter-name>encodingFilter</filter-name> 필터 이름
+		<url-pattern>/*</url-pattern> 모든 요청에 맵핑
+	</filter-maping> -->
+	
+	<filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>
+            org.springframework.web.filter.CharacterEncodingFilter
+	    </filter-class>
+	    <init-param>
+	            <param-name>encoding</param-name>
+	            <param-value>UTF-8</param-value>
+        </init-param>
+	</filter>
+	<filter-mapping>
+	        <filter-name>encodingFilter</filter-name>
+	        <url-pattern>/*</url-pattern>
+	</filter-mapping>
+		
 </web-app>
