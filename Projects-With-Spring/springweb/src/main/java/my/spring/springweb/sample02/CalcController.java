@@ -1,7 +1,7 @@
 package my.spring.springweb.sample02;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,8 +13,8 @@ import my.spring.springweb.sample02.vo.User;
 @RequestMapping("/calc.do")
 public class CalcController {
 
-	private static final Logger logger = 
-			LoggerFactory.getLogger(CalcController.class);
+//	private static final Logger logger = 
+//			LoggerFactory.getLogger(CalcController.class);
 	
 	@PostMapping
 	public ModelAndView process(int firstNum, int secondNum, // @RequestParam 생략

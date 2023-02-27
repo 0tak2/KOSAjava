@@ -11,7 +11,7 @@
 		<java-version>1.8</java-version> <!-- 자바 버전 -->
 		<org.springframework-version>5.3.23</org.springframework-version> <!-- 스프링 버전 -->
 		<org.aspectj-version>1.9.9.1</org.aspectj-version>
-		<org.slf4j-version>1.7.36</org.slf4j-version>
+		<!-- <org.slf4j-version>1.7.36</org.slf4j-version> -->
 		<log4j2.version>2.17.1</log4j2.version> <!-- 이따 Log4J 2도 사용해볼 예정. 우선 여기에 버전을 잡아주자 -->
 	</properties>
 	<dependencies>
@@ -41,7 +41,7 @@
 			<version>${org.aspectj-version}</version>
 		</dependency>	
 		
-		<!-- Logging -->
+<!-- 		log4j v1.x
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -58,7 +58,7 @@
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>${org.slf4j-version}</version>
 			<scope>runtime</scope>
-		</dependency>
+		</dependency> -->
 
 		<!-- @Inject -->
 		<dependency>
