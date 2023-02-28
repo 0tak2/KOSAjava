@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+div {
+    display: inline-block;
+    width: 120px;
+    height: 120px;
+}
+  
+img {
+    width: 100px;
+    height: 100px;
+}
+  
+.shadow img {
+    transition: .5s ease;
+}
+  
+.shadow img:hover {
+    box-shadow: 1px 1px #d9d9d9, 2px 2px #d9d9d9, 3px 3px #d9d9d9, 4px 4px
+        #d9d9d9, 5px 5px #d9d9d9, 6px 6px #d9d9d9;
+    transform: translateX(-3px);
+    transition: .5s ease;
+}
+</style>
+</head>
+
+<body>
+	<h1>원하는 숫자를 선택하세요!</h1>
+	<div>
+		<a href="/springweb/lotto?lottoNum=1"> <!-- VO로 받으려면 키 값이 VO 필드명과 같아야 함 -->
+			<img src="../images/1.png">
+		</a>
+	</div>
+		<div>
+		<a href="/springweb/lotto?lottoNum=2">
+			<img src="../images/2.png">
+		</a>
+	</div>
+		<div>
+		<a href="/springweb/lotto?lottoNum=3">
+			<img src="../images/3.png">
+		</a>
+	</div>
+		<div>
+		<a href="/springweb/lotto?lottoNum=4">
+			<img src="../images/4.png">
+		</a>
+	</div>
+		<div>
+		<a href="/springweb/lotto?lottoNum=5">
+			<img src="../images/5.png">
+		</a>
+	</div>
+		<div>
+		<a href="/springweb/lotto?lottoNum=6">
+			<img src="../images/6.png">
+		</a>
+	</div>
+</body>
+</html>
