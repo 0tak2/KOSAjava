@@ -1,11 +1,9 @@
 package my.spring.springweb.sample07;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,8 +14,8 @@ import my.spring.springweb.sample07.vo.Student;
 
 @Controller
 @SessionAttributes({"data1", "shin"})
-@RequestMapping(value = "/sessionAttributesTest03")
-public class SessionAttributeController03 {
+@RequestMapping(value = "/sessionAttributesTest04")
+public class SessionAttributeController04 {
 
 	Logger log = LogManager.getLogger("case3");
 	
@@ -27,16 +25,15 @@ public class SessionAttributeController03 {
 		return "createString1";
 	}
 	
-	@ModelAttribute("shin")
-	public Student createString2(HttpServletRequest request) {
-		// 세션 직접 이용
-		//	true => 접속 클라리언트에 대한 세션이 없으면 만들고 레퍼런스를 가져옴.
-		//			있으면 레퍼런스만 가져옴.
+	@ModelAttribute("data2")
+	public String createString2(Model model) {
 		Student student = new Student(30, "신사임당", "국어국문");
 		
+		model.addAttribute("shin", student);
+		
 		log.debug("[Invoked] createString2");
-		return student;
-	}	
+		return "createString1";
+	}
 	
 	@PostMapping
 	public String handler(@ModelAttribute("data1") String str1,
