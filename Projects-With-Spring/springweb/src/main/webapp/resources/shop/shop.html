@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>영택이의 과일가게: 상품 목록</title>
+<style>
+	img {
+		width: 250px;
+	}
+	
+	.shop-items {
+		display: flex;
+	}
+	
+	button {
+		border: none;
+		background-color: transparent;
+	}
+</style>
+</head>
+<body>
+	<h1>영택이네 과일가게</h1>
+	<h2>구매하고자 하는 상품을 선택하십시오.</h2>
+	
+	<hr>
+	
+	<div class="shop-items">
+		<form action="/springweb/shop/select" method="post">
+			<input type="hidden" name="bananaCount" value="1">
+			<button><img src="../images/banana.jpg"></button>
+		</form>
+		
+		<form action="/springweb/shop/select" method="post">
+			<input type="hidden" name="appleCount" value="1">
+			<button><img src="../images/apple.gif"></button>
+		</form>
+		
+		<form action="/springweb/shop/select" method="post">
+			<input type="hidden" name="halabongCount" value="1">
+			<button><img src="../images/halabong.jpg"></button>
+		</form>
+	</div>
+	
+	<hr>
+	
+	<a href="/springweb/shop/select">장바구니 보기</a><br>
+	<a href="/springweb/shop/purchase">구매하고 장바구니 비우기</a>
+</body>
+</html>
