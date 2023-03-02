@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>Test Link</h1>
+	<hr>
+	GET 방식 1:
+	<a href="/springweb/testProduces1">produces의 content-type: 설정 안함. 실제 전송 결과는 JSP</a>
+	
+	<br><br>
+	
+	GET 방식 2:
+	<a href="/springweb/testProduces2">produces의 content-type: text/plain. 실제 전송 결과는 JSP</a>
+	
+	<br><br>
+	
+	GET 방식 3:
+	<a href="/springweb/testProduces3">produces의 content-type: text/html. Stream을 이용해 직접 리스폰스 출력</a>
+	
+	<br><br>
+	
+	GET 방식 4:
+	<a href="/springweb/testProduces4">produces의 content-type: application/json. Stream을 이용해 직접 리스폰스 출력</a>
+	
+	
+	
+</body>
+</html>
