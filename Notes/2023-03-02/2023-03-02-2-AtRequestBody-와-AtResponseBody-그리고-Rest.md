@@ -21,7 +21,7 @@ MessageConverter는 여러 개의 구현체가 있는 인터페이스임. 이때
 
 ## @RequestBody와 @ResponseBody 실습: sample09
 
-### ㅁ
+### text/plain (return String)
 
 ```html
 <!-- sample09/responseBodyTest.html -->
@@ -71,7 +71,7 @@ text/plain;charset=UTF-8"
 ![c595f8555681743c13d367fd6179faff.png](Assets/c595f8555681743c13d367fd6179faff.png)
 
 
-### ㅁ
+### text/plain (return ResponseEntity<String>)
 
 ```html
 	<a href="/springweb/body/textObject/3">content-type: text/plain (ResponseEntity 리턴)</a>
