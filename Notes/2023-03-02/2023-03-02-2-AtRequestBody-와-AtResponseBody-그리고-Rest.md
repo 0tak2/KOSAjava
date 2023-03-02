@@ -12,7 +12,7 @@ title: 2. @RequestBody와 @ResponseBody / 그리고 Rest
 
 ### 다른 경우: 컨트롤러가 직접 Data를 클라이언트에게 전송
 
-![8ce745e8ff3182620623a9a17da0aa30.png](Assets/8ce745e8ff3182620623a9a17da0aa30.png)
+![6e204ad04174e23459e322e9e55c0a0d.png](Assets/6e204ad04174e23459e322e9e55c0a0d.png)
 
 JSP를 전송하지 않고 JSON, XML 등 자체를 리스폰스로 반환하고자 할 경우, 컨트롤러에서 ResponseEntity 객체에 data, header, 상태코드 등을 채워 리턴하면 됨. 혹은 바디에 들어갈 데이터만을 간단하게 String, VO 등의 Object로 리턴할 수도 있음. (이 경우 데이터 외의 상태코드, 헤더 등은 설정 불가)
 
