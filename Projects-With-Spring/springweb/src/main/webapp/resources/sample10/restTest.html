@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+<script>
+function myFunc(restMethod) {
+	$.ajax({
+		url: '/springweb/rest/user',
+		method: restMethod,
+		data: {
+			id: $("#id").val(),
+			name: $("#name").val()
+		},
+		success: function(result) {
+			alert("성공");
+			console.log(result);
+		},
+		error: function() {
+			alert("실패");
+		}
+	});
+}
+
+</script>
+
+</head>
+<body>
+	<h1>AJAX 호출</h1>
+	ID: <input type="text" id="id">
+	<br><br>
+	Name: <input type="text" id="name">
+	<br><br>
+	
+	<button onclick="myFunc('get')">GET 호출</button>
+	<button onclick="myFunc('delete')">DELETE 호출</button>
+	
+</body>
+</html>
