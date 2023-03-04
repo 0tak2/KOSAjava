@@ -6,8 +6,7 @@
 </head>
 <body>
 <h1>
-	Hello world!  
+	게시글 목록
 </h1>
-<P>  ${ currentMember.memberName }님 로그인하셨습니다. </P>
 </body>
 </html>
