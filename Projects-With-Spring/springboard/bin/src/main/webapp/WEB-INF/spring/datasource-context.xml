@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+<!-- src/main/resources 경로는 classpath에 포함됩니다. 
+        location경로의 파일을 property파일로 불러와 사용하겠다는 설정입니다. -->
+   <context:property-placeholder
+      location="classpath:config/database.properties" />
+
+   <!-- dataSource를 Bean으로 등록합니다. 
+        dataSource는 connection에 필요한 정보가지고 있습니다. -->
+   <bean id="dataSource"
+      class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+      <property name="driverClassName" value="${db.driverClassName}" />
+      <property name="url" value="${db.url}" />
+      <property name="username" value="${db.username}" />
+      <property name="password" value="${db.password}" />
+   </bean>
+
+   <!-- sqlSessionFactory를 Bean으로 등록합니다. 
+        SqlSessionFactory는 SqlSession을 만들기 위한 정보들을 가지고 있습니다. 
+        mapper를 생성하면 list에 추가해야 합니다. -->
+   <bean id="sqlSessionFactory"
+      class="org.mybatis.spring.SqlSessionFactoryBean">
+      <property name="dataSource" ref="dataSource" />
+      <property name="configLocation"
+         value="classpath:mybatis-config.xml" />
+	  <property name="mapperLocations">
+         <list>
+            <value>classpath:mappers/memberMapper.xml</value>
+         </list>
+      </property>
+   </bean>
+
+   <!-- sqlSession를 Bean으로 등록합니다. 기존의 sqlSession은 Thread-Sage하지 않습니다. 
+             그래서 Bean으로 등록해서 사용하면 Transaction처리에 문제가 발생할 수 있지만 
+             여기서는 Thread-Safe한 SqlSessionTemplate 클래스를 사용합니다. -->
+   <bean id="sqlSession"
+      class="org.mybatis.spring.SqlSessionTemplate">
+      <constructor-arg ref="sqlSessionFactory" />
+   </bean>
+
+</beans>

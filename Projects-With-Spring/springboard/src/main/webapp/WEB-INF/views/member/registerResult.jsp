@@ -6,7 +6,18 @@
 </head>
 <body>
 <h1>
-	${ result }
+	<c:choose>
+		<c:when test="${ result }">
+			<h1>축하합니다</h1>
+			회원가입에 성공하였습니다. <br>
+			<a href="/springboard">메인으로</a>
+		</c:when>
+		<c:otherwise>
+			<h1>무언가 잘못되었습니다.</h1>
+			회원가입에 실패하였습니다. 다시 시도해보세요.<br>
+			<a href="/springboard/member/register">회원가입 페이지로</a>
+		</c:otherwise>
+	</c:choose>
 </h1>
 
 </body>

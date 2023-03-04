@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration 
+          PUBLIC "-//mybatis.org/DTD Config 3.0//EN" 
+          "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+	 <settings>
+	 	<setting name="jdbcTypeForNull" value="NULL"/>
+	 	<setting name="logImpl" value="LOG4J2"/> <!-- log4j와 MyBatis 연동. 쿼리문과 실행결과를 로그로 출력 -->
+	 </settings>
+	 
+	 <typeAliases>
+	 	<typeAlias type="org.youngtak2.springboard.member.vo.Member" alias="Member"/>
+<!-- 	 	<typeAlias type="member.vo.Member" alias="Member"/>
+	 	<typeAlias type="board.vo.ArticleExtended" alias="ArticleExtended"/>
+	 	<typeAlias type="board.vo.Comment" alias="Comment" />
+	 	<typeAlias type="board.vo.Like" alias="Like" /> -->
+	 </typeAliases>
+
+<!-- 	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC">
+			</transactionManager>
+			<dataSource type="POOLED">
+				 <property name="driver" value="${driver}"/>
+				 <property name="url" value="${url}"/>
+				 <property name="username" value="${user}"/>
+				 <property name="password" value="${password}"/>
+			</dataSource>
+		</environment>		
+	</environments>
+	
+	<mappers>
+		<mapper resource="./sqlmap/Member.xml"/>
+		<mapper resource="./sqlmap/Board.xml"/>
+	</mappers> -->
+</configuration>

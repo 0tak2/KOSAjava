@@ -19,6 +19,8 @@ public class AuthInterceptor implements HandlerInterceptor {
 		HttpSession session = request.getSession();
 		Member currentMember = (Member)session.getAttribute("currentMember");
 		
+		log.debug("세션 로그인 정보:" + currentMember);
+		
 		if(currentMember == null || currentMember.getMemberId() == null) {
 			response.sendRedirect(request.getContextPath() + "/member/login");
 		}

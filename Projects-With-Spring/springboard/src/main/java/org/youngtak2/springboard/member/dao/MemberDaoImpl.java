@@ -13,7 +13,12 @@ public class MemberDaoImpl implements MemberDao {
 	
 	@Override
 	public int insert(Member member) {
-		int affectedRows = session.insert("org.youngtak2.springboard.member.insert", member);
+		int affectedRows = 0;
+		try {
+			affectedRows = session.insert("org.youngtak2.springboard.member.insert", member);	
+		} catch (Exception e) {
+			throw e;
+		}
 		return affectedRows;
 	}
 

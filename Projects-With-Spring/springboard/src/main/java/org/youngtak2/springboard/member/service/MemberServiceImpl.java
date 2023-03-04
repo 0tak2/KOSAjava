@@ -13,7 +13,14 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	public boolean registerNewAccount(Member newMember) {
-		int affectedRows = dao.insert(newMember);
+		int affectedRows = 0;
+		
+		try {
+			affectedRows = dao.insert(newMember);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		if (affectedRows == 1) {
 			return true;
 		} else {

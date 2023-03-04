@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.youngtak2.springboard.member.service.MemberService;
@@ -30,12 +31,17 @@ public class MemberController {
 	}
 	
 	@GetMapping(value = "/login")
-	public String getLoginHandler() {
+	public String getLoginHandler(@SessionAttribute(required = false) Member currentMember, SessionStatus sessionStatus) {
+		if (currentMember != null) {
+			log.debug("이미 로그인되어 있음 - 로그인정보 날림");
+			sessionStatus.setComplete();
+		}
+		
 		return "member/login";
 	}
 	
 	@PostMapping(value = "/login")
-	public String postLoginHandler(@ModelAttribute("currentMember") Member member,
+	public String postLoginHandler(@ModelAttribute Member member,
 			Model model,
 			SessionStatus sessionStatus) {
 		log.debug("로그인 정보 전송받음: " + member);
@@ -57,7 +63,7 @@ public class MemberController {
 	}
 	
 	@PostMapping(value = "/register")
-	public String postRegisterHandler(@ModelAttribute() Member newMember, Model model) {
+	public String postRegisterHandler(@ModelAttribute Member newMember, Model model) {
 		boolean result = service.registerNewAccount(newMember);
 		
 		model.addAttribute("result", result);
