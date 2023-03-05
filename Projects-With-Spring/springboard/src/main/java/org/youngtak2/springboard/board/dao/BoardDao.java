@@ -9,7 +9,7 @@ import org.youngtak2.springboard.board.vo.Like;
 import org.youngtak2.springboard.common.vo.BasicSelect;
 
 public interface BoardDao {
-
+	
 	public BasicSelect selectArticleCounts();
 	
 	public List<ArticleExtended> selectAllArticles();

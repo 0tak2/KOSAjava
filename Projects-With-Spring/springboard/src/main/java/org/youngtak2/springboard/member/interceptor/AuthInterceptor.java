@@ -23,6 +23,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 		
 		if(currentMember == null || currentMember.getMemberId() == null) {
 			response.sendRedirect(request.getContextPath() + "/member/login");
+			return false;
 		}
 		return true;
 	}

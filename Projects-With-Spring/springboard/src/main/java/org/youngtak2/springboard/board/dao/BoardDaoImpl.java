@@ -16,12 +16,12 @@ public class BoardDaoImpl implements BoardDao {
 
 	@Autowired
 	private SqlSession session;
-	
+
 	@Override
 	public BasicSelect selectArticleCounts() {
 		BasicSelect result = null;
 		try {
-			result = session.selectOne("myBoard.selectArticleCounts");			
+			result = session.selectOne("org.youngtak2.springboard.board.selectArticleCounts");			
 		} catch (Exception e) {
 			throw e;
 		}
@@ -33,7 +33,7 @@ public class BoardDaoImpl implements BoardDao {
 		// 데이터베이스 처리 - MyBatis 이용
 		List<ArticleExtended> result = null;
 		try {
-			result = session.selectList("myBoard.selectAllArticles");
+			result = session.selectList("org.youngtak2.springboard.board.selectAllArticles");
 		} catch (Exception e) {
 			throw e;
 		}
@@ -45,7 +45,7 @@ public class BoardDaoImpl implements BoardDao {
 		// 데이터베이스 처리 - MyBatis 이용
 		List<ArticleExtended> result = null;
 		try {
-			result = session.selectList("myBoard.selectArticles", param);			
+			result = session.selectList("org.youngtak2.springboard.board.selectArticles", param);			
 		} catch (Exception e) {
 			throw e;
 		}
@@ -56,7 +56,7 @@ public class BoardDaoImpl implements BoardDao {
 	public ArticleExtended selectOneArticle(Article articleParam) {
 		ArticleExtended result = null;
 		try {
-			result = session.selectOne("myBoard.selectOneArticle", articleParam);			
+			result = session.selectOne("org.youngtak2.springboard.board.selectOneArticle", articleParam);			
 		} catch (Exception e) {
 			throw e;
 		}
@@ -67,7 +67,7 @@ public class BoardDaoImpl implements BoardDao {
 	public int insertArticle(Article newArticle) {
 		int affectedRows = 0;
 		try {
-			affectedRows = session.insert("myBoard.insertArticle", newArticle);
+			affectedRows = session.insert("org.youngtak2.springboard.board.insertArticle", newArticle);
 		} catch (Exception e) {
 			throw e;
 		}
@@ -78,7 +78,7 @@ public class BoardDaoImpl implements BoardDao {
 	public int editArticle(Article param) {
 		int affectedRows = 0;
 		try {
-			affectedRows = session.update("myBoard.updateArticle", param);
+			affectedRows = session.update("org.youngtak2.springboard.board.updateArticle", param);
 		} catch (Exception e) {
 			throw e;
 		}
@@ -89,7 +89,7 @@ public class BoardDaoImpl implements BoardDao {
 	public int deleteArticle(Article param) {
 		int affectedRows = 0;
 		try {
-			affectedRows = session.delete("myBoard.deleteArticle", param);
+			affectedRows = session.delete("org.youngtak2.springboard.board.deleteArticle", param);
 		} catch (Exception e) {
 			throw e;
 		}
@@ -100,7 +100,7 @@ public class BoardDaoImpl implements BoardDao {
 	public List<Comment> selectAllComments(Article param) {
 		List<Comment> result = null;
 		try {
-			result = session.selectList("myBoard.selectAllComments", param);			
+			result = session.selectList("org.youngtak2.springboard.board.selectAllComments", param);			
 		} catch (Exception e) {
 			throw e;
 		}
@@ -111,7 +111,7 @@ public class BoardDaoImpl implements BoardDao {
 	public Comment selectOneComment(Comment param) {
 		Comment result = null;
 		try {
-			result = session.selectOne("myBoard.selectComment", param);			
+			result = session.selectOne("org.youngtak2.springboard.board.selectComment", param);			
 		} catch (Exception e) {
 			throw e;
 		}
@@ -122,7 +122,7 @@ public class BoardDaoImpl implements BoardDao {
 	public int insertComment(Comment param) {
 		int affectedRows = 0;
 		try {
-			affectedRows = session.insert("myBoard.insertComment", param);
+			affectedRows = session.insert("org.youngtak2.springboard.board.insertComment", param);
 		} catch (Exception e) {
 			throw e;
 		}
@@ -133,7 +133,7 @@ public class BoardDaoImpl implements BoardDao {
 	public int editComment(Comment param) {
 		int affectedRows = 0;
 		try {
-			affectedRows = session.update("myBoard.updateComment", param);
+			affectedRows = session.update("org.youngtak2.springboard.board.updateComment", param);
 		} catch (Exception e) {
 			throw e;
 		}
@@ -144,7 +144,7 @@ public class BoardDaoImpl implements BoardDao {
 	public int deleteComment(Comment param) {
 		int affectedRows = 0;
 		try {
-			affectedRows = session.delete("myBoard.deleteComment", param);
+			affectedRows = session.delete("org.youngtak2.springboard.board.deleteComment", param);
 		} catch (Exception e) {
 			throw e;
 		}
@@ -155,7 +155,7 @@ public class BoardDaoImpl implements BoardDao {
 	public Like selectLike(Like param) {
 		Like result = null;
 		try {
-			result = session.selectOne("myBoard.selectLike", param);		
+			result = session.selectOne("org.youngtak2.springboard.board.selectLike", param);		
 		} catch (Exception e) {
 			throw e;
 		}
@@ -166,7 +166,7 @@ public class BoardDaoImpl implements BoardDao {
 	public int insertLike(Like param) {
 		int affectedRows = 0;
 		try {
-			affectedRows = session.insert("myBoard.insertLike", param);
+			affectedRows = session.insert("org.youngtak2.springboard.board.insertLike", param);
 		} catch (Exception e) {
 			throw e;
 		}
@@ -177,7 +177,7 @@ public class BoardDaoImpl implements BoardDao {
 	public int deleteLike(Like param) {
 		int affectedRows = 0;
 		try {
-			affectedRows = session.delete("myBoard.deleteLike", param);
+			affectedRows = session.delete("org.youngtak2.springboard.board.deleteLike", param);
 		} catch (Exception e) {
 			throw e;
 		}

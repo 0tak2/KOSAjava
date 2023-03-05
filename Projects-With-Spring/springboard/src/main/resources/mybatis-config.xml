@@ -10,27 +10,10 @@
 	 
 	 <typeAliases>
 	 	<typeAlias type="org.youngtak2.springboard.member.vo.Member" alias="Member"/>
-<!-- 	 	<typeAlias type="member.vo.Member" alias="Member"/>
-	 	<typeAlias type="board.vo.ArticleExtended" alias="ArticleExtended"/>
-	 	<typeAlias type="board.vo.Comment" alias="Comment" />
-	 	<typeAlias type="board.vo.Like" alias="Like" /> -->
+	 	<typeAlias type="org.youngtak2.springboard.board.vo.Article" alias="Article"/>
+	 	<typeAlias type="org.youngtak2.springboard.board.vo.ArticleExtended" alias="ArticleExtended"/>
+	 	<typeAlias type="org.youngtak2.springboard.board.vo.Comment" alias="Comment" />
+	 	<typeAlias type="org.youngtak2.springboard.board.vo.Like" alias="Like" />
+	 	<typeAlias type="org.youngtak2.springboard.common.vo.BasicSelect" alias="BasicSelect" />
 	 </typeAliases>
-
-<!-- 	<environments default="development">
-		<environment id="development">
-			<transactionManager type="JDBC">
-			</transactionManager>
-			<dataSource type="POOLED">
-				 <property name="driver" value="${driver}"/>
-				 <property name="url" value="${url}"/>
-				 <property name="username" value="${user}"/>
-				 <property name="password" value="${password}"/>
-			</dataSource>
-		</environment>		
-	</environments>
-	
-	<mappers>
-		<mapper resource="./sqlmap/Member.xml"/>
-		<mapper resource="./sqlmap/Board.xml"/>
-	</mappers> -->
 </configuration>

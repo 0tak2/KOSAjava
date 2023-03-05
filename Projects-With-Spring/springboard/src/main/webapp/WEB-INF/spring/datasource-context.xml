@@ -2,8 +2,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
 <!-- src/main/resources 경로는 classpath에 포함됩니다. 
         location경로의 파일을 property파일로 불러와 사용하겠다는 설정입니다. -->
@@ -20,6 +22,15 @@
       <property name="password" value="${db.password}" />
    </bean>
 
+	<!-- 스프링 트랜잭션 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<constructor-arg ref="dataSource" />
+	</bean>
+	
+	<!-- 어노테이션 사용 -->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+
    <!-- sqlSessionFactory를 Bean으로 등록합니다. 
         SqlSessionFactory는 SqlSession을 만들기 위한 정보들을 가지고 있습니다. 
         mapper를 생성하면 list에 추가해야 합니다. -->
@@ -31,6 +42,7 @@
 	  <property name="mapperLocations">
          <list>
             <value>classpath:mappers/memberMapper.xml</value>
+            <value>classpath:mappers/boardMapper.xml</value>
          </list>
       </property>
    </bean>
