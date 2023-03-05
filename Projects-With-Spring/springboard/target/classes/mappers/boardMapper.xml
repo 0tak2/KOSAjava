@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.youngtak2.springboard.board">
+	<select id="selectArticleCounts" resultType="BasicSelect">		
+		<![CDATA[
+			SELECT COUNT(*) AS numOfRows FROM articles
+		]]>
+	</select>
+	
+	<select id="selectAllArticles" resultType="ArticleExtended">		
+		<![CDATA[
+			SELECT articleNum, articleTitle, articleContent, articleAuthor, memberName, articleDate,
+					IF(likeCount IS NULL, 0, likeCount) AS articleLike,
+					IF(commentCount IS NULL, 0, commentCount) AS articleComments
+			FROM articles A
+			INNER JOIN members M
+			ON A.articleAuthor = M.memberId
+			LEFT JOIN (
+				SELECT likeArticle, COUNT(likeMemberId) AS likeCount
+				FROM likes
+				GROUP BY likeArticle
+			) L
+			ON A.articleNum = L.likeArticle
+			LEFT JOIN (
+				SELECT commentArticle, COUNT(commentNum) AS commentCount
+				FROM comments
+				GROUP BY commentArticle
+			) C
+			ON A.articleNum = C.commentArticle
+			ORDER BY articleNum DESC;
+		]]>
+	</select>
+	
+	<select id="selectArticles" parameterType="BasicSelect" resultType="ArticleExtended">		
+		<![CDATA[
+			SELECT articleNum, articleTitle, articleContent, articleAuthor, memberName, articleDate,
+					IF(likeCount IS NULL, 0, likeCount) AS articleLike,
+					IF(commentCount IS NULL, 0, commentCount) AS articleComments
+			FROM articles A
+			INNER JOIN members M
+			ON A.articleAuthor = M.memberId
+			LEFT JOIN (
+				SELECT likeArticle, COUNT(likeMemberId) AS likeCount
+				FROM likes
+				GROUP BY likeArticle
+			) L
+			ON A.articleNum = L.likeArticle
+			LEFT JOIN (
+				SELECT commentArticle, COUNT(commentNum) AS commentCount
+				FROM comments
+				GROUP BY commentArticle
+			) C
+			ON A.articleNum = C.commentArticle
+			ORDER BY articleNum
+			DESC
+			LIMIT #{start}, #{end};
+		]]>
+	</select>
+	
+	<select id="selectOneArticle" parameterType="Article" resultType="ArticleExtended">		
+		<![CDATA[
+			SELECT articleNum, articleTitle, articleContent, articleAuthor, memberName, articleDate, IF(likeCount IS NULL, 0, likeCount) AS articleLike
+			FROM articles A
+			INNER JOIN members M
+			ON A.articleAuthor = M.memberId
+			LEFT JOIN (
+				SELECT likeArticle, COUNT(likeMemberId) AS likeCount
+				FROM likes
+				GROUP BY likeArticle
+			) L
+			ON A.articleNum = L.likeArticle
+			WHERE articleNum = #{articleNum};
+		]]>
+	</select>
+	
+	<select id="selectAllComments" parameterType="Article" resultType="Comment">		
+		<![CDATA[
+			SELECT commentNum, commentContent, commentAuthor, memberName, commentDate, commentArticle
+			FROM comments C
+			INNER JOIN members M
+			on C.commentAuthor = M.memberId
+			WHERE commentArticle = #{articleNum}
+			ORDER BY commentDate ASC
+		]]>
+	</select>
+	
+	<select id="selectComment" parameterType="Comment" resultType="Comment">
+		<![CDATA[
+			SELECT commentNum, commentContent, commentAuthor, memberName, commentDate, commentArticle
+			FROM comments C
+			INNER JOIN members M
+			on C.commentAuthor = M.memberId
+			WHERE commentNum = #{commentNum}
+		]]>
+	</select>
+	
+	<select id="selectLike" parameterType="Like" resultType="Like">
+		<![CDATA[
+			SELECT likeMemberId, likeArticle
+			FROM likes
+			WHERE likeArticle = #{likeArticle} AND likeMemberId = #{likeMemberId}
+		]]>
+	</select>
+	
+	<insert id="insertArticle" parameterType="Article">
+		<![CDATA[
+			INSERT INTO articles(articleTitle, articleAuthor, articleContent)
+			VALUES(#{articleTitle}, #{articleAuthor}, #{articleContent});
+		]]>
+	</insert>
+	
+	<insert id="insertComment" parameterType="Comment">
+		<![CDATA[
+			INSERT INTO comments(commentContent, commentAuthor, commentArticle)
+			VALUES(#{commentContent}, #{commentAuthor}, #{commentArticle});
+		]]>
+	</insert>
+	
+	<insert id="insertLike" parameterType="Like">
+		<![CDATA[
+			INSERT INTO likes(likeMemberId, likeArticle)
+			VALUES(#{likeMemberId}, #{likeArticle});
+		]]>
+	</insert>
+	
+	<delete id="deleteArticle" parameterType="Article">
+		<![CDATA[
+			DELETE FROM articles
+			WHERE articleNum = #{articleNum}
+		]]>
+	</delete>
+	
+	<delete id="deleteComment" parameterType="Comment">
+		<![CDATA[
+			DELETE FROM comments
+			WHERE commentNum = #{commentNum}
+		]]>
+	</delete>
+	
+	<delete id="deleteLike" parameterType="Like">
+		<![CDATA[
+			DELETE FROM likes
+			WHERE likeMemberId = #{likeMemberId}
+				AND likeArticle = #{likeArticle}
+		]]>
+	</delete>
+	
+	<update id="updateArticle" parameterType="Article">
+		<![CDATA[
+			UPDATE articles
+			SET articleTitle=#{articleTitle}, articleContent=#{articleContent}
+			WHERE articleNum = #{articleNum}
+		]]>
+	</update>
+	
+	<update id="updateComment" parameterType="Comment">
+			<![CDATA[
+			UPDATE comments
+			SET commentContent=#{commentContent}
+			WHERE commentNum = #{commentNum}
+		]]>
+	</update>
+</mapper>
