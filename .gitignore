@@ -36,3 +36,5 @@ secret.js
 
 # ML
 large-data/
+
+venv/
