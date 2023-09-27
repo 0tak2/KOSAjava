@@ -1,2 +1,4 @@
-* linguist-vendored
-*.java linguist-vendored=false
+*.css linguist-detectable=false
+*.html linguist-detectable=false
+*.py linguist-detectable=false
+*.ipynb linguist-detectable=false
